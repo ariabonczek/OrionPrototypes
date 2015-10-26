@@ -11,6 +11,8 @@ public class CameraScript : MonoBehaviour {
 	private Vector3 cross;
 	private Vector3 newPos;
 
+	private Vector3 velocity = Vector3.zero;
+
 	private float medX;
 	private float medY;
 	private float medZ;
@@ -48,14 +50,22 @@ public class CameraScript : MonoBehaviour {
 		distanceZ = Mathf.Pow((player2.transform.position.z - player1.transform.position.z), 2);
 		
 		distance = Mathf.Sqrt(distanceX + distanceY + distanceZ);
-
-		// transform.position = new Vector3(-distance, distance, medZ);
-		transform.forward = median;
-
+		
+		this.transform.position = new Vector3(-distance, distance, medZ);
+		
 		// rotation displacement
-		cross = Vector3.Cross(median, player1.transform.position);
+		//cross = Vector3.Cross(median, player1.transform.forward);
+		Debug.DrawLine(player1.transform.position, median, Color.black);
+		Debug.DrawLine(player2.transform.position, median, Color.black);
+		Debug.DrawLine(player1.transform.position, player1.transform.forward, Color.green);
+		Debug.DrawLine(transform.position, median, Color.green);
+
+		//cross.y = 0.5f;
+		//Debug.DrawLine(median, cross, Color.red);
+		//Debug.DrawLine(player1.transform.position, cross, Color.red);
+		// this.transform.forward = cross;
+
 		//transform.forward = cross.normalized;
-		//transform.rotation = new Quaternion(0.0f, transform.forward.y, 0.0f, 50.0f);
 
 		/*transform.position = player.transform.position + offset;
 		transform.forward = player.transform.forward;
