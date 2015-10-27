@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class CameraScript : MonoBehaviour {
@@ -8,7 +8,7 @@ public class CameraScript : MonoBehaviour {
 
     private Vector3 median;
 	private Vector3 cross;
-	private Vector3 camDistance;
+	private float camDistance;
 
 	private Vector3 velocity = Vector3.zero;
 
@@ -21,6 +21,9 @@ public class CameraScript : MonoBehaviour {
 	private float distance;
 	private float upperLimit;
 	private float lowerLimit;
+	private float cameraAngle;
+	private float yVal;
+	private float xzVal;
 
     //CAMERA IMPLEMENTATION TO WORK AS FOLLOWS:
     //---Calculate displacement between players
@@ -33,9 +36,10 @@ public class CameraScript : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
 	{
+		cameraAngle = Mathf.PI / 10;
         // offset = transform.position - median;
-		upperLimit = 15f;
-		lowerLimit = -5f;
+		upperLimit = 12f;
+		lowerLimit = 3f;
 	}
 	
 	// Update is called once per frame
@@ -52,20 +56,30 @@ public class CameraScript : MonoBehaviour {
 		distance = Mathf.Sqrt(distanceX + distanceY + distanceZ);
 
 		Vector3 dispalcement = player2.transform.position - player1.transform.position;
-		cross = Vector3.Cross(dispalcement, player1.transform.up);
+		cross = Vector3.Normalize(Vector3.Cross(dispalcement, player1.transform.up));
 
-		Debug.DrawLine(median, cross + median, Color.black);
-		Debug.DrawLine(player1.transform.position, cross + median, Color.green);
+		//Debug.DrawLine(median, cross + median, Color.black);
+		//Debug.DrawLine(player1.transform.position, cross + median, Color.green);
 
 		transform.forward = cross;
 
-		Debug.Log(camDistance);
-
-		camDistance = cross* -distance;
-		camDistance = Vector3.ClampMagnitude(camDistance, upperLimit);
+		camDistance = distance * 2f;
+		camDistance = Mathf.Clamp(camDistance, lowerLimit, upperLimit);
+		Debug.Log (camDistance);
 		// we constrain to the upper limit, but we don't handle the lower limit, if they get to close
 
-		transform.position = median + camDistance;
+		yVal = (camDistance) * Mathf.Sin (cameraAngle);
+
+		xzVal = (camDistance) * Mathf.Cos (cameraAngle);
+
+		Vector3 projectedCam = median + (cross*-xzVal);
+
+		Debug.DrawLine(median, projectedCam, Color.blue);
+		Debug.DrawLine(projectedCam, projectedCam+new Vector3(0,yVal,0), Color.yellow);
+
+		transform.position = new Vector3 (projectedCam.x, median.y + yVal, projectedCam.z);
+
+		transform.forward = Vector3.Normalize ((median - transform.position));
 
 		//transform.position = new Vector3(
 		//	median + (cross* -distance/4)
