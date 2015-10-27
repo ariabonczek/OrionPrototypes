@@ -8,6 +8,7 @@ public class CameraScript : MonoBehaviour {
 
     private Vector3 median;
 	private Vector3 cross;
+	private Vector3 camDistance;
 
 	private Vector3 velocity = Vector3.zero;
 
@@ -34,7 +35,7 @@ public class CameraScript : MonoBehaviour {
 	{
         // offset = transform.position - median;
 		upperLimit = 15f;
-		lowerLimit = 2f;
+		lowerLimit = -5f;
 	}
 	
 	// Update is called once per frame
@@ -58,9 +59,12 @@ public class CameraScript : MonoBehaviour {
 
 		transform.forward = cross;
 
-		Vector3 camDistance = cross* -distance;
+		Debug.Log(camDistance);
+
+		camDistance = cross* -distance;
 		camDistance = Vector3.ClampMagnitude(camDistance, upperLimit);
-		Debug.Log(camDistance.magnitude);
+		// we constrain to the upper limit, but we don't handle the lower limit, if they get to close
+
 		transform.position = median + camDistance;
 
 		//transform.position = new Vector3(

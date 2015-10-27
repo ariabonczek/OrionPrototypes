@@ -61,6 +61,10 @@ public class Player1Script : MonoBehaviour {
 			DestroyImmediate(col.gameObject);
 			hasRope=true;
 		}
+		if (col.gameObject.tag == "smallRock")
+		{
+			col.gameObject.transform.parent = transform;
+		}
 	}
 
 	void OnTriggerStay(Collider col)

@@ -9,6 +9,8 @@ TagManager:
   - RopeRock
   - Statue
   - RopeRockStatue
+  - smallRock
+  - largeRock
   layers:
   - Default
   - TransparentFX
