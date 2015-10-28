@@ -65,7 +65,6 @@ public class CameraScript : MonoBehaviour {
 
 		camDistance = distance * 2f;
 		camDistance = Mathf.Clamp(camDistance, lowerLimit, upperLimit);
-		Debug.Log (camDistance);
 		// we constrain to the upper limit, but we don't handle the lower limit, if they get to close
 
 		yVal = (camDistance) * Mathf.Sin (cameraAngle);

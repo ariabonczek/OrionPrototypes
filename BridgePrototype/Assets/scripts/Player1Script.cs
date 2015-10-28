@@ -5,17 +5,21 @@ public class Player1Script : MonoBehaviour {
 
 	public float speed;
 	public float throwSpeed;
+	public GameObject rockPrefab;
 	private GameObject rock;
-	public GameObject ropeRock;
 	private bool hasRock;
-	private bool hasRope;
 	private bool actionButton;
+	private bool actionButtonPrev;
+	private float countdown;
+	private bool countRun;
 
 	// Use this for initialization
 	void Start () {
+		countRun = false;
+		countdown = 50;
 		hasRock = false;
-		hasRope = false;
 		actionButton = false;
+		actionButtonPrev = false;
 	}
 	
 	// Update is called once per frame
@@ -39,17 +43,33 @@ public class Player1Script : MonoBehaviour {
 		}
 		if (Input.GetKey (KeyCode.S))
 			this.transform.Translate (Vector3.back * speed * Time.deltaTime);
-		if (Input.GetKey (KeyCode.X))
-			ThrowRock ();
+		/*if (Input.GetKey (KeyCode.X))
+			ThrowRock ();*/
 		if (Input.GetKey (KeyCode.Z))
 			actionButton = true;
 		else
 			actionButton = false;
+
+		if (actionButton && !actionButtonPrev && hasRock) {
+			Destroy(rock);
+			Instantiate(rockPrefab,new Vector3(transform.position.x+transform.forward.x, .9f, transform.position.z+transform.forward.z),Quaternion.identity);
+			hasRock=false;
+			countRun=true;
+		}
+
+		if (countRun) {
+			countdown--;
+			if(countdown<0){
+				countRun=false;
+				countdown=50;
+			}
+		}
+		actionButtonPrev = actionButton;
 	}
 
 	void OnCollisionEnter(Collision col)
 	{
-		if (col.gameObject.tag == "Rock"&&hasRock==false)
+		/*if (col.gameObject.tag == "Rock"&&hasRock==false)
 		{
 			col.gameObject.GetComponent<Renderer>().enabled=false;
 			col.gameObject.GetComponent<Collider>().enabled=false;
@@ -60,16 +80,20 @@ public class Player1Script : MonoBehaviour {
 		{
 			DestroyImmediate(col.gameObject);
 			hasRope=true;
-		}
-		if (col.gameObject.tag == "smallRock")
-		{
-			col.gameObject.transform.parent = transform;
-		}
+		}*/
 	}
 
 	void OnTriggerStay(Collider col)
 	{
-		if (col.gameObject.tag == "Rope" && actionButton) {
+		if (col.gameObject.tag == "smallRock" && !hasRock && actionButton && !countRun)
+		{
+			Destroy(col.gameObject);
+			rock = Instantiate(rockPrefab);
+			rock.transform.position= transform.position+ (transform.forward)+(transform.up*1.5f);
+			rock.transform.parent = transform;
+			hasRock=true;
+		}
+		/*if (col.gameObject.tag == "Rope" && actionButton) {
 			if(!col.gameObject.GetComponent<Rigidbody> ().isKinematic)
 			{
 				Destroy(col.gameObject);
@@ -83,10 +107,10 @@ public class Player1Script : MonoBehaviour {
 			col.gameObject.transform.root.gameObject.transform.Rotate(new Vector3(90, 0 , 0));
 			col.gameObject.GetComponent<BoxCollider>().enabled = false;
 			Destroy(col.gameObject);
-		}
+		}*/
 	}
 
-	void ThrowRock(){
+	/*void ThrowRock(){
 		if (hasRope && hasRock) {
 			ropeRock.transform.GetChild(0).transform.position=this.transform.position+this.transform.forward*3+new Vector3(0,.5f,0);
 			ropeRock.transform.GetChild(0).GetComponent<Rigidbody>().velocity= new Vector3(0,0,0);
@@ -94,5 +118,5 @@ public class Player1Script : MonoBehaviour {
 			hasRope = false;
 			hasRock = false;
 		}
-	}
+	}*/
 }
