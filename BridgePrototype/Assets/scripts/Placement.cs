@@ -19,6 +19,7 @@ public class Placement : MonoBehaviour {
 		{
 			col.transform.position = transform.position;
 			col.gameObject.tag = "PlaceHolder";
+			col.gameObject.GetComponent<Rigidbody>().isKinematic = true;
 			// col.transform.position += new Vector3(0, -1, 0);
 			Destroy(transform.gameObject);
 		}

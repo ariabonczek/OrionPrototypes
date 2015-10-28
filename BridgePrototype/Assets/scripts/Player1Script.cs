@@ -55,10 +55,10 @@ public class Player1Script : MonoBehaviour {
 		}
 
 		if (actionButton && !actionButtonPrev && hasRock) {
-			Destroy(rock);
+			/*Destroy(rock);
 			Instantiate(rockPrefab,new Vector3(transform.position.x+transform.forward.x, .9f, transform.position.z+transform.forward.z),Quaternion.identity);
 			hasRock=false;
-			countRun=true;
+			countRun=true;*/
 		}
 
 		if (countRun) {
@@ -104,8 +104,8 @@ public class Player1Script : MonoBehaviour {
 
 			if (largeRockPrefab.GetComponent<LargeRock>().PlayerTwo && largeRockPrefab.GetComponent<LargeRock>().PlayerOne)
 			{
-				rock.transform.parent = transform;
 				hasRock=true;
+				transform.position = Camera.allCameras[0].GetComponent<CameraScript>().Median + Camera.allCameras[0].GetComponent<CameraScript>().Median;
 			}
 		}
 		/*if (col.gameObject.tag == "Rope" && actionButton) {

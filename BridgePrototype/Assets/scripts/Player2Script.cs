@@ -58,10 +58,10 @@ public class Player2Script : MonoBehaviour {
 		}
 		
 		if (actionButton && !actionButtonPrev && hasRock) {
-			Destroy(rock);
-			Instantiate(rockPrefab,new Vector3(transform.position.x+transform.forward.x, .9f, transform.position.z+transform.forward.z),Quaternion.identity);
-			hasRock=false;
-			countRun=true;
+			//Destroy(rock);
+			//Instantiate(rockPrefab,new Vector3(transform.position.x+transform.forward.x, .9f, transform.position.z+transform.forward.z),Quaternion.identity);
+			//hasRock=false;
+			//countRun=true;
 		}
 		
 		if (countRun) {
@@ -103,12 +103,16 @@ public class Player2Script : MonoBehaviour {
 		}
 		if (col.gameObject.tag == "largeRock" && !hasRock && actionButton && !countRun)
 		{
-			largeRockPrefab.GetComponent<LargeRock>().PlayerOne = true;
+			largeRockPrefab.GetComponent<LargeRock>().PlayerTwo = true;
 			
 			if (largeRockPrefab.GetComponent<LargeRock>().PlayerTwo && largeRockPrefab.GetComponent<LargeRock>().PlayerOne)
 			{
+				Destroy(col.gameObject);
+				rock = Instantiate(largeRockPrefab);
+				rock.transform.position = Camera.allCameras[0].GetComponent<CameraScript>().Median + (transform.up*1.5f);
 				rock.transform.parent = transform;
 				hasRock=true;
+			// 	rock.gameObject.GetComponent<Rigidbody> ().isKinematic = true;
 			}
 		}
 		/*if (col.gameObject.tag == "Rope" && actionButton) {
