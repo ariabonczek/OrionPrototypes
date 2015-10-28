@@ -6,6 +6,7 @@ public class Player1Script : MonoBehaviour {
 	public float speed;
 	public float throwSpeed;
 	public GameObject rockPrefab;
+	public GameObject largeRockPrefab;
 	private GameObject rock;
 	private bool hasRock;
 	private bool actionButton;
@@ -48,7 +49,10 @@ public class Player1Script : MonoBehaviour {
 		if (Input.GetKey (KeyCode.Z))
 			actionButton = true;
 		else
+		{
 			actionButton = false;
+			// GetComponent<LargeRock>().player1 = false;
+		}
 
 		if (actionButton && !actionButtonPrev && hasRock) {
 			Destroy(rock);
@@ -92,6 +96,16 @@ public class Player1Script : MonoBehaviour {
 			rock.transform.position= transform.position+ (transform.forward)+(transform.up*1.5f);
 			rock.transform.parent = transform;
 			hasRock=true;
+		}
+		if (col.gameObject.tag == "largeRock" && !hasRock && actionButton && !countRun)
+		{
+			largeRockPrefab.GetComponent<LargeRock>().PlayerOne = true;
+
+			if (largeRockPrefab.GetComponent<LargeRock>().PlayerTwo && largeRockPrefab.GetComponent<LargeRock>().PlayerOne)
+			{
+				rock.transform.parent = transform;
+				hasRock=true;
+			}
 		}
 		/*if (col.gameObject.tag == "Rope" && actionButton) {
 			if(!col.gameObject.GetComponent<Rigidbody> ().isKinematic)

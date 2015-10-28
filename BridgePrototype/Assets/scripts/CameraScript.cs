@@ -25,6 +25,11 @@ public class CameraScript : MonoBehaviour {
 	private float yVal;
 	private float xzVal;
 
+	public Vector3 Median
+	{
+		get { return median; } 
+	}
+
     //CAMERA IMPLEMENTATION TO WORK AS FOLLOWS:
     //---Calculate displacement between players
     //---Cross displacement with up vector

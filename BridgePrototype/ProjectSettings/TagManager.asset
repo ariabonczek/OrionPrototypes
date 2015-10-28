@@ -11,6 +11,8 @@ TagManager:
   - RopeRockStatue
   - smallRock
   - largeRock
+  - PlaceHolder
+  - Player2
   layers:
   - Default
   - TransparentFX

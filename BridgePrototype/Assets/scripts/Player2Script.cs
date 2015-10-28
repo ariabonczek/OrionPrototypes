@@ -8,14 +8,22 @@ public class Player2Script : MonoBehaviour {
 	private GameObject rock;
 	private GameObject ropeRock;
 	public GameObject rrs;
+	public GameObject rockPrefab;
+	public GameObject largeRockPrefab;
 	private bool hasRock;
 	private bool hasRopeRock;
+	private bool actionButton;
+	private bool actionButtonPrev;
+	private float countdown;
+	private bool countRun;
 
 	// Use this for initialization
 	void Start () {
+		countRun = false;
+		countdown = 50;
 		hasRock = false;
-		hasRopeRock = false;
-
+		actionButton = false;
+		actionButtonPrev = false;
 	}
 	
 	// Update is called once per frame
@@ -38,6 +46,30 @@ public class Player2Script : MonoBehaviour {
 			this.transform.Translate (Vector3.back * speed * Time.deltaTime);
 		if (Input.GetKey (KeyCode.Keypad2))
 			ThrowRock ();
+
+		if (Input.GetKey (KeyCode.KeypadDivide))
+			actionButton = true;
+		else
+		{
+			actionButton = false;
+			// GetComponent<LargeRock>().player2 = false;
+		}
+		
+		if (actionButton && !actionButtonPrev && hasRock) {
+			Destroy(rock);
+			Instantiate(rockPrefab,new Vector3(transform.position.x+transform.forward.x, .9f, transform.position.z+transform.forward.z),Quaternion.identity);
+			hasRock=false;
+			countRun=true;
+		}
+		
+		if (countRun) {
+			countdown--;
+			if(countdown<0){
+				countRun=false;
+				countdown=50;
+			}
+		}
+		actionButtonPrev = actionButton;
 	}
 
 	void OnCollisionEnter(Collision col)
@@ -64,6 +96,31 @@ public class Player2Script : MonoBehaviour {
 			hasRopeRock = false;
 			Destroy(col.gameObject);
 			Instantiate(rrs);
+		}
+	}
+
+	void OnTriggerStay(Collider col)
+	{
+		if (col.gameObject.tag == "smallRock" && !hasRock && actionButton && !countRun)
+		{
+			Destroy(col.gameObject);
+			rock = Instantiate(rockPrefab);
+			rock.transform.position= transform.position+ (transform.forward)+(transform.up*1.5f);
+			rock.transform.parent = transform;
+			hasRock=true;
+		}
+		if (col.gameObject.tag == "largeRock" && !hasRock && actionButton && !countRun)
+		{
+			largeRockPrefab.GetComponent<LargeRock>().PlayerTwo = true;
+
+			if (largeRockPrefab.GetComponent<LargeRock>().PlayerTwo && largeRockPrefab.GetComponent<LargeRock>().PlayerOne)
+			{
+				Destroy(col.gameObject);
+				rock = Instantiate(largeRockPrefab);
+				rock.transform.position = Camera.allCameras[0].GetComponent<CameraScript>().Median +(transform.up*1.5f);
+				rock.transform.parent = transform;
+				hasRock=true;
+			}
 		}
 	}
 
