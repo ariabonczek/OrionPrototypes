@@ -96,6 +96,7 @@ public class Player1Script : MonoBehaviour {
 			rock.transform.position= transform.position+ (transform.forward)+(transform.up*1.5f);
 			rock.transform.parent = transform;
 			hasRock=true;
+			rock.gameObject.GetComponent<Rigidbody> ().isKinematic = true;
 		}
 		if (col.gameObject.tag == "largeRock" && !hasRock && actionButton && !countRun)
 		{

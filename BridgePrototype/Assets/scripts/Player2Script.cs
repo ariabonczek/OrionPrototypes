@@ -5,13 +5,10 @@ public class Player2Script : MonoBehaviour {
 	
 	public float speed;
 	public float throwSpeed;
-	private GameObject rock;
-	private GameObject ropeRock;
-	public GameObject rrs;
 	public GameObject rockPrefab;
 	public GameObject largeRockPrefab;
+	private GameObject rock;
 	private bool hasRock;
-	private bool hasRopeRock;
 	private bool actionButton;
 	private bool actionButtonPrev;
 	private float countdown;
@@ -44,8 +41,13 @@ public class Player2Script : MonoBehaviour {
 			this.transform.Translate (Vector3.forward * speed * Time.deltaTime);
 		if (Input.GetKey(KeyCode.Keypad5))
 			this.transform.Translate (Vector3.back * speed * Time.deltaTime);
-		if (Input.GetKey (KeyCode.Keypad2))
-			ThrowRock ();
+		if (Input.GetKey (KeyCode.Keypad1))
+			actionButton = true;
+		else
+		{
+			actionButton = false;
+			// GetComponent<LargeRock>().player1 = false;
+		}
 
 		if (Input.GetKey (KeyCode.KeypadDivide))
 			actionButton = true;
@@ -74,31 +76,20 @@ public class Player2Script : MonoBehaviour {
 
 	void OnCollisionEnter(Collision col)
 	{
-		if (col.gameObject.tag == "Rock"&&hasRock==false)
+		/*if (col.gameObject.tag == "Rock"&&hasRock==false)
 		{
 			col.gameObject.GetComponent<Renderer>().enabled=false;
 			col.gameObject.GetComponent<Collider>().enabled=false;
 			rock= col.gameObject;
 			hasRock=true;
 		}
-		if (col.gameObject.tag == "RopeRock"&&hasRock==false)
+		if (col.gameObject.tag == "Rope"&&hasRope==false)
 		{
-			ropeRock = col.gameObject;
-			ropeRock.transform.position= new Vector3(1000,0.0f,0);
-			hasRopeRock=true;
-		}
+			DestroyImmediate(col.gameObject);
+			hasRope=true;
+		}*/
 	}
-
-	void OnTriggerEnter(Collider col)
-	{
-		if (col.gameObject.tag == "Statue" && hasRopeRock == true)
-		{
-			hasRopeRock = false;
-			Destroy(col.gameObject);
-			Instantiate(rrs);
-		}
-	}
-
+	
 	void OnTriggerStay(Collider col)
 	{
 		if (col.gameObject.tag == "smallRock" && !hasRock && actionButton && !countRun)
@@ -108,30 +99,42 @@ public class Player2Script : MonoBehaviour {
 			rock.transform.position= transform.position+ (transform.forward)+(transform.up*1.5f);
 			rock.transform.parent = transform;
 			hasRock=true;
+			rock.gameObject.GetComponent<Rigidbody> ().isKinematic = true;
 		}
 		if (col.gameObject.tag == "largeRock" && !hasRock && actionButton && !countRun)
 		{
-			largeRockPrefab.GetComponent<LargeRock>().PlayerTwo = true;
-
+			largeRockPrefab.GetComponent<LargeRock>().PlayerOne = true;
+			
 			if (largeRockPrefab.GetComponent<LargeRock>().PlayerTwo && largeRockPrefab.GetComponent<LargeRock>().PlayerOne)
 			{
-				Destroy(col.gameObject);
-				rock = Instantiate(largeRockPrefab);
-				rock.transform.position = Camera.allCameras[0].GetComponent<CameraScript>().Median +(transform.up*1.5f);
 				rock.transform.parent = transform;
 				hasRock=true;
 			}
 		}
-	}
-
-	void ThrowRock(){
-		if (hasRock) {
-			rock.transform.position=this.transform.position+this.transform.forward*3+new Vector3(0,.5f,0);
-			rock.gameObject.GetComponent<Renderer>().enabled=true;
-			rock.gameObject.GetComponent<Collider>().enabled=true;
-			rock.GetComponent<Rigidbody>().velocity= new Vector3(0,0,0);
-			rock.GetComponent<Rigidbody>().AddForce((this.transform.up + this.transform.forward) * throwSpeed);
-			hasRock=false;
+		/*if (col.gameObject.tag == "Rope" && actionButton) {
+			if(!col.gameObject.GetComponent<Rigidbody> ().isKinematic)
+			{
+				Destroy(col.gameObject);
+				hasRope=true;
+			} 
+			col.gameObject.GetComponent<Rigidbody>().isKinematic=false;
 		}
+		if (col.gameObject.tag == "RopeRockStatue")
+		{
+			col.gameObject.transform.root.gameObject.transform.position = new Vector3(21.57066f, 1.42f , 18.97f);
+			col.gameObject.transform.root.gameObject.transform.Rotate(new Vector3(90, 0 , 0));
+			col.gameObject.GetComponent<BoxCollider>().enabled = false;
+			Destroy(col.gameObject);
+		}*/
 	}
+	
+	/*void ThrowRock(){
+		if (hasRope && hasRock) {
+			ropeRock.transform.GetChild(0).transform.position=this.transform.position+this.transform.forward*3+new Vector3(0,.5f,0);
+			ropeRock.transform.GetChild(0).GetComponent<Rigidbody>().velocity= new Vector3(0,0,0);
+			ropeRock.transform.GetChild(0).GetComponent<Rigidbody>().AddForce((this.transform.up + this.transform.forward) * throwSpeed);
+			hasRope = false;
+			hasRock = false;
+		}
+	}*/
 }
