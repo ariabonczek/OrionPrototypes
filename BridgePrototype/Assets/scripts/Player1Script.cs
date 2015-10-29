@@ -7,15 +7,30 @@ public class Player1Script : MonoBehaviour {
 	public float throwSpeed;
 	public GameObject rockPrefab;
 	public GameObject largeRockPrefab;
+	private GameObject p2;
 	private GameObject rock;
 	private bool hasRock;
 	private bool actionButton;
 	private bool actionButtonPrev;
 	private float countdown;
 	private bool countRun;
+	private bool stepmode = false;
+	private bool topmode = false;
+	private bool topstack = false;
+
+	public bool Stepmode
+	{
+		get { return stepmode; }
+	}
+
+	public bool Topmode
+	{
+		get { return topmode; }
+	}
 
 	// Use this for initialization
 	void Start () {
+		p2 = Camera.allCameras[0].GetComponent<CameraScript>().player2.gameObject;
 		countRun = false;
 		countdown = 50;
 		hasRock = false;
@@ -25,6 +40,28 @@ public class Player1Script : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (topstack)
+		{
+			if (Input.GetKey (KeyCode.W)) {
+				topstack = false;
+				transform.position = p2.transform.position + new Vector3(0, p2.GetComponent<CapsuleCollider>().height * 2, 0);
+				transform.Translate (Vector3.forward * (speed*4) * Time.deltaTime);
+				p2.transform.position = transform.position;
+			}
+			if (Input.GetKey (KeyCode.S))
+			{
+				topstack = false;
+				transform.position = p2.transform.position;
+				transform.Translate (Vector3.back * speed * Time.deltaTime);
+			}
+			if (Input.GetKey (KeyCode.A)) {
+				return;
+			}
+			if (Input.GetKey (KeyCode.D)) {
+				return;
+			}
+		}
+
 		if (Input.GetKey (KeyCode.A)) {
 			this.transform.Translate (Vector3.left * speed * Time.deltaTime);
 		}
@@ -54,11 +91,29 @@ public class Player1Script : MonoBehaviour {
 			// GetComponent<LargeRock>().player1 = false;
 		}
 
+		if (Input.GetKey (KeyCode.X))
+		{
+			stepmode = true;
+		}
+		else
+		{
+			stepmode = false;
+		}
+
+		if (Input.GetKey (KeyCode.C))
+		{
+			topmode = true;
+		}
+		else
+		{
+			topmode = false;
+		}
+
 		if (actionButton && !actionButtonPrev && hasRock) {
-			/*Destroy(rock);
+			Destroy(rock);
 			Instantiate(rockPrefab,new Vector3(transform.position.x+transform.forward.x, .9f, transform.position.z+transform.forward.z),Quaternion.identity);
 			hasRock=false;
-			countRun=true;*/
+			countRun=true;
 		}
 
 		if (countRun) {
@@ -69,6 +124,9 @@ public class Player1Script : MonoBehaviour {
 			}
 		}
 		actionButtonPrev = actionButton;
+
+		Debug.Log("p1 top: " + topmode);
+		Debug.Log("p1 step: " + stepmode);
 	}
 
 	void OnCollisionEnter(Collision col)
@@ -87,6 +145,18 @@ public class Player1Script : MonoBehaviour {
 		}*/
 	}
 
+	void OnCollisionStay(Collision col)
+	{
+		if (col.gameObject.tag == "Player2")
+		{
+			if (p2.GetComponent<Player2Script>().Stepmode && topmode)
+			{
+				topstack = true;
+				transform.position = p2.transform.position + new Vector3(0, p2.GetComponent<CapsuleCollider>().height, 0);
+			}
+		}
+	}
+
 	void OnTriggerStay(Collider col)
 	{
 		if (col.gameObject.tag == "smallRock" && !hasRock && actionButton && !countRun)
@@ -98,7 +168,7 @@ public class Player1Script : MonoBehaviour {
 			hasRock=true;
 			rock.gameObject.GetComponent<Rigidbody> ().isKinematic = true;
 		}
-		if (col.gameObject.tag == "largeRock" && !hasRock && actionButton && !countRun)
+		/*if (col.gameObject.tag == "largeRock" && !hasRock && actionButton && !countRun)
 		{
 			largeRockPrefab.GetComponent<LargeRock>().PlayerOne = true;
 
@@ -107,7 +177,7 @@ public class Player1Script : MonoBehaviour {
 				hasRock=true;
 				transform.position = Camera.allCameras[0].GetComponent<CameraScript>().Median + Camera.allCameras[0].GetComponent<CameraScript>().Median;
 			}
-		}
+		}*/
 		/*if (col.gameObject.tag == "Rope" && actionButton) {
 			if(!col.gameObject.GetComponent<Rigidbody> ().isKinematic)
 			{

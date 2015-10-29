@@ -7,15 +7,30 @@ public class Player2Script : MonoBehaviour {
 	public float throwSpeed;
 	public GameObject rockPrefab;
 	public GameObject largeRockPrefab;
+	private GameObject p1;
 	private GameObject rock;
 	private bool hasRock;
 	private bool actionButton;
 	private bool actionButtonPrev;
 	private float countdown;
 	private bool countRun;
+	private bool stepmode = false;
+	private bool topmode = false;
+	private bool topstack = false;
+	
+	public bool Stepmode
+	{
+		get { return stepmode; }
+	}
+
+	public bool Topmode
+	{
+		get { return topmode; }
+	}
 
 	// Use this for initialization
 	void Start () {
+		p1 = Camera.allCameras[0].GetComponent<CameraScript>().player1.gameObject;
 		countRun = false;
 		countdown = 50;
 		hasRock = false;
@@ -25,6 +40,22 @@ public class Player2Script : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (topstack)
+		{
+			if (Input.GetKey (KeyCode.Keypad8)) {
+				topstack = false;
+				transform.position = p1.transform.position + new Vector3(0, p1.GetComponent<CapsuleCollider>().height * 2, 0);
+				transform.Translate (Vector3.forward * (speed*4) * Time.deltaTime);
+				p1.transform.position = transform.position;
+			}
+			if (Input.GetKey (KeyCode.Keypad5))
+			{
+				topstack = false;
+				transform.position = p1.transform.position;
+				transform.Translate (Vector3.back * speed * Time.deltaTime);
+			}
+		}
+
 		if (Input.GetKey (KeyCode.Keypad7))
 		{
 			this.transform.Rotate(new Vector3(0, -1, 0));
@@ -46,22 +77,39 @@ public class Player2Script : MonoBehaviour {
 		else
 		{
 			actionButton = false;
-			// GetComponent<LargeRock>().player1 = false;
 		}
+
+		if (Input.GetKey (KeyCode.KeypadMultiply))
+		{
+			stepmode = true;
+		}
+		else
+		{
+			stepmode = false;
+		}
+
+		if (Input.GetKey (KeyCode.KeypadMinus))
+		{
+			topmode = true;
+		}
+		else
+		{
+			topmode = false;
+		}
+
 
 		if (Input.GetKey (KeyCode.KeypadDivide))
 			actionButton = true;
 		else
 		{
 			actionButton = false;
-			// GetComponent<LargeRock>().player2 = false;
 		}
 		
 		if (actionButton && !actionButtonPrev && hasRock) {
-			//Destroy(rock);
-			//Instantiate(rockPrefab,new Vector3(transform.position.x+transform.forward.x, .9f, transform.position.z+transform.forward.z),Quaternion.identity);
-			//hasRock=false;
-			//countRun=true;
+			Destroy(rock);
+			Instantiate(rockPrefab,new Vector3(transform.position.x+transform.forward.x, .9f, transform.position.z+transform.forward.z),Quaternion.identity);
+			hasRock=false;
+			countRun=true;
 		}
 		
 		if (countRun) {
@@ -72,6 +120,7 @@ public class Player2Script : MonoBehaviour {
 			}
 		}
 		actionButtonPrev = actionButton;
+
 	}
 
 	void OnCollisionEnter(Collision col)
@@ -89,6 +138,18 @@ public class Player2Script : MonoBehaviour {
 			hasRope=true;
 		}*/
 	}
+
+	void OnCollisionStay(Collision col)
+	{
+		if (col.gameObject.tag == "Player")
+		{
+			if (p1.GetComponent<Player1Script>().Stepmode && topmode)
+			{
+				topstack = true;
+				transform.position = p1.transform.position + new Vector3(0, p1.GetComponent<CapsuleCollider>().height, 0);
+			}
+		}
+	}
 	
 	void OnTriggerStay(Collider col)
 	{
@@ -101,7 +162,7 @@ public class Player2Script : MonoBehaviour {
 			hasRock=true;
 			rock.gameObject.GetComponent<Rigidbody> ().isKinematic = true;
 		}
-		if (col.gameObject.tag == "largeRock" && !hasRock && actionButton && !countRun)
+		/*if (col.gameObject.tag == "largeRock" && !hasRock && actionButton && !countRun)
 		{
 			largeRockPrefab.GetComponent<LargeRock>().PlayerTwo = true;
 			
@@ -114,7 +175,7 @@ public class Player2Script : MonoBehaviour {
 				hasRock=true;
 			// 	rock.gameObject.GetComponent<Rigidbody> ().isKinematic = true;
 			}
-		}
+		}*/
 		/*if (col.gameObject.tag == "Rope" && actionButton) {
 			if(!col.gameObject.GetComponent<Rigidbody> ().isKinematic)
 			{
