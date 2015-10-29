@@ -28,6 +28,12 @@ public class Player2Script : MonoBehaviour {
 		get { return topmode; }
 	}
 
+	public bool TopStack
+	{
+		set { topstack = value; }
+		get { return topstack; }
+	}
+
 	// Use this for initialization
 	void Start () {
 		p1 = Camera.allCameras[0].GetComponent<CameraScript>().player1.gameObject;
@@ -42,11 +48,9 @@ public class Player2Script : MonoBehaviour {
 	void Update () {
 		if (topstack)
 		{
-			if (Input.GetKey (KeyCode.Keypad8)) {
+			if (Input.GetKey(KeyCode.Keypad8))
+			{
 				topstack = false;
-				transform.position = p1.transform.position + new Vector3(0, p1.GetComponent<CapsuleCollider>().height * 2, 0);
-				transform.Translate (Vector3.forward * (speed*4) * Time.deltaTime);
-				p1.transform.position = transform.position;
 			}
 			if (Input.GetKey (KeyCode.Keypad5))
 			{
@@ -54,6 +58,10 @@ public class Player2Script : MonoBehaviour {
 				transform.position = p1.transform.position;
 				transform.Translate (Vector3.back * speed * Time.deltaTime);
 			}
+			if (Input.GetKey(KeyCode.Keypad4))
+				return;
+			if (Input.GetKey(KeyCode.Keypad6))
+				return;
 		}
 
 		if (Input.GetKey (KeyCode.Keypad7))
@@ -146,7 +154,7 @@ public class Player2Script : MonoBehaviour {
 			if (p1.GetComponent<Player1Script>().Stepmode && topmode)
 			{
 				topstack = true;
-				transform.position = p1.transform.position + new Vector3(0, p1.GetComponent<CapsuleCollider>().height, 0);
+				transform.position = p1.transform.position + new Vector3(0, p1.GetComponent<CapsuleCollider>().height - .5f, 0);
 			}
 		}
 	}

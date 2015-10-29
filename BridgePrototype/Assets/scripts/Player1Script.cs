@@ -28,6 +28,12 @@ public class Player1Script : MonoBehaviour {
 		get { return topmode; }
 	}
 
+	public bool TopStack
+	{
+		set { topstack = value; }
+		get { return topstack; }
+	}
+
 	// Use this for initialization
 	void Start () {
 		p2 = Camera.allCameras[0].GetComponent<CameraScript>().player2.gameObject;
@@ -40,27 +46,6 @@ public class Player1Script : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (topstack)
-		{
-			if (Input.GetKey (KeyCode.W)) {
-				topstack = false;
-				transform.position = p2.transform.position + new Vector3(0, p2.GetComponent<CapsuleCollider>().height * 2, 0);
-				transform.Translate (Vector3.forward * (speed*4) * Time.deltaTime);
-				p2.transform.position = transform.position;
-			}
-			if (Input.GetKey (KeyCode.S))
-			{
-				topstack = false;
-				transform.position = p2.transform.position;
-				transform.Translate (Vector3.back * speed * Time.deltaTime);
-			}
-			if (Input.GetKey (KeyCode.A)) {
-				return;
-			}
-			if (Input.GetKey (KeyCode.D)) {
-				return;
-			}
-		}
 
 		if (Input.GetKey (KeyCode.A)) {
 			this.transform.Translate (Vector3.left * speed * Time.deltaTime);
@@ -124,9 +109,6 @@ public class Player1Script : MonoBehaviour {
 			}
 		}
 		actionButtonPrev = actionButton;
-
-		Debug.Log("p1 top: " + topmode);
-		Debug.Log("p1 step: " + stepmode);
 	}
 
 	void OnCollisionEnter(Collision col)
