@@ -4,9 +4,11 @@ using System.Collections;
 public class Player1Script : MonoBehaviour {
 
 	public float speed;
+	public float jumpheight;
 	public float throwSpeed;
 	public GameObject rockPrefab;
 	public GameObject largeRockPrefab;
+
 	private GameObject p2;
 	private GameObject rock;
 	private bool hasRock;
@@ -14,6 +16,7 @@ public class Player1Script : MonoBehaviour {
 	private bool actionButtonPrev;
 	private float countdown;
 	private bool countRun;
+	private bool airborne = false;
 	private bool stepmode = false;
 	private bool topmode = false;
 	private bool topstack = false;
@@ -76,6 +79,13 @@ public class Player1Script : MonoBehaviour {
 			// GetComponent<LargeRock>().player1 = false;
 		}
 
+		if (Input.GetKey (KeyCode.X) && airborne == false)
+		{
+			Jump();
+		}
+
+		// remove stepping on each other for now
+		/*
 		if (Input.GetKey (KeyCode.X))
 		{
 			stepmode = true;
@@ -92,7 +102,7 @@ public class Player1Script : MonoBehaviour {
 		else
 		{
 			topmode = false;
-		}
+		}*/
 
 		if (actionButton && !actionButtonPrev && hasRock) {
 			Destroy(rock);
@@ -111,6 +121,13 @@ public class Player1Script : MonoBehaviour {
 		actionButtonPrev = actionButton;
 	}
 
+	void Jump()
+	{
+		Rigidbody rig = GetComponent<Rigidbody>();
+		rig.velocity += jumpheight * transform.up;
+		airborne = true;
+	}
+
 	void OnCollisionEnter(Collision col)
 	{
 		/*if (col.gameObject.tag == "Rock"&&hasRock==false)
@@ -125,6 +142,10 @@ public class Player1Script : MonoBehaviour {
 			DestroyImmediate(col.gameObject);
 			hasRope=true;
 		}*/
+		if (col.gameObject.tag == "Ground")
+		{
+			airborne = false;
+		}
 	}
 
 	void OnCollisionStay(Collision col)

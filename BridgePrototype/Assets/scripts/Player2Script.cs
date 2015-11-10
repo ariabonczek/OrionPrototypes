@@ -4,9 +4,11 @@ using System.Collections;
 public class Player2Script : MonoBehaviour {
 	
 	public float speed;
+	public float jumpheight;
 	public float throwSpeed;
 	public GameObject rockPrefab;
 	public GameObject largeRockPrefab;
+
 	private GameObject p1;
 	private GameObject rock;
 	private bool hasRock;
@@ -14,6 +16,7 @@ public class Player2Script : MonoBehaviour {
 	private bool actionButtonPrev;
 	private float countdown;
 	private bool countRun;
+	private bool airborne = false;
 	private bool stepmode = false;
 	private bool topmode = false;
 	private bool topstack = false;
@@ -87,6 +90,11 @@ public class Player2Script : MonoBehaviour {
 			actionButton = false;
 		}
 
+		if (Input.GetKey (KeyCode.Keypad3) && airborne == false)
+		{
+			Jump();
+		}
+
 		if (Input.GetKey (KeyCode.KeypadMultiply))
 		{
 			stepmode = true;
@@ -131,6 +139,13 @@ public class Player2Script : MonoBehaviour {
 
 	}
 
+	void Jump()
+	{
+		Rigidbody rig = GetComponent<Rigidbody>();
+		rig.velocity += jumpheight * transform.up;
+		airborne = true;
+	}
+
 	void OnCollisionEnter(Collision col)
 	{
 		/*if (col.gameObject.tag == "Rock"&&hasRock==false)
@@ -145,6 +160,11 @@ public class Player2Script : MonoBehaviour {
 			DestroyImmediate(col.gameObject);
 			hasRope=true;
 		}*/
+
+		if (col.gameObject.tag == "Ground")
+		{
+			airborne = false;
+		}
 	}
 
 	void OnCollisionStay(Collision col)
