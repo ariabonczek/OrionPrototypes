@@ -12,6 +12,7 @@ public class Player1Script : MonoBehaviour {
 	private GameObject p2;
 	private GameObject rock;
 	private bool hasRock;
+	private bool climbing;
 	private bool actionButton;
 	private bool actionButtonPrev;
 	private float countdown;
@@ -45,6 +46,7 @@ public class Player1Script : MonoBehaviour {
 		hasRock = false;
 		actionButton = false;
 		actionButtonPrev = false;
+		climbing = false;
 	}
 	
 	// Update is called once per frame
@@ -111,6 +113,11 @@ public class Player1Script : MonoBehaviour {
 			countRun=true;
 		}
 
+		if (climbing)
+		{
+			Climb();
+		}
+
 		if (countRun) {
 			countdown--;
 			if(countdown<0){
@@ -126,6 +133,13 @@ public class Player1Script : MonoBehaviour {
 		Rigidbody rig = GetComponent<Rigidbody>();
 		rig.velocity += jumpheight * transform.up;
 		airborne = true;
+	}
+
+	void Climb()
+	{
+		float time = speed * Time.deltaTime;
+		transform.position = Vector3.Lerp (transform.position, GameObject.Find ("top").transform.position, time);
+		//transform.position = Vector3.MoveTowards(GameObject.Find ("bottom").transform.position, GameObject.Find ("top").transform.position, time);
 	}
 
 	void OnCollisionEnter(Collision col)
@@ -171,6 +185,18 @@ public class Player1Script : MonoBehaviour {
 			hasRock=true;
 			rock.gameObject.GetComponent<Rigidbody> ().isKinematic = true;
 		}
+
+		if (col.gameObject.name == "bottom" && actionButton)
+		{
+			climbing = true;
+		}
+
+		if (col.gameObject.name == "top" && climbing)
+		{
+			//transform.Translate (Vector3.forward * speed * Time.deltaTime);
+			climbing = false;
+		}
+
 		/*if (col.gameObject.tag == "largeRock" && !hasRock && actionButton && !countRun)
 		{
 			largeRockPrefab.GetComponent<LargeRock>().PlayerOne = true;
