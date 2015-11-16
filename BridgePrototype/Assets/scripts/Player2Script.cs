@@ -12,6 +12,7 @@ public class Player2Script : MonoBehaviour {
 	private GameObject p1;
 	private GameObject rock;
 	private bool hasRock;
+	private bool climbing;
 	private bool actionButton;
 	private bool actionButtonPrev;
 	private float countdown;
@@ -45,54 +46,49 @@ public class Player2Script : MonoBehaviour {
 		hasRock = false;
 		actionButton = false;
 		actionButtonPrev = false;
+		climbing = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (topstack)
+		if (climbing)
 		{
 			if (Input.GetKey(KeyCode.Keypad8))
+				this.transform.Translate (Vector3.up * speed * Time.deltaTime);
+			if (Input.GetKey(KeyCode.Keypad5))
 			{
-				topstack = false;
+				this.transform.Translate (-Vector3.up * speed * Time.deltaTime);
 			}
-			if (Input.GetKey (KeyCode.Keypad5))
-			{
-				topstack = false;
-				transform.position = p1.transform.position;
-				transform.Translate (Vector3.back * speed * Time.deltaTime);
-			}
-			if (Input.GetKey(KeyCode.Keypad4))
-				return;
-			if (Input.GetKey(KeyCode.Keypad6))
-				return;
 		}
-
-		if (Input.GetKey (KeyCode.Keypad7))
-		{
-			this.transform.Rotate(new Vector3(0, -1, 0));
-		}
-		if (Input.GetKey (KeyCode.Keypad9))
-		{
-			this.transform.Rotate(new Vector3(0, 1, 0));
-		}
-		if (Input.GetKey(KeyCode.Keypad4))
-			this.transform.Translate (Vector3.left * speed * Time.deltaTime);
-		if (Input.GetKey(KeyCode.Keypad6))
-			this.transform.Translate (Vector3.right * speed * Time.deltaTime);
-		if (Input.GetKey(KeyCode.Keypad8))
-			this.transform.Translate (Vector3.forward * speed * Time.deltaTime);
-		if (Input.GetKey(KeyCode.Keypad5))
-			this.transform.Translate (Vector3.back * speed * Time.deltaTime);
-		if (Input.GetKey (KeyCode.Keypad1))
-			actionButton = true;
 		else
 		{
-			actionButton = false;
-		}
+			if (Input.GetKey (KeyCode.Keypad7))
+			{
+				this.transform.Rotate(new Vector3(0, -1, 0));
+			}
+			if (Input.GetKey (KeyCode.Keypad9))
+			{
+				this.transform.Rotate(new Vector3(0, 1, 0));
+			}
+			if (Input.GetKey(KeyCode.Keypad4))
+				this.transform.Translate (Vector3.left * speed * Time.deltaTime);
+			if (Input.GetKey(KeyCode.Keypad6))
+				this.transform.Translate (Vector3.right * speed * Time.deltaTime);
+			if (Input.GetKey(KeyCode.Keypad8))
+				this.transform.Translate (Vector3.forward * speed * Time.deltaTime);
+			if (Input.GetKey(KeyCode.Keypad5))
+				this.transform.Translate (Vector3.back * speed * Time.deltaTime);
+			if (Input.GetKey (KeyCode.Keypad1))
+				actionButton = true;
+			else
+			{
+				actionButton = false;
+			}
 
-		if (Input.GetKey (KeyCode.Keypad3) && airborne == false)
-		{
-			Jump();
+			if (Input.GetKey (KeyCode.Keypad3) && airborne == false)
+			{
+				Jump();
+			}
 		}
 
 		if (Input.GetKey (KeyCode.KeypadMultiply))
@@ -177,6 +173,19 @@ public class Player2Script : MonoBehaviour {
 				transform.position = p1.transform.position + new Vector3(0, p1.GetComponent<CapsuleCollider>().height - .5f, 0);
 			}
 		}
+
+		if (col.gameObject.name == "ladder" && actionButton)
+		{
+			climbing = true;
+			transform.SetParent(col.gameObject.transform);
+			GetComponent<Rigidbody>().useGravity = false;
+		}
+		else if(col.gameObject.tag == "Ground" && actionButton)
+		{
+			climbing = false;
+			transform.parent = null;
+			GetComponent<Rigidbody>().useGravity = true;
+		}
 	}
 	
 	void OnTriggerStay(Collider col)
@@ -190,6 +199,14 @@ public class Player2Script : MonoBehaviour {
 			hasRock=true;
 			rock.gameObject.GetComponent<Rigidbody> ().isKinematic = true;
 		}
+
+		if (col.gameObject.name == "top" && climbing)
+		{
+			climbing = false;
+			GetComponent<Rigidbody>().useGravity = true;
+			transform.parent = null;
+		}
+
 		/*if (col.gameObject.tag == "largeRock" && !hasRock && actionButton && !countRun)
 		{
 			largeRockPrefab.GetComponent<LargeRock>().PlayerTwo = true;

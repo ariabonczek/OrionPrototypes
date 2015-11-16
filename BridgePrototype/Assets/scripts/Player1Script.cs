@@ -51,39 +51,50 @@ public class Player1Script : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
-		if (Input.GetKey (KeyCode.A)) {
-			this.transform.Translate (Vector3.left * speed * Time.deltaTime);
-		}
-		if (Input.GetKey (KeyCode.Q))
+		if (climbing)
 		{
-			this.transform.Rotate(new Vector3(0, -1, 0));
+			if (Input.GetKey(KeyCode.W))
+				this.transform.Translate (Vector3.up * speed * Time.deltaTime);
+			if (Input.GetKey(KeyCode.S))
+			{
+				this.transform.Translate (-Vector3.up * speed * Time.deltaTime);
+			}
 		}
-		if (Input.GetKey (KeyCode.E))
-		{
-			this.transform.Rotate(new Vector3(0, 1, 0));
-		}
-		if (Input.GetKey(KeyCode.D))
-			this.transform.Translate (Vector3.right * speed * Time.deltaTime);
-		if (Input.GetKey(KeyCode.W))
-		{
-			this.transform.Translate (Vector3.forward * speed * Time.deltaTime);
-		}
-		if (Input.GetKey (KeyCode.S))
-			this.transform.Translate (Vector3.back * speed * Time.deltaTime);
-		/*if (Input.GetKey (KeyCode.X))
-			ThrowRock ();*/
-		if (Input.GetKey (KeyCode.Z))
-			actionButton = true;
 		else
 		{
-			actionButton = false;
-			// GetComponent<LargeRock>().player1 = false;
-		}
+			if (Input.GetKey (KeyCode.A)) {
+				this.transform.Translate (Vector3.left * speed * Time.deltaTime);
+			}
+			if (Input.GetKey (KeyCode.Q))
+			{
+				this.transform.Rotate(new Vector3(0, -1, 0));
+			}
+			if (Input.GetKey (KeyCode.E))
+			{
+				this.transform.Rotate(new Vector3(0, 1, 0));
+			}
+			if (Input.GetKey(KeyCode.D))
+				this.transform.Translate (Vector3.right * speed * Time.deltaTime);
+			if (Input.GetKey(KeyCode.W))
+			{
+				this.transform.Translate (Vector3.forward * speed * Time.deltaTime);
+			}
+			if (Input.GetKey (KeyCode.S))
+				this.transform.Translate (Vector3.back * speed * Time.deltaTime);
+			/*if (Input.GetKey (KeyCode.X))
+				ThrowRock ();*/
+			if (Input.GetKey (KeyCode.Z))
+				actionButton = true;
+			else
+			{
+				actionButton = false;
+				// GetComponent<LargeRock>().player1 = false;
+			}
 
-		if (Input.GetKey (KeyCode.X) && airborne == false)
-		{
-			Jump();
+			if (Input.GetKey (KeyCode.X) && airborne == false)
+			{
+				Jump();
+			}
 		}
 
 		// remove stepping on each other for now
@@ -113,11 +124,6 @@ public class Player1Script : MonoBehaviour {
 			countRun=true;
 		}
 
-		if (climbing)
-		{
-			Climb();
-		}
-
 		if (countRun) {
 			countdown--;
 			if(countdown<0){
@@ -133,13 +139,6 @@ public class Player1Script : MonoBehaviour {
 		Rigidbody rig = GetComponent<Rigidbody>();
 		rig.velocity += jumpheight * transform.up;
 		airborne = true;
-	}
-
-	void Climb()
-	{
-		float time = speed * Time.deltaTime;
-		transform.position = Vector3.Lerp (transform.position, GameObject.Find ("top").transform.position, time);
-		//transform.position = Vector3.MoveTowards(GameObject.Find ("bottom").transform.position, GameObject.Find ("top").transform.position, time);
 	}
 
 	void OnCollisionEnter(Collision col)
@@ -172,6 +171,20 @@ public class Player1Script : MonoBehaviour {
 				transform.position = p2.transform.position + new Vector3(0, p2.GetComponent<CapsuleCollider>().height, 0);
 			}
 		}
+
+		if (col.gameObject.name == "ladder" && actionButton)
+		{
+			climbing = true;
+			transform.SetParent(col.gameObject.transform);
+			GetComponent<Rigidbody>().useGravity = false;
+		}
+		else if(col.gameObject.tag == "Ground" && actionButton)
+		{
+			climbing = false;
+			transform.parent = null;
+			GetComponent<Rigidbody>().useGravity = true;
+		}
+
 	}
 
 	void OnTriggerStay(Collider col)
@@ -186,15 +199,17 @@ public class Player1Script : MonoBehaviour {
 			rock.gameObject.GetComponent<Rigidbody> ().isKinematic = true;
 		}
 
-		if (col.gameObject.name == "bottom" && actionButton)
-		{
-			climbing = true;
-		}
 
 		if (col.gameObject.name == "top" && climbing)
 		{
-			//transform.Translate (Vector3.forward * speed * Time.deltaTime);
 			climbing = false;
+			GetComponent<Rigidbody>().useGravity = true;
+			transform.parent = null;
+		}
+
+		if(col.gameObject.name == "launchpad" && actionButton)
+		{
+
 		}
 
 		/*if (col.gameObject.tag == "largeRock" && !hasRock && actionButton && !countRun)
