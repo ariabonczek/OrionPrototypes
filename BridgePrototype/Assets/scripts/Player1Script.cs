@@ -57,7 +57,7 @@ public class Player1Script : MonoBehaviour {
 		else if (stepmode)
 		{
 			// no movement
-			if (Input.GetKey (KeyCode.Z) || Input.GetButtonDown("P1O"))
+			if (Input.GetKey (KeyCode.Z) || Input.GetButton("P1O"))
 				actionButton = true;
 			else
 			{
@@ -88,7 +88,7 @@ public class Player1Script : MonoBehaviour {
 			}
 			if (Input.GetKey (KeyCode.S))
 				this.transform.Translate (Vector3.back * speed * Time.deltaTime);
-			if (Input.GetKey (KeyCode.Z) || Input.GetButtonDown("P1O"))
+			if (Input.GetKey (KeyCode.Z) || Input.GetButton("P1O"))
 				actionButton = true;
 			else
 			{
@@ -97,7 +97,7 @@ public class Player1Script : MonoBehaviour {
 			}
 			this.transform.Translate (Vector3.left * -(Input.GetAxis("P1LeftStickX") * speed * Time.deltaTime));
 			this.transform.Translate (Vector3.forward * -(Input.GetAxis("P1LeftStickY") * speed * Time.deltaTime));
-			if ((Input.GetKey (KeyCode.X) || Input.GetButtonDown("P1X")) && airborne == false)
+			if ((Input.GetKey (KeyCode.X) || Input.GetButton("P1X")) && airborne == false)
 			{
 				Jump();
 			}

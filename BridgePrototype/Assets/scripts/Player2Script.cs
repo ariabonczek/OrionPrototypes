@@ -71,7 +71,7 @@ public class Player2Script : MonoBehaviour {
 				this.transform.Translate (Vector3.forward * speed * Time.deltaTime);
 			if (Input.GetKey(KeyCode.Keypad5))
 				this.transform.Translate (Vector3.back * speed * Time.deltaTime);
-			if (Input.GetKey (KeyCode.Keypad1) || Input.GetButtonDown("P2X"))
+			if (Input.GetKey (KeyCode.Keypad1) || Input.GetButton("P2X"))
 				actionButton = true;
 			else
 			{
@@ -80,13 +80,13 @@ public class Player2Script : MonoBehaviour {
 			this.transform.Translate (Vector3.left * -(Input.GetAxis("P2LeftStickX") * speed * Time.deltaTime));
 			this.transform.Translate (Vector3.forward * -(Input.GetAxis("P2LeftStickY") * speed * Time.deltaTime));
 
-			if ((Input.GetKey (KeyCode.Keypad3) || Input.GetButtonDown("P2X")) && airborne == false)
+			if ((Input.GetKey (KeyCode.Keypad3) || Input.GetButton("P2X")) && airborne == false)
 			{
 				Jump();
 			}
 		}
 
-		if (Input.GetKey (KeyCode.KeypadDivide)|| Input.GetButtonDown("P2O"))
+		if (Input.GetKey (KeyCode.KeypadDivide)|| Input.GetButton("P2O"))
 			actionButton = true;
 		else
 		{
