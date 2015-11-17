@@ -16,26 +16,14 @@ public class Player1Script : MonoBehaviour {
 	private bool actionButton;
 	private bool actionButtonPrev;
 	private float countdown;
+	private float stepCounter;
 	private bool countRun;
 	private bool airborne = false;
 	private bool stepmode = false;
-	private bool topmode = false;
-	private bool topstack = false;
 
 	public bool Stepmode
 	{
 		get { return stepmode; }
-	}
-
-	public bool Topmode
-	{
-		get { return topmode; }
-	}
-
-	public bool TopStack
-	{
-		set { topstack = value; }
-		get { return topstack; }
 	}
 
 	// Use this for initialization
@@ -47,10 +35,13 @@ public class Player1Script : MonoBehaviour {
 		actionButton = false;
 		actionButtonPrev = false;
 		climbing = false;
+		stepCounter = 0;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		actionButtonPrev = actionButton;
+
 		if (climbing)
 		{
 			if (Input.GetKey(KeyCode.W))
@@ -58,6 +49,17 @@ public class Player1Script : MonoBehaviour {
 			if (Input.GetKey(KeyCode.S))
 			{
 				this.transform.Translate (-Vector3.up * speed * Time.deltaTime);
+			}
+		}
+		else if (stepmode)
+		{
+			// no movement
+			if (Input.GetKey (KeyCode.Z))
+				actionButton = true;
+			else
+			{
+				actionButton = false;
+				// GetComponent<LargeRock>().player1 = false;
 			}
 		}
 		else
@@ -97,26 +99,6 @@ public class Player1Script : MonoBehaviour {
 			}
 		}
 
-		// remove stepping on each other for now
-		/*
-		if (Input.GetKey (KeyCode.X))
-		{
-			stepmode = true;
-		}
-		else
-		{
-			stepmode = false;
-		}
-
-		if (Input.GetKey (KeyCode.C))
-		{
-			topmode = true;
-		}
-		else
-		{
-			topmode = false;
-		}*/
-
 		if (actionButton && !actionButtonPrev && hasRock) {
 			Destroy(rock);
 			Instantiate(rockPrefab,new Vector3(transform.position.x+transform.forward.x, .9f, transform.position.z+transform.forward.z),Quaternion.identity);
@@ -131,7 +113,7 @@ public class Player1Script : MonoBehaviour {
 				countdown=50;
 			}
 		}
-		actionButtonPrev = actionButton;
+
 	}
 
 	void Jump()
@@ -163,15 +145,6 @@ public class Player1Script : MonoBehaviour {
 
 	void OnCollisionStay(Collision col)
 	{
-		if (col.gameObject.tag == "Player2")
-		{
-			if (p2.GetComponent<Player2Script>().Stepmode && topmode)
-			{
-				topstack = true;
-				transform.position = p2.transform.position + new Vector3(0, p2.GetComponent<CapsuleCollider>().height, 0);
-			}
-		}
-
 		if (col.gameObject.name == "ladder" && actionButton)
 		{
 			climbing = true;
@@ -207,9 +180,9 @@ public class Player1Script : MonoBehaviour {
 			transform.parent = null;
 		}
 
-		if(col.gameObject.name == "launchpad" && actionButton)
+		if (col.gameObject.name == "launchpad" && actionButton && actionButtonPrev == false)
 		{
-
+			stepmode = !stepmode;
 		}
 
 		/*if (col.gameObject.tag == "largeRock" && !hasRock && actionButton && !countRun)

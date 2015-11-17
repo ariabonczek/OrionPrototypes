@@ -19,23 +19,10 @@ public class Player2Script : MonoBehaviour {
 	private bool countRun;
 	private bool airborne = false;
 	private bool stepmode = false;
-	private bool topmode = false;
-	private bool topstack = false;
 	
 	public bool Stepmode
 	{
 		get { return stepmode; }
-	}
-
-	public bool Topmode
-	{
-		get { return topmode; }
-	}
-
-	public bool TopStack
-	{
-		set { topstack = value; }
-		get { return topstack; }
 	}
 
 	// Use this for initialization
@@ -90,25 +77,6 @@ public class Player2Script : MonoBehaviour {
 				Jump();
 			}
 		}
-
-		if (Input.GetKey (KeyCode.KeypadMultiply))
-		{
-			stepmode = true;
-		}
-		else
-		{
-			stepmode = false;
-		}
-
-		if (Input.GetKey (KeyCode.KeypadMinus))
-		{
-			topmode = true;
-		}
-		else
-		{
-			topmode = false;
-		}
-
 
 		if (Input.GetKey (KeyCode.KeypadDivide))
 			actionButton = true;
@@ -165,15 +133,6 @@ public class Player2Script : MonoBehaviour {
 
 	void OnCollisionStay(Collision col)
 	{
-		if (col.gameObject.tag == "Player")
-		{
-			if (p1.GetComponent<Player1Script>().Stepmode && topmode)
-			{
-				topstack = true;
-				transform.position = p1.transform.position + new Vector3(0, p1.GetComponent<CapsuleCollider>().height - .5f, 0);
-			}
-		}
-
 		if (col.gameObject.name == "ladder" && actionButton)
 		{
 			climbing = true;
