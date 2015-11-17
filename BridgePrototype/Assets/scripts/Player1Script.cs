@@ -36,6 +36,7 @@ public class Player1Script : MonoBehaviour {
 		actionButtonPrev = false;
 		climbing = false;
 		stepCounter = 0;
+		speed = 3;
 	}
 	
 	// Update is called once per frame
@@ -51,11 +52,12 @@ public class Player1Script : MonoBehaviour {
 			{
 				this.transform.Translate (-Vector3.up * speed * Time.deltaTime);
 			}
+			this.transform.Translate (Vector3.up * -(Input.GetAxis("P1LeftStickY") * speed * Time.deltaTime));
 		}
 		else if (stepmode)
 		{
 			// no movement
-			if (Input.GetKey (KeyCode.Z))
+			if (Input.GetKey (KeyCode.Z) || Input.GetButtonDown("P1O"))
 				actionButton = true;
 			else
 			{
@@ -86,17 +88,16 @@ public class Player1Script : MonoBehaviour {
 			}
 			if (Input.GetKey (KeyCode.S))
 				this.transform.Translate (Vector3.back * speed * Time.deltaTime);
-			/*if (Input.GetKey (KeyCode.X))
-				ThrowRock ();*/
-			if (Input.GetKey (KeyCode.Z))
+			if (Input.GetKey (KeyCode.Z) || Input.GetButtonDown("P1O"))
 				actionButton = true;
 			else
 			{
 				actionButton = false;
 				// GetComponent<LargeRock>().player1 = false;
 			}
-
-			if (Input.GetKey (KeyCode.X) && airborne == false)
+			this.transform.Translate (Vector3.left * -(Input.GetAxis("P1LeftStickX") * speed * Time.deltaTime));
+			this.transform.Translate (Vector3.forward * -(Input.GetAxis("P1LeftStickY") * speed * Time.deltaTime));
+			if ((Input.GetKey (KeyCode.X) || Input.GetButtonDown("P1X")) && airborne == false)
 			{
 				Jump();
 			}
