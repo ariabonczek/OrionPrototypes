@@ -17,6 +17,7 @@ public class Player2Script : MonoBehaviour {
 	private bool actionButtonPrev;
 	private float countdown;
 	private bool countRun;
+	private bool launching = false;
 	private bool airborne = false;
 	private bool stepmode = false;
 	
@@ -46,6 +47,10 @@ public class Player2Script : MonoBehaviour {
 			{
 				this.transform.Translate (-Vector3.up * speed * Time.deltaTime);
 			}
+		}
+		else if(launching)
+		{
+			Launch ();
 		}
 		else
 		{
@@ -103,6 +108,13 @@ public class Player2Script : MonoBehaviour {
 
 	}
 
+	void Launch()
+	{
+		float time = speed * Time.deltaTime;
+		GetComponent<Rigidbody> ().useGravity = false;
+		transform.position = Vector3.Lerp (transform.position, GameObject.Find ("lTop").transform.position, time);
+	}
+
 	void Jump()
 	{
 		Rigidbody rig = GetComponent<Rigidbody>();
@@ -129,7 +141,12 @@ public class Player2Script : MonoBehaviour {
 		{
 			airborne = false;
 		}
-	}
+
+		if (col.gameObject.tag == "Player" && p1.GetComponent<Player1Script>().Stepmode && actionButton)
+        {
+			launching = true;
+        }
+    }
 
 	void OnCollisionStay(Collision col)
 	{
@@ -164,6 +181,17 @@ public class Player2Script : MonoBehaviour {
 			climbing = false;
 			GetComponent<Rigidbody>().useGravity = true;
 			transform.parent = null;
+		}
+
+		if (col.gameObject.name == "lTop" && launching)
+		{
+			launching = false;
+			GetComponent<Rigidbody>().useGravity = true;
+		}
+
+		if(col.gameObject.name == "Control Panel" && actionButton)
+		{
+			GameObject.Find("Control Panel").SendMessage("ActivatePanel", "move");
 		}
 
 		/*if (col.gameObject.tag == "largeRock" && !hasRock && actionButton && !countRun)

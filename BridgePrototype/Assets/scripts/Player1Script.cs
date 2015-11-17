@@ -41,8 +41,9 @@ public class Player1Script : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		actionButtonPrev = actionButton;
+        GetComponent<Rigidbody>().isKinematic = false;
 
-		if (climbing)
+        if (climbing)
 		{
 			if (Input.GetKey(KeyCode.W))
 				this.transform.Translate (Vector3.up * speed * Time.deltaTime);
@@ -61,6 +62,8 @@ public class Player1Script : MonoBehaviour {
 				actionButton = false;
 				// GetComponent<LargeRock>().player1 = false;
 			}
+
+            GetComponent<Rigidbody>().isKinematic = true;
 		}
 		else
 		{
