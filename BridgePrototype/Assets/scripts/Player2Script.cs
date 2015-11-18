@@ -192,9 +192,9 @@ public class Player2Script : MonoBehaviour {
 			GetComponent<Rigidbody>().useGravity = true;
 		}
 
-		if(col.gameObject.name == "Control Panel" && actionButton)
+		if(col.gameObject.name.Contains("Control Panel") && actionButton)
 		{
-			GameObject.Find("Control Panel").SendMessage("ActivatePanel", "move");
+			GameObject.Find(col.gameObject.name).SendMessage("ActivatePanel", "move");
 		}
 
 		/*if (col.gameObject.tag == "largeRock" && !hasRock && actionButton && !countRun)

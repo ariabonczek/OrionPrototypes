@@ -189,6 +189,11 @@ public class Player1Script : MonoBehaviour {
 			stepmode = !stepmode;
 		}
 
+		if(col.gameObject.name.Contains("Control Panel") && actionButton)
+		{
+			GameObject.Find(col.gameObject.name).SendMessage("ActivatePanel", "move");
+		}
+
 		/*if (col.gameObject.tag == "largeRock" && !hasRock && actionButton && !countRun)
 		{
 			largeRockPrefab.GetComponent<LargeRock>().PlayerOne = true;
