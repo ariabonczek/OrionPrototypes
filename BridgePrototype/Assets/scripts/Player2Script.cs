@@ -115,7 +115,7 @@ public class Player2Script : MonoBehaviour {
 	{
 		float time = speed * Time.deltaTime;
 		GetComponent<Rigidbody> ().useGravity = false;
-		transform.position = Vector3.Lerp (transform.position, GameObject.Find ("lTop").transform.position, time);
+		transform.position = Vector3.Lerp (transform.position, new Vector3(transform.position.x, (transform.position.y + 3f), transform.position.z), time);
 	}
 
 	void Jump()
@@ -186,7 +186,7 @@ public class Player2Script : MonoBehaviour {
 			transform.parent = null;
 		}
 
-		if (col.gameObject.name == "lTop" && launching)
+		if (col.gameObject.name.Contains("lTop") && launching)
 		{
 			launching = false;
 			GetComponent<Rigidbody>().useGravity = true;
