@@ -11,19 +11,27 @@ public class Player2Script : MonoBehaviour {
 
 	private GameObject p1;
 	private GameObject rock;
+	private Vector3 respawnPosition;
+	private float countdown;
 	private bool hasRock;
 	private bool climbing;
 	private bool actionButton;
 	private bool actionButtonPrev;
-	private float countdown;
 	private bool countRun;
 	private bool launching = false;
 	private bool airborne = false;
 	private bool stepmode = false;
+	private bool crouching = false;
 	
 	public bool Stepmode
 	{
 		get { return stepmode; }
+	}
+
+	public Vector3 RespawnPosition
+	{
+		set { respawnPosition = value; }
+		get { return respawnPosition; }
 	}
 
 	// Use this for initialization
@@ -125,6 +133,11 @@ public class Player2Script : MonoBehaviour {
 		airborne = true;
 	}
 
+	void Respawn(string message)
+	{
+		transform.position = respawnPosition;
+	}
+
 	void OnCollisionEnter(Collision col)
 	{
 		/*if (col.gameObject.tag == "Rock"&&hasRock==false)
@@ -195,6 +208,20 @@ public class Player2Script : MonoBehaviour {
 		if(col.gameObject.name.Contains("Control Panel") && actionButton)
 		{
 			GameObject.Find(col.gameObject.name).SendMessage("ActivatePanel", "move");
+		}
+
+		if(col.gameObject.name.Contains("platform move") && actionButton && actionButtonPrev == false)
+		{
+			crouching = !crouching;
+			
+			if (crouching)
+			{
+				transform.parent = col.gameObject.transform;
+			}
+			else
+			{
+				transform.parent = null;
+			}
 		}
 
 		/*if (col.gameObject.tag == "largeRock" && !hasRock && actionButton && !countRun)
