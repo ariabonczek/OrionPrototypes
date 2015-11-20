@@ -8,6 +8,20 @@ public class SliderTrigger : MonoBehaviour {
 	public float speed;
 	private float distanceTraveled;
 	private bool forward = true;
+	private Vector3 startPos;
+	private Quaternion startRotation;
+
+	void Start()
+	{
+		startRotation = SLIDEMEBLOCK.transform.rotation;
+		startPos = SLIDEMEBLOCK.transform.position;
+	}
+
+	void ResetPosition(string message)
+	{
+		SLIDEMEBLOCK.transform.rotation = startRotation;
+		SLIDEMEBLOCK.transform.position = startPos;
+	}
 
 	void ActivatePanel(string message)
 	{

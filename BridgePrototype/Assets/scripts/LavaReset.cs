@@ -7,7 +7,16 @@ public class LavaReset : MonoBehaviour {
 	{
 		if (col.gameObject.tag == "Player")
 		{
-			GameObject.Find(col.gameObject.name).SendMessage("Respawn", "come back");
+			GameObject.Find("Player 1").SendMessage("Respawn", "come back");
+			GameObject.Find("Player 2").SendMessage("Respawn", "come back");
+
+			GameObject[] movedPlatforms;
+			movedPlatforms = GameObject.FindGameObjectsWithTag("Panel");
+
+			foreach ( GameObject g in movedPlatforms)
+			{
+				g.SendMessage("ResetPosition", "go back");
+			}
 		}
 	}
 }

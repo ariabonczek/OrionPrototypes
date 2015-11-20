@@ -199,6 +199,10 @@ Prefab:
       propertyPath: m_Name
       value: platform move D
       objectReference: {fileID: 0}
+    - target: {fileID: 119462, guid: c76863b090b18444285f1d3f1a1ad6ff, type: 2}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c76863b090b18444285f1d3f1a1ad6ff, type: 2}
   m_IsPrefabParent: 0
@@ -775,6 +779,10 @@ Prefab:
       propertyPath: speed
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 106670, guid: ee03911ba039aad47b3b5e0d0d47dd66, type: 2}
+      propertyPath: m_TagString
+      value: Panel
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ee03911ba039aad47b3b5e0d0d47dd66, type: 2}
   m_IsPrefabParent: 0
@@ -1212,6 +1220,10 @@ Prefab:
       propertyPath: speed
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 106670, guid: ee03911ba039aad47b3b5e0d0d47dd66, type: 2}
+      propertyPath: m_TagString
+      value: Panel
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ee03911ba039aad47b3b5e0d0d47dd66, type: 2}
   m_IsPrefabParent: 0
@@ -1257,6 +1269,10 @@ Prefab:
     - target: {fileID: 119462, guid: c76863b090b18444285f1d3f1a1ad6ff, type: 2}
       propertyPath: m_Name
       value: platform move B
+      objectReference: {fileID: 0}
+    - target: {fileID: 119462, guid: c76863b090b18444285f1d3f1a1ad6ff, type: 2}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c76863b090b18444285f1d3f1a1ad6ff, type: 2}
@@ -1423,6 +1439,10 @@ Prefab:
     - target: {fileID: 11420836, guid: ee03911ba039aad47b3b5e0d0d47dd66, type: 2}
       propertyPath: speed
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 106670, guid: ee03911ba039aad47b3b5e0d0d47dd66, type: 2}
+      propertyPath: m_TagString
+      value: Panel
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ee03911ba039aad47b3b5e0d0d47dd66, type: 2}
@@ -1969,6 +1989,10 @@ Prefab:
       propertyPath: speed
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 106670, guid: ee03911ba039aad47b3b5e0d0d47dd66, type: 2}
+      propertyPath: m_TagString
+      value: Panel
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ee03911ba039aad47b3b5e0d0d47dd66, type: 2}
   m_IsPrefabParent: 0
@@ -2279,6 +2303,10 @@ Prefab:
     - target: {fileID: 449740, guid: c76863b090b18444285f1d3f1a1ad6ff, type: 2}
       propertyPath: m_RootOrder
       value: 39
+      objectReference: {fileID: 0}
+    - target: {fileID: 119462, guid: c76863b090b18444285f1d3f1a1ad6ff, type: 2}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c76863b090b18444285f1d3f1a1ad6ff, type: 2}
@@ -2661,6 +2689,10 @@ Prefab:
     - target: {fileID: 11420836, guid: ee03911ba039aad47b3b5e0d0d47dd66, type: 2}
       propertyPath: speed
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 106670, guid: ee03911ba039aad47b3b5e0d0d47dd66, type: 2}
+      propertyPath: m_TagString
+      value: Panel
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ee03911ba039aad47b3b5e0d0d47dd66, type: 2}
@@ -3246,6 +3278,10 @@ Prefab:
       propertyPath: m_Name
       value: platform move C
       objectReference: {fileID: 0}
+    - target: {fileID: 119462, guid: c76863b090b18444285f1d3f1a1ad6ff, type: 2}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c76863b090b18444285f1d3f1a1ad6ff, type: 2}
   m_IsPrefabParent: 0
@@ -3295,6 +3331,10 @@ Prefab:
     - target: {fileID: 119462, guid: c76863b090b18444285f1d3f1a1ad6ff, type: 2}
       propertyPath: m_Name
       value: platform move A
+      objectReference: {fileID: 0}
+    - target: {fileID: 119462, guid: c76863b090b18444285f1d3f1a1ad6ff, type: 2}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c76863b090b18444285f1d3f1a1ad6ff, type: 2}

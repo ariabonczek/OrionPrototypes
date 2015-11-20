@@ -7,21 +7,22 @@ public class Player1Script : MonoBehaviour {
 	public float jumpheight;
 	public float throwSpeed;
 	public GameObject rockPrefab;
-	public GameObject largeRockPrefab;
 
 	private GameObject p2;
 	private GameObject rock;
 	private Vector3 respawnPosition;
 	private float countdown;
 	private float stepCounter;
+	private float launchBuffer;
 	private bool hasRock;
 	private bool climbing;
 	private bool actionButton;
 	private bool actionButtonPrev;
 	private bool countRun;
-	private bool airborne = false;
-	private bool stepmode = false;
-	private bool crouching = false;
+	private bool launching;
+	private bool airborne; 
+	private bool stepmode; 
+	private bool crouching;
 
 	public bool Stepmode
 	{
@@ -43,8 +44,13 @@ public class Player1Script : MonoBehaviour {
 		actionButton = false;
 		actionButtonPrev = false;
 		climbing = false;
+		airborne = false;
+		stepmode = false;
+		crouching = false;
+		launching = false;
 		stepCounter = 0;
 		speed = 3;
+		launchBuffer = 3f;
 	}
 	
 	// Update is called once per frame
@@ -55,12 +61,21 @@ public class Player1Script : MonoBehaviour {
         if (climbing)
 		{
 			if (Input.GetKey(KeyCode.W))
+			{
 				this.transform.Translate (Vector3.up * speed * Time.deltaTime);
+			}
+
 			if (Input.GetKey(KeyCode.S))
 			{
 				this.transform.Translate (-Vector3.up * speed * Time.deltaTime);
 			}
+
 			this.transform.Translate (Vector3.up * -(Input.GetAxis("P1LeftStickY") * speed * Time.deltaTime));
+		}
+		else if(launching)
+		{
+			Launch ();
+			launching = false;
 		}
 		else if (stepmode)
 		{
@@ -70,41 +85,54 @@ public class Player1Script : MonoBehaviour {
 			else
 			{
 				actionButton = false;
-				// GetComponent<LargeRock>().player1 = false;
 			}
 
             GetComponent<Rigidbody>().isKinematic = true;
 		}
 		else
 		{
-			if (Input.GetKey (KeyCode.A)) {
+			if (Input.GetKey (KeyCode.A)) 
+			{
 				this.transform.Translate (Vector3.left * speed * Time.deltaTime);
 			}
+
 			if (Input.GetKey (KeyCode.Q))
 			{
 				this.transform.Rotate(new Vector3(0, -1, 0));
 			}
+
 			if (Input.GetKey (KeyCode.E))
 			{
 				this.transform.Rotate(new Vector3(0, 1, 0));
 			}
+
 			if (Input.GetKey(KeyCode.D))
+			{
 				this.transform.Translate (Vector3.right * speed * Time.deltaTime);
+			}
+
 			if (Input.GetKey(KeyCode.W))
 			{
 				this.transform.Translate (Vector3.forward * speed * Time.deltaTime);
 			}
+
 			if (Input.GetKey (KeyCode.S))
+			{
 				this.transform.Translate (Vector3.back * speed * Time.deltaTime);
+			}
+
 			if (Input.GetKey (KeyCode.Z) || Input.GetButton("P1O"))
+			{
 				actionButton = true;
+			}
 			else
 			{
 				actionButton = false;
-				// GetComponent<LargeRock>().player1 = false;
 			}
+
 			this.transform.Translate (Vector3.left * -(Input.GetAxis("P1LeftStickX") * speed * Time.deltaTime));
 			this.transform.Translate (Vector3.forward * -(Input.GetAxis("P1LeftStickY") * speed * Time.deltaTime));
+
 			if ((Input.GetKey (KeyCode.X) || Input.GetButton("P1X")) && airborne == false)
 			{
 				Jump();
@@ -126,6 +154,11 @@ public class Player1Script : MonoBehaviour {
 			}
 		}
 
+	}
+
+	void Launch()
+	{
+		GetComponent<Rigidbody> ().velocity += (jumpheight / launchBuffer ) * transform.up;
 	}
 
 	void Jump()
@@ -154,9 +187,15 @@ public class Player1Script : MonoBehaviour {
 			DestroyImmediate(col.gameObject);
 			hasRope=true;
 		}*/
+
 		if (col.gameObject.tag == "Ground")
 		{
 			airborne = false;
+		}
+
+		if (col.gameObject.tag == "Player" && p2.GetComponent<Player2Script>().Stepmode && actionButton)
+		{
+			launching = true;
 		}
 	}
 
@@ -168,7 +207,7 @@ public class Player1Script : MonoBehaviour {
 			transform.SetParent(col.gameObject.transform);
 			GetComponent<Rigidbody>().useGravity = false;
 		}
-		else if(col.gameObject.tag == "Ground" && actionButton)
+		else if(climbing && actionButton)
 		{
 			climbing = false;
 			transform.parent = null;
@@ -188,7 +227,6 @@ public class Player1Script : MonoBehaviour {
 			rock.gameObject.GetComponent<Rigidbody> ().isKinematic = true;
 		}
 
-
 		if (col.gameObject.name == "top" && climbing)
 		{
 			climbing = false;
@@ -198,7 +236,10 @@ public class Player1Script : MonoBehaviour {
 
 		if (col.gameObject.name == "launchpad" && actionButton && actionButtonPrev == false)
 		{
-			stepmode = !stepmode;
+			if (p2.GetComponent<Player2Script>().Stepmode == false)
+			{
+				stepmode = !stepmode;
+			}
 		}
 
 		if(col.gameObject.name.Contains("Control Panel") && actionButton)
@@ -245,6 +286,14 @@ public class Player1Script : MonoBehaviour {
 			col.gameObject.GetComponent<BoxCollider>().enabled = false;
 			Destroy(col.gameObject);
 		}*/
+	}
+
+	void OnTriggerExit(Collider col)
+	{
+		if (col.gameObject.name.Contains("platform move"))
+		{
+			transform.parent = null;
+		}
 	}
 
 	/*void ThrowRock(){
