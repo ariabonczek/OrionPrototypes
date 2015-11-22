@@ -5,16 +5,12 @@ public class Player1Script : MonoBehaviour {
 
 	public float speed;
 	public float jumpheight;
-	public float throwSpeed;
-	public GameObject rockPrefab;
-
-	private GameObject p2;
-	private GameObject rock;
+	public bool Player1;
+	
 	private Vector3 respawnPosition;
 	private float countdown;
 	private float stepCounter;
 	private float launchBuffer;
-	private bool hasRock;
 	private bool climbing;
 	private bool actionButton;
 	private bool actionButtonPrev;
@@ -22,7 +18,6 @@ public class Player1Script : MonoBehaviour {
 	private bool launching;
 	private bool airborne; 
 	private bool stepmode; 
-	private bool crouching;
 
 	public bool Stepmode
 	{
@@ -37,113 +32,177 @@ public class Player1Script : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		p2 = Camera.allCameras[0].GetComponent<CameraScript>().player2.gameObject;
 		countRun = false;
 		countdown = 50;
-		hasRock = false;
 		actionButton = false;
 		actionButtonPrev = false;
 		climbing = false;
 		airborne = false;
 		stepmode = false;
-		crouching = false;
 		launching = false;
 		stepCounter = 0;
 		speed = 3;
-		launchBuffer = 3f;
+		launchBuffer = .5f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		actionButtonPrev = actionButton;
-        GetComponent<Rigidbody>().isKinematic = false;
+		GetComponent<Rigidbody> ().isKinematic = false;
 
-        if (climbing)
-		{
-			if (Input.GetKey(KeyCode.W))
-			{
-				this.transform.Translate (Vector3.up * speed * Time.deltaTime);
+		if (Player1) {
+			if (climbing) {
+				if (Input.GetKey (KeyCode.W)) {
+					this.transform.Translate (Vector3.up * speed * Time.deltaTime);
+				}
+
+				if (Input.GetKey (KeyCode.S)) {
+					this.transform.Translate (-Vector3.up * speed * Time.deltaTime);
+				}
+
+				this.transform.Translate (Vector3.up * -(Input.GetAxis ("P1LeftStickY") * speed * Time.deltaTime));
+			} else if (launching) {
+				Launch ();
+				launching = false;
+			} else if (stepmode) {
+				// no movement
+				if (Input.GetKey (KeyCode.Z) || Input.GetButton ("P1O"))
+					actionButton = true;
+				else {
+					actionButton = false;
+				}
+
+				GetComponent<Rigidbody> ().isKinematic = true;
+			} else {
+				if (Input.GetKey (KeyCode.A)) {
+					this.transform.Translate (Vector3.left * speed * Time.deltaTime);
+				}
+
+				if (Input.GetKey (KeyCode.Q)) {
+					this.transform.Rotate (new Vector3 (0, -1, 0));
+				}
+
+				if (Input.GetKey (KeyCode.E)) {
+					this.transform.Rotate (new Vector3 (0, 1, 0));
+				}
+
+				if (Input.GetKey (KeyCode.D)) {
+					this.transform.Translate (Vector3.right * speed * Time.deltaTime);
+				}
+
+				if (Input.GetKey (KeyCode.W)) {
+					this.transform.Translate (Vector3.forward * speed * Time.deltaTime);
+				}
+
+				if (Input.GetKey (KeyCode.S)) {
+					this.transform.Translate (Vector3.back * speed * Time.deltaTime);
+				}
+
+				if (Input.GetKey (KeyCode.Z) || Input.GetButton ("P1O")) {
+					actionButton = true;
+				} else {
+					actionButton = false;
+				}
+
+				this.transform.Translate (Vector3.left * -(Input.GetAxis ("P1LeftStickX") * speed * Time.deltaTime));
+				this.transform.Translate (Vector3.forward * -(Input.GetAxis ("P1LeftStickY") * speed * Time.deltaTime));
+
+				if ((Input.GetKey (KeyCode.X) || Input.GetButton ("P1X")) && airborne == false) {
+					Jump ();
+				}
 			}
-
-			if (Input.GetKey(KeyCode.S))
+		} else {
+			if (climbing)
 			{
-				this.transform.Translate (-Vector3.up * speed * Time.deltaTime);
+				if (Input.GetKey(KeyCode.Keypad8))
+				{
+					this.transform.Translate (Vector3.up * speed * Time.deltaTime);
+				}
+				
+				if (Input.GetKey(KeyCode.Keypad5))
+				{
+					this.transform.Translate (-Vector3.up * speed * Time.deltaTime);
+				}
+				
+				this.transform.Translate (Vector3.up * -(Input.GetAxis("P2LeftStickY") * speed * Time.deltaTime));
 			}
-
-			this.transform.Translate (Vector3.up * -(Input.GetAxis("P1LeftStickY") * speed * Time.deltaTime));
-		}
-		else if(launching)
-		{
-			Launch ();
-			launching = false;
-		}
-		else if (stepmode)
-		{
-			// no movement
-			if (Input.GetKey (KeyCode.Z) || Input.GetButton("P1O"))
+			else if(launching)
+			{
+				Launch ();
+				launching = false;
+			}
+			else if (stepmode)
+			{
+				// no movement
+				if (Input.GetKey (KeyCode.KeypadDivide) || Input.GetButton("P2O"))
+				{
+					actionButton = true;
+				}
+				else
+				{
+					actionButton = false;
+				}
+				
+				GetComponent<Rigidbody>().isKinematic = true;
+			}
+			else
+			{
+				if (Input.GetKey (KeyCode.Keypad7))
+				{
+					this.transform.Rotate(new Vector3(0, -1, 0));
+				}
+				
+				if (Input.GetKey (KeyCode.Keypad9))
+				{
+					this.transform.Rotate(new Vector3(0, 1, 0));
+				}
+				
+				if (Input.GetKey(KeyCode.Keypad4))
+				{
+					this.transform.Translate (Vector3.left * speed * Time.deltaTime);
+				}
+				
+				if (Input.GetKey(KeyCode.Keypad6))
+				{
+					this.transform.Translate (Vector3.right * speed * Time.deltaTime);
+				}
+				
+				if (Input.GetKey(KeyCode.Keypad8))
+				{
+					this.transform.Translate (Vector3.forward * speed * Time.deltaTime);
+				}
+				
+				if (Input.GetKey(KeyCode.Keypad5))
+				{
+					this.transform.Translate (Vector3.back * speed * Time.deltaTime);
+				}
+				
+				if (Input.GetKey (KeyCode.Keypad1) || Input.GetButton("P2X"))
+				{
+					actionButton = true;
+				}
+				else
+				{
+					actionButton = false;
+				}
+				
+				this.transform.Translate (Vector3.left * -(Input.GetAxis("P2LeftStickX") * speed * Time.deltaTime));
+				this.transform.Translate (Vector3.forward * -(Input.GetAxis("P2LeftStickY") * speed * Time.deltaTime));
+				
+				if ((Input.GetKey (KeyCode.Keypad3) || Input.GetButton("P2X")) && airborne == false)
+				{
+					Jump();
+				}
+			}
+			
+			if (Input.GetKey (KeyCode.KeypadDivide)|| Input.GetButton("P2O"))
+			{
 				actionButton = true;
+			}
 			else
 			{
 				actionButton = false;
 			}
-
-            GetComponent<Rigidbody>().isKinematic = true;
-		}
-		else
-		{
-			if (Input.GetKey (KeyCode.A)) 
-			{
-				this.transform.Translate (Vector3.left * speed * Time.deltaTime);
-			}
-
-			if (Input.GetKey (KeyCode.Q))
-			{
-				this.transform.Rotate(new Vector3(0, -1, 0));
-			}
-
-			if (Input.GetKey (KeyCode.E))
-			{
-				this.transform.Rotate(new Vector3(0, 1, 0));
-			}
-
-			if (Input.GetKey(KeyCode.D))
-			{
-				this.transform.Translate (Vector3.right * speed * Time.deltaTime);
-			}
-
-			if (Input.GetKey(KeyCode.W))
-			{
-				this.transform.Translate (Vector3.forward * speed * Time.deltaTime);
-			}
-
-			if (Input.GetKey (KeyCode.S))
-			{
-				this.transform.Translate (Vector3.back * speed * Time.deltaTime);
-			}
-
-			if (Input.GetKey (KeyCode.Z) || Input.GetButton("P1O"))
-			{
-				actionButton = true;
-			}
-			else
-			{
-				actionButton = false;
-			}
-
-			this.transform.Translate (Vector3.left * -(Input.GetAxis("P1LeftStickX") * speed * Time.deltaTime));
-			this.transform.Translate (Vector3.forward * -(Input.GetAxis("P1LeftStickY") * speed * Time.deltaTime));
-
-			if ((Input.GetKey (KeyCode.X) || Input.GetButton("P1X")) && airborne == false)
-			{
-				Jump();
-			}
-		}
-
-		if (actionButton && !actionButtonPrev && hasRock) {
-			Destroy(rock);
-			Instantiate(rockPrefab,new Vector3(transform.position.x+transform.forward.x, .9f, transform.position.z+transform.forward.z),Quaternion.identity);
-			hasRock=false;
-			countRun=true;
 		}
 
 		if (countRun) {
@@ -158,7 +217,8 @@ public class Player1Script : MonoBehaviour {
 
 	void Launch()
 	{
-		GetComponent<Rigidbody> ().velocity += (jumpheight / launchBuffer ) * transform.up;
+		Rigidbody rig = GetComponent<Rigidbody>();
+		rig.velocity += (jumpheight / launchBuffer) * transform.up;
 	}
 
 	void Jump()
@@ -175,27 +235,9 @@ public class Player1Script : MonoBehaviour {
 
 	void OnCollisionEnter(Collision col)
 	{
-		/*if (col.gameObject.tag == "Rock"&&hasRock==false)
-		{
-			col.gameObject.GetComponent<Renderer>().enabled=false;
-			col.gameObject.GetComponent<Collider>().enabled=false;
-			rock= col.gameObject;
-			hasRock=true;
-		}
-		if (col.gameObject.tag == "Rope"&&hasRope==false)
-		{
-			DestroyImmediate(col.gameObject);
-			hasRope=true;
-		}*/
-
 		if (col.gameObject.tag == "Ground")
 		{
 			airborne = false;
-		}
-
-		if (col.gameObject.tag == "Player" && p2.GetComponent<Player2Script>().Stepmode && actionButton)
-		{
-			launching = true;
 		}
 	}
 
@@ -217,16 +259,6 @@ public class Player1Script : MonoBehaviour {
 
 	void OnTriggerStay(Collider col)
 	{
-		if (col.gameObject.tag == "smallRock" && !hasRock && actionButton && !countRun)
-		{
-			Destroy(col.gameObject);
-			rock = Instantiate(rockPrefab);
-			rock.transform.position= transform.position+ (transform.forward)+(transform.up*1.5f);
-			rock.transform.parent = transform;
-			hasRock=true;
-			rock.gameObject.GetComponent<Rigidbody> ().isKinematic = true;
-		}
-
 		if (col.gameObject.name == "top" && climbing)
 		{
 			climbing = false;
@@ -236,9 +268,15 @@ public class Player1Script : MonoBehaviour {
 
 		if (col.gameObject.name == "launchpad" && actionButton && actionButtonPrev == false)
 		{
-			if (p2.GetComponent<Player2Script>().Stepmode == false)
+			if (!col.gameObject.GetComponent<LaunchPadScript>().set)
 			{
-				stepmode = !stepmode;
+				stepmode = true;
+				col.gameObject.GetComponent<LaunchPadScript>().set = true;
+			}else if(!stepmode) {
+				launching = true;
+			} else {
+				stepmode = false;
+				col.gameObject.GetComponent<LaunchPadScript>().set = false;
 			}
 		}
 
@@ -247,45 +285,10 @@ public class Player1Script : MonoBehaviour {
 			GameObject.Find(col.gameObject.name).SendMessage("ActivatePanel", "move");
 		}
 
-		if(col.gameObject.name.Contains("platform move") && actionButton && actionButtonPrev == false)
+		if(col.gameObject.name.Contains("platform move"))
 		{
-			crouching = !crouching;
-
-			if (crouching)
-			{
 				transform.parent = col.gameObject.transform;
-			}
-			else
-			{
-				transform.parent = null;
-			}
 		}
-
-		/*if (col.gameObject.tag == "largeRock" && !hasRock && actionButton && !countRun)
-		{
-			largeRockPrefab.GetComponent<LargeRock>().PlayerOne = true;
-
-			if (largeRockPrefab.GetComponent<LargeRock>().PlayerTwo && largeRockPrefab.GetComponent<LargeRock>().PlayerOne)
-			{
-				hasRock=true;
-				transform.position = Camera.allCameras[0].GetComponent<CameraScript>().Median + Camera.allCameras[0].GetComponent<CameraScript>().Median;
-			}
-		}*/
-		/*if (col.gameObject.tag == "Rope" && actionButton) {
-			if(!col.gameObject.GetComponent<Rigidbody> ().isKinematic)
-			{
-				Destroy(col.gameObject);
-				hasRope=true;
-			} 
-			col.gameObject.GetComponent<Rigidbody>().isKinematic=false;
-		}
-		if (col.gameObject.tag == "RopeRockStatue")
-		{
-			col.gameObject.transform.root.gameObject.transform.position = new Vector3(21.57066f, 1.42f , 18.97f);
-			col.gameObject.transform.root.gameObject.transform.Rotate(new Vector3(90, 0 , 0));
-			col.gameObject.GetComponent<BoxCollider>().enabled = false;
-			Destroy(col.gameObject);
-		}*/
 	}
 
 	void OnTriggerExit(Collider col)
@@ -295,14 +298,4 @@ public class Player1Script : MonoBehaviour {
 			transform.parent = null;
 		}
 	}
-
-	/*void ThrowRock(){
-		if (hasRope && hasRock) {
-			ropeRock.transform.GetChild(0).transform.position=this.transform.position+this.transform.forward*3+new Vector3(0,.5f,0);
-			ropeRock.transform.GetChild(0).GetComponent<Rigidbody>().velocity= new Vector3(0,0,0);
-			ropeRock.transform.GetChild(0).GetComponent<Rigidbody>().AddForce((this.transform.up + this.transform.forward) * throwSpeed);
-			hasRope = false;
-			hasRock = false;
-		}
-	}*/
 }
