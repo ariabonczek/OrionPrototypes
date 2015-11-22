@@ -21,6 +21,8 @@ public class SliderTrigger : MonoBehaviour {
 	{
 		SLIDEMEBLOCK.transform.rotation = startRotation;
 		SLIDEMEBLOCK.transform.position = startPos;
+		forward = true;
+		distanceTraveled = 0;
 	}
 
 	void ActivatePanel(string message)

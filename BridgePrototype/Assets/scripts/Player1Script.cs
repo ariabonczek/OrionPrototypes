@@ -272,9 +272,13 @@ public class Player1Script : MonoBehaviour {
 			{
 				stepmode = true;
 				col.gameObject.GetComponent<LaunchPadScript>().set = true;
-			}else if(!stepmode) {
+			}
+			else if(!stepmode) 
+			{
 				launching = true;
-			} else {
+			} 
+			else 
+			{
 				stepmode = false;
 				col.gameObject.GetComponent<LaunchPadScript>().set = false;
 			}
