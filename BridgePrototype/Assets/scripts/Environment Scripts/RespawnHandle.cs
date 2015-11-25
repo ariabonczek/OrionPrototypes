@@ -8,6 +8,18 @@ public class RespawnHandle : MonoBehaviour {
 
 	private bool play1, play2;
 
+	public bool Player1Check
+	{
+		set { play1 = value; }
+		get { return play1; }
+	}
+
+	public bool Player2Check
+	{
+		set { play2 = value; }
+		get { return play2; }
+	}
+
 	void OnTriggerEnter(Collider col)
 	{
 		if (col.gameObject.name == "Player 1")

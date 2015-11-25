@@ -17,7 +17,7 @@ public class Player1Script : MonoBehaviour {
 	private bool countRun;
 	private bool launching;
 	private bool airborne; 
-	private bool stepmode; 
+	private bool stepmode;
 
 	public bool Stepmode
 	{

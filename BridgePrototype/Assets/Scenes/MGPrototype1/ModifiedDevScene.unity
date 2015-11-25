@@ -37,9 +37,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
---- !u!127 &3
-LevelGameManager:
-  m_ObjectHideFlags: 0
 --- !u!157 &4
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -68,6 +65,7 @@ LightmapSettings:
     m_TextureCompression: 1
     m_FinalGather: 0
     m_FinalGatherRayCount: 1024
+    m_ReflectionCompression: 2
   m_LightmapSnapshot: {fileID: 0}
   m_RuntimeCPUUsage: 25
 --- !u!196 &5
@@ -109,7 +107,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 17399709}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .119999997, y: -.0769999996, z: 29.2000008}
+  m_LocalPosition: {x: .119999997, y: -.307000011, z: 29.2000008}
   m_LocalScale: {x: .0291069299, y: .079421021, z: 18.4937477}
   m_Children: []
   m_Father: {fileID: 350986348}
@@ -370,6 +368,7 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
+  m_TargetEye: 3
   m_HDR: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -459,7 +458,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 350986347}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.3999996, y: 6.03000021, z: 30.0900002}
+  m_LocalPosition: {x: 13.3999996, y: 6.03000021, z: 24.8799992}
   m_LocalScale: {x: 34.3560791, y: 12.5911255, z: .0540723279}
   m_Children:
   - {fileID: 17399710}
@@ -1002,7 +1001,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 587352249}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -.167999998, y: -.0610000007, z: 61.7000008}
+  m_LocalPosition: {x: -.167999998, y: -.36500001, z: 14.3000002}
   m_LocalScale: {x: .0291069299, y: .079421021, z: 18.4937477}
   m_Children: []
   m_Father: {fileID: 350986348}
