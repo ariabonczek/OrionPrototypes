@@ -17,6 +17,10 @@ TagManager:
   - PPoint
   - checkpoint
   - Panel
+  - DamControl
+  - Pad
+  - Dam
+  - Resource
   layers:
   - Default
   - TransparentFX

@@ -5,6 +5,11 @@ public class Player1Script : MonoBehaviour {
 
 	public float speed;
 	public float jumpheight;
+	private float hoverCount;
+	private float pressCount;
+	private float lifeforce;
+	private int resources;
+	private float distance;
 	public bool Player1;
 	
 	private Vector3 respawnPosition;
@@ -43,12 +48,41 @@ public class Player1Script : MonoBehaviour {
 		stepCounter = 0;
 		speed = 3;
 		launchBuffer = .5f;
+		hoverCount = 0;
+		pressCount = 0;
+		lifeforce = 100;
+		resources = 0;
+		distance=0;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		actionButtonPrev = actionButton;
 		GetComponent<Rigidbody> ().isKinematic = false;
+		Rigidbody rig = GetComponent<Rigidbody> ();
+
+		distance = (GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraScript>().Median-transform.position).magnitude;
+
+		if(!Player1){
+			Debug.Log(lifeforce);
+		}
+
+		if(lifeforce>0){
+			lifeforce -=.05f;
+		}
+
+		if (rig.velocity.y <= 0)
+		{
+			if (hoverCount < 10f && pressCount>=1)
+			{
+				hoverCount++;
+				rig.isKinematic = true;
+			}
+			else
+			{
+				rig.isKinematic = false;
+			}
+		}
 
 		if (Player1) {
 			if (climbing) {
@@ -60,7 +94,7 @@ public class Player1Script : MonoBehaviour {
 					this.transform.Translate (-Vector3.up * speed * Time.deltaTime);
 				}
 
-				this.transform.Translate (Vector3.up * -(Input.GetAxis ("P1LeftStickY") * speed * Time.deltaTime));
+				this.transform.Translate (Vector3.up * -(Input.GetAxis ("P1LeftStickY") * speed * /*((float)lifeforce/100)*/ Time.deltaTime));
 			} else if (launching) {
 				Launch ();
 				launching = false;
@@ -96,12 +130,22 @@ public class Player1Script : MonoBehaviour {
 					actionButton = false;
 				}
 
-				this.transform.Translate (Vector3.left * -(Input.GetAxis ("P1LeftStickX") * speed * Time.deltaTime));
-				this.transform.Translate (Vector3.forward * -(Input.GetAxis ("P1LeftStickY") * speed * Time.deltaTime));
+				this.transform.Translate (Vector3.left * -(Input.GetAxis ("P1LeftStickX") * speed* /*((float)lifeforce/100)*/ Time.deltaTime));
+				this.transform.Translate (Vector3.forward * -(Input.GetAxis ("P1LeftStickY") * speed* /*((float)lifeforce/100)*/ Time.deltaTime));
 
 				if ((Input.GetKey (KeyCode.X) || Input.GetButton ("P1X")) && airborne == false) {
 					Jump ();
+					pressCount++;
 				}
+				if(Input.GetButtonUp ("P1X")){
+					pressCount = 0;
+				}
+
+				if(Input.GetButton("P1O")  && distance<.5f){
+					GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraScript>().player2.GetComponent<Player1Script>().lifeforce += (resources*=20); 
+					resources =0;
+				}
+
 				if(Input.GetAxis("P1LeftStickX")>.1f  || Input.GetAxis("P1LeftStickY") >.1f || Input.GetAxis("P1LeftStickX")<-.1f  || Input.GetAxis("P1LeftStickY")<-.1f){
 					this.gameObject.transform.GetChild(0).forward = new Vector3(Input.GetAxis("P1LeftStickX"),0,-Input.GetAxis("P1LeftStickY"));}
 			}
@@ -176,7 +220,17 @@ public class Player1Script : MonoBehaviour {
 				if ((Input.GetKey (KeyCode.Keypad3) || Input.GetButton("P2X")) && airborne == false)
 				{
 					Jump();
+					pressCount++;
 				}
+				if(Input.GetButtonUp("P2X")){
+					pressCount = 0;
+				}
+
+				if(Input.GetButton("P2O")  && distance<.5f){
+					GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraScript>().player1.GetComponent<Player1Script>().lifeforce += (resources*=20); 
+					resources =0;
+				}
+
 				if(Input.GetAxis("P2LeftStickX")>.1f  || Input.GetAxis("P2LeftStickY") >.1f || Input.GetAxis("P2LeftStickX")<-.1f  || Input.GetAxis("P2LeftStickY")<-.1f){
 				this.gameObject.transform.GetChild(0).forward = new Vector3(Input.GetAxis("P2LeftStickX"),0,-Input.GetAxis("P2LeftStickY"));
 				}
@@ -202,6 +256,13 @@ public class Player1Script : MonoBehaviour {
 
 	}
 
+	public void FixedUpdated()
+	{
+		Rigidbody rig = GetComponent<Rigidbody>();
+
+		rig.AddForce(0, -700f, 0);
+	}
+
 	void Launch()
 	{
 		Rigidbody rig = GetComponent<Rigidbody>();
@@ -210,8 +271,9 @@ public class Player1Script : MonoBehaviour {
 
 	void Jump()
 	{
+		hoverCount = 0;
 		Rigidbody rig = GetComponent<Rigidbody>();
-		rig.velocity += jumpheight * transform.up;
+		rig.velocity += jumpheight * transform.up *(float)lifeforce/100;
 		airborne = true;
 	}
 
@@ -246,6 +308,12 @@ public class Player1Script : MonoBehaviour {
 
 	void OnTriggerStay(Collider col)
 	{
+		if(col.gameObject.tag=="Resource"){
+			col.GetComponent<Renderer>().enabled=false;
+			col.GetComponent<Collider>().enabled=false;
+			resources++;
+		}
+
 		if (col.gameObject.name == "top" && climbing)
 		{
 			climbing = false;
