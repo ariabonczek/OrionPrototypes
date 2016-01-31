@@ -5,6 +5,7 @@ public class CameraScript : MonoBehaviour {
 
 	public GameObject player1;
     public GameObject player2;
+	public float Distance;
 
     private Vector3 median;
 	private Vector3 cross;

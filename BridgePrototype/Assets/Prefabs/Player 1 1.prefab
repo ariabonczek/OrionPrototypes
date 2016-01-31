@@ -42,7 +42,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 128134}
   m_LocalRotation: {x: 0, y: .00655026175, z: 0, w: .999978602}
-  m_LocalPosition: {x: 19.8999996, y: 6.92999983, z: 53.3100014}
+  m_LocalPosition: {x: 50.2999992, y: 2.00999999, z: 2.49000001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 458490}
@@ -70,7 +70,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: 89d0a64141632d647a8908a50fcf5415, type: 2}
+  - {fileID: 2100000, guid: 074a26ad7c0be4e49969c5f68d96ad5e, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -118,8 +118,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
-  jumpheight: 7
+  jumpheight: 4
   Player1: 1
+  life: {fileID: 2800000, guid: d39594db658170841ab09f63856b736d, type: 3}
+  lifeforce: 0
 --- !u!136 &13652156
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -132,7 +134,7 @@ CapsuleCollider:
   m_Radius: .33954677
   m_Height: 1.29999995
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: .0500000007, z: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
