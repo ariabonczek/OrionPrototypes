@@ -4,14 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Rock
-  - Rope
-  - RopeRock
-  - Statue
-  - RopeRockStatue
   - smallRock
   - largeRock
-  - PlaceHolder
   - Player2
   - Ground
   - PPoint
@@ -21,6 +15,12 @@ TagManager:
   - Pad
   - Dam
   - Resource
+  - Shadow Gate
+  - Light Gate
+  - Light Barrier
+  - Shadow Barrier
+  - Camera1
+  - Camera2
   layers:
   - Default
   - TransparentFX
