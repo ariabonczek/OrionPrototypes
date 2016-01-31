@@ -10,6 +10,7 @@ public class CameraScript : MonoBehaviour {
     private Vector3 median;
 	private Vector3 cross;
 	private float camDistance;
+	private float playerDist;
 	private GameObject closestPoint;
 	private GameObject prevClosestPoint;
 
@@ -58,15 +59,36 @@ public class CameraScript : MonoBehaviour {
 		medZ = (player1.transform.position.z + player2.transform.position.z) / 2;
 		median = new Vector3(medX, medY, medZ);
 
+		playerDist = (player1.transform.position-player2.transform.position).magnitude;
+
+		if(playerDist<10){
+			playerDist =10;
+		}
+
 		if (lerping) {
 			timer = (Time.time - timerStart);
 			if(timer<lerpTime){
-				Vector3 oldPos = median + -(prevClosestPoint.GetComponent<PPointScript> ().direction * prevClosestPoint.GetComponent<PPointScript> ().distance);
-				Vector3 newPos = median + -(closestPoint.GetComponent<PPointScript> ().direction * closestPoint.GetComponent<PPointScript> ().distance);
+				Vector3 oldPos;
+				Vector3 newPos;
+				if(prevClosestPoint.GetComponent<PPointScript>().isFixed){
+					oldPos = median -(prevClosestPoint.GetComponent<PPointScript> ().direction * prevClosestPoint.GetComponent<PPointScript> ().distance);
+				}
+				else
+				{
+					oldPos = median -(prevClosestPoint.GetComponent<PPointScript> ().direction * playerDist);
+				}
+
+				if(closestPoint.GetComponent<PPointScript>().isFixed){
+					newPos = median -(closestPoint.GetComponent<PPointScript> ().direction * prevClosestPoint.GetComponent<PPointScript> ().distance);
+				}
+				else
+				{
+					newPos = median -(closestPoint.GetComponent<PPointScript> ().direction * playerDist);
+				}
 
 				transform.position = Vector3.Lerp(oldPos, newPos, timer/lerpTime);
 
-				transform.forward = Vector3.Lerp(prevClosestPoint.GetComponent<PPointScript> ().direction, closestPoint.GetComponent<PPointScript> ().direction, timer/lerpTime);
+				transform.forward = Vector3.Lerp(prevClosestPoint.GetComponent<PPointScript> ().direction, closestPoint.GetComponent<PPointScript> ().direction, timer/lerpTime );
 			}else{
 				lerping= false;
 			}
@@ -77,7 +99,13 @@ public class CameraScript : MonoBehaviour {
 		if (!lerping) {
 			transform.forward = closestPoint.GetComponent<PPointScript> ().direction;
 
-			transform.position = median + -(closestPoint.GetComponent<PPointScript> ().direction * closestPoint.GetComponent<PPointScript> ().distance);
+			if(closestPoint.GetComponent<PPointScript> ().isFixed){
+				transform.position = median -(closestPoint.GetComponent<PPointScript> ().direction * closestPoint.GetComponent<PPointScript> ().distance);
+			}
+			else
+			{
+				transform.position = median -(closestPoint.GetComponent<PPointScript> ().direction * playerDist);
+			}
 		}
 	}
 

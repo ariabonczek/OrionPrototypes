@@ -11,6 +11,7 @@ GameObject:
   - 33: {fileID: 3331624}
   - 23: {fileID: 2304462}
   - 65: {fileID: 6592618}
+  - 114: {fileID: 11499120}
   m_Layer: 0
   m_Name: Resource
   m_TagString: Resource
@@ -73,13 +74,33 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: .99999994, y: .99999994, z: .99999994}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &11499120
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 197420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3831cb27db1d5094ea5cd37891a63ae1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Value: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: Value
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 197420}

@@ -71,7 +71,11 @@ public class Player1Script : MonoBehaviour {
 	void FixedUpdate()
 	{
 		Rigidbody rig = this.GetComponent<Rigidbody>();
-		rig.AddForce(0,-6.5f,0);
+
+		if (!climbing)
+		{
+			rig.AddForce(0,-6.5f,0);
+		}
 
 		if (rig.velocity.y <= 0)
 		{
@@ -113,12 +117,12 @@ public class Player1Script : MonoBehaviour {
 
 		if (distance > GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraScript>().Distance)
 		{
-			lifeforce -= .05f;
+			lifeforce -= .025f;
 		}
 
 		if(lifeforce>100)
 		{
-			lifeforce -= .05f;
+			lifeforce -= .025f;
 		}
 
 		ray = new Ray(transform.position, -transform.up);
@@ -177,7 +181,7 @@ public class Player1Script : MonoBehaviour {
 				}
 
 				if(Input.GetButton("P1O")  && distance<.5f){
-					GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraScript>().player2.GetComponent<Player1Script>().lifeforce += (resources*=5); 
+					GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraScript>().player2.GetComponent<Player1Script>().lifeforce += (resources); 
 					resources =0;
 				}
 
@@ -226,7 +230,7 @@ public class Player1Script : MonoBehaviour {
 				}
 				
 				if(Input.GetButton("P2O")  && distance<.5f){
-					GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraScript>().player1.GetComponent<Player1Script>().lifeforce += (resources*=5); 
+					GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraScript>().player1.GetComponent<Player1Script>().lifeforce += (resources); 
 					resources =0;
 				}
 				
@@ -310,8 +314,7 @@ public class Player1Script : MonoBehaviour {
 		if(col.gameObject.tag=="Resource"){
 			col.GetComponent<Renderer>().enabled=false;
 			col.GetComponent<Collider>().enabled=false;
-			resources += 1;
-			Debug.Log(resources);
+			resources += col.gameObject.GetComponent<Resource>().Value;
 		}
 
 		if (col.gameObject.name == "top" && climbing)
