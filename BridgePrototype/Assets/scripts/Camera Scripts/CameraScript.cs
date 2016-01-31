@@ -5,6 +5,8 @@ public class CameraScript : MonoBehaviour {
 
 	public GameObject player1;
     public GameObject player2;
+	public GameObject Camera1;
+	public GameObject Camera2;
 	public float Distance;
 
     private Vector3 median;
@@ -63,6 +65,22 @@ public class CameraScript : MonoBehaviour {
 
 		if(playerDist<10){
 			playerDist =10;
+		}
+
+		if(playerDist>15){
+			this.GetComponent<Camera>().enabled = false;
+			Camera1.GetComponent<Camera>().enabled = true;
+			Camera2.GetComponent<Camera>().enabled = true;
+			player1.GetComponent<Player1Script>().myCamera = Camera1;
+			player2.GetComponent<Player1Script>().myCamera = Camera2;
+			Camera1.GetComponent<Player1CameraScript>().direction = this.transform.forward;
+			Camera2.GetComponent<Player2CameraScript>().direction = this.transform.forward;
+		} else{
+			this.GetComponent<Camera>().enabled = true;
+			Camera1.GetComponent<Camera>().enabled = false;
+			Camera2.GetComponent<Camera>().enabled = false;
+			player1.GetComponent<Player1Script>().myCamera = this.gameObject;
+			player2.GetComponent<Player1Script>().myCamera = this.gameObject;
 		}
 
 		if (lerping) {

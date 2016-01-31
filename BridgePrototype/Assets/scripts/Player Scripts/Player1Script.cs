@@ -3,6 +3,10 @@ using System.Collections;
 
 public class Player1Script : MonoBehaviour {
 
+	public GameObject myCamera;
+	public GameObject otherPlayer;
+
+	public float dyingdistance;
 	public float speed;
 	public float jumpheight;
 	public bool Player1;
@@ -20,6 +24,8 @@ public class Player1Script : MonoBehaviour {
 	private float stepCounter;
 	private float launchBuffer;
 	private float powerBoost;
+	private float camAngleOnY;
+	private float camAngleOnX;
 	private bool climbing;
 	private bool actionButton;
 	private bool actionButtonPrev;
@@ -31,6 +37,7 @@ public class Player1Script : MonoBehaviour {
 	private float cameraAngleDiff;
 	private RaycastHit hit;
 	private Ray ray;
+	GameObject[] barriers;
 
 	public bool Stepmode
 	{
@@ -65,7 +72,19 @@ public class Player1Script : MonoBehaviour {
 		movementVec = new Vector3(0,0,0);
 		hit = new RaycastHit();
 		powerBoost = 1;
-		// jumpPrev = false;
+		camAngleOnY=0;
+		camAngleOnX=0;
+
+		if(Player1){
+			barriers = GameObject.FindGameObjectsWithTag("Shadow Barrier");
+		}else {
+			barriers = GameObject.FindGameObjectsWithTag("Light Barrier");
+		}
+
+		for(int i=0;i<barriers.Length;i++)
+		{
+			Physics.IgnoreCollision(barriers[i].GetComponent<Collider>(), this.GetComponent<Collider>());
+		}
 	}
 
 	void FixedUpdate()
@@ -111,11 +130,18 @@ public class Player1Script : MonoBehaviour {
 			powerBoost = 1;
 		}
 
-		cameraAngleDiff = Vector3.Angle(new Vector3(0,0,1),GameObject.FindGameObjectWithTag("MainCamera").transform.forward);
+		cameraAngleDiff = Vector3.Angle(new Vector3(0,0,1),new Vector3(myCamera.transform.forward.x,0,myCamera.transform.forward.z));
 
-		distance = (GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraScript>().Median-transform.position).magnitude;
+		Vector3 cross = Vector3.Cross(new Vector3(0,0,1), new Vector3(myCamera.transform.forward.x,0,myCamera.transform.forward.z));
 
-		if (distance > GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraScript>().Distance)
+		if(cross.y<0){
+			cameraAngleDiff = -cameraAngleDiff;
+		}
+
+		distance = (otherPlayer.transform.position-this.transform.position).magnitude;
+		Debug.Log(dyingdistance);
+
+		if (distance > dyingdistance)
 		{
 			lifeforce -= .025f;
 		}
@@ -158,7 +184,7 @@ public class Player1Script : MonoBehaviour {
 				movementVec.x = (Vector3.left * -(Input.GetAxis ("P1LeftStickX") * speed* powerBoost * Time.deltaTime)).x;
 				movementVec.z = (Vector3.forward * -(Input.GetAxis ("P1LeftStickY") * speed* powerBoost * Time.deltaTime)).z;
 
-				movementVec = Quaternion.AngleAxis(-cameraAngleDiff, Vector3.up) * movementVec;
+				movementVec = Quaternion.AngleAxis(cameraAngleDiff, Vector3.up) * movementVec;
 
 				movementVec *= powerBoost;
 
@@ -187,6 +213,23 @@ public class Player1Script : MonoBehaviour {
 
 				if(Input.GetAxis("P1LeftStickX")>.1f  || Input.GetAxis("P1LeftStickY") >.1f || Input.GetAxis("P1LeftStickX")<-.1f  || Input.GetAxis("P1LeftStickY")<-.1f){
 					this.gameObject.transform.GetChild(0).forward = movementVec;}
+
+				if(myCamera.tag == "Camera1" || myCamera.tag == "Camera2"){
+					Vector3 camForward = new Vector3(0,0,1);
+
+					camAngleOnY += Input.GetAxis("P1RightStickX");
+					camAngleOnX += Input.GetAxis("P1RightStickY");
+
+					camForward = Quaternion.AngleAxis(camAngleOnX, Vector3.right) * camForward;
+					camForward = Quaternion.AngleAxis(camAngleOnY, Vector3.up) * camForward;
+
+					myCamera.GetComponent<Player1CameraScript>().direction = camForward;
+				}
+
+				if(myCamera.tag == "MainCamera"){
+					camAngleOnX =0;
+					camAngleOnY = 0;
+				}
 			}
 		} else {
 			if (climbing) {
@@ -207,7 +250,7 @@ public class Player1Script : MonoBehaviour {
 				movementVec.x = (Vector3.left * -(Input.GetAxis ("P2LeftStickX") * speed* powerBoost * Time.deltaTime)).x;
 				movementVec.z = (Vector3.forward * -(Input.GetAxis ("P2LeftStickY") * speed* powerBoost * Time.deltaTime)).z;
 				
-				movementVec = Quaternion.AngleAxis(-cameraAngleDiff, Vector3.up) * movementVec;
+				movementVec = Quaternion.AngleAxis(cameraAngleDiff, Vector3.up) * movementVec;
 				
 				movementVec *= powerBoost;
 				
@@ -236,6 +279,23 @@ public class Player1Script : MonoBehaviour {
 				
 				if(Input.GetAxis("P2LeftStickX")>.1f  || Input.GetAxis("P2LeftStickY") >.1f || Input.GetAxis("P2LeftStickX")<-.1f  || Input.GetAxis("P2LeftStickY")<-.1f){
 					this.gameObject.transform.GetChild(0).forward = movementVec;}
+
+				if(myCamera.tag == "Camera1" || myCamera.tag == "Camera2"){
+					Vector3 camForward = new Vector3(0,0,1);
+					
+					camAngleOnY += Input.GetAxis("P2RightStickX");
+					camAngleOnX += Input.GetAxis("P2RightStickY");
+
+					camForward = Quaternion.AngleAxis(camAngleOnX, Vector3.right) * camForward;
+					camForward = Quaternion.AngleAxis(camAngleOnY, Vector3.up) * camForward;
+					
+					myCamera.GetComponent<Player2CameraScript>().direction = camForward;
+				}
+
+				if(myCamera.tag == "MainCamera"){
+					camAngleOnX =0;
+					camAngleOnY = 0;
+				}
 			}
 			
 			if (Input.GetButton("P2O"))
@@ -380,6 +440,15 @@ public class Player1Script : MonoBehaviour {
 			if (lifeforce > 0 && col.gameObject.GetComponent<GateControl>().paid < col.gameObject.GetComponent<GateControl>().cost)
 			{
 				col.gameObject.GetComponent<GateControl>().ShrinkGate();
+				lifeforce -= .5f;
+				col.gameObject.GetComponent<GateControl>().paid += .05f;
+			}
+		}
+
+		if(Input.GetButton("P1O") && col.gameObject.tag == "Recepticle")
+		{
+			if (lifeforce > 0 && col.gameObject.GetComponent<RecepticleScript>().paid < col.gameObject.GetComponent<RecepticleScript>().cost)
+			{
 				lifeforce -= .5f;
 				col.gameObject.GetComponent<GateControl>().paid += .05f;
 			}
