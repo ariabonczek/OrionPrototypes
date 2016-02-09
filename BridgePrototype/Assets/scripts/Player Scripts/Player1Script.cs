@@ -141,9 +141,12 @@ public class Player1Script : MonoBehaviour {
 		distance = (otherPlayer.transform.position-this.transform.position).magnitude;
 		Debug.Log(dyingdistance);
 
-		if (distance > dyingdistance)
-		{
+		if (distance > dyingdistance) {
 			lifeforce -= .025f;
+		} else {
+			if(lifeforce<101){
+				lifeforce += .025f;
+			}
 		}
 
 		if(lifeforce>100)
@@ -371,11 +374,13 @@ public class Player1Script : MonoBehaviour {
 
 	void OnTriggerStay(Collider col)
 	{
+		/*
 		if(col.gameObject.tag=="Resource"){
 			col.GetComponent<Renderer>().enabled=false;
 			col.GetComponent<Collider>().enabled=false;
 			resources += col.gameObject.GetComponent<Resource>().Value;
 		}
+		*/
 
 		if (col.gameObject.name == "top" && climbing)
 		{

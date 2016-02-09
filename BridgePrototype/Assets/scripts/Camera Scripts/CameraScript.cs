@@ -67,7 +67,7 @@ public class CameraScript : MonoBehaviour {
 			playerDist =10;
 		}
 
-		if(playerDist>15){
+		/*if(playerDist>15){
 			this.GetComponent<Camera>().enabled = false;
 			Camera1.GetComponent<Camera>().enabled = true;
 			Camera2.GetComponent<Camera>().enabled = true;
@@ -81,7 +81,7 @@ public class CameraScript : MonoBehaviour {
 			Camera2.GetComponent<Camera>().enabled = false;
 			player1.GetComponent<Player1Script>().myCamera = this.gameObject;
 			player2.GetComponent<Player1Script>().myCamera = this.gameObject;
-		}
+		}*/
 
 		if (lerping) {
 			timer = (Time.time - timerStart);
