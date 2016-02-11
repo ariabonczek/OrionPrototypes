@@ -139,7 +139,6 @@ public class Player1Script : MonoBehaviour {
 		}
 
 		distance = (otherPlayer.transform.position-this.transform.position).magnitude;
-		Debug.Log(dyingdistance);
 
 		if (distance > dyingdistance) {
 			lifeforce -= .025f;
@@ -381,6 +380,25 @@ public class Player1Script : MonoBehaviour {
 			resources += col.gameObject.GetComponent<Resource>().Value;
 		}
 		*/
+
+		if (col.gameObject.name == "ControlRock") {
+			if(!col.GetComponent<ControlRock>().playerOneIn){
+				col.GetComponent<ControlRock>().playerOneIn = true;
+				if(!Player1){
+					col.GetComponent<ControlRock>().player1First = false;
+				}
+			} else {
+				col.GetComponent<ControlRock>().playerTwoIn = true;
+			}
+			if(Player1){
+				myCamera.GetComponent<CameraScript>().player1 = col.gameObject;
+			} else{
+				myCamera.GetComponent<CameraScript>().player2 = col.gameObject;
+			}
+
+			this.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+			this.transform.GetComponent<Collider>().enabled = false;
+		}
 
 		if (col.gameObject.name == "top" && climbing)
 		{
