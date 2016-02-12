@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MoveScrpt : MonoBehaviour {
+public class MovePl : MonoBehaviour {
 
 	float start;
 	float end;
-	public bool up;
-	
+	bool up;
+
 	// Use this for initialization
 	void Start () {
 		start = transform.position.y;
@@ -16,12 +16,14 @@ public class MoveScrpt : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(up){
-			if(!(transform.position.y >end)){
-				transform.position+= new Vector3(0,.04f,0);
+			transform.position+= new Vector3(0,.05f,0);
+			if(transform.position.y >end){
+				up = !up;
 			}
 		}else{
-			if(!(transform.position.y <start)){
-				transform.position-= new Vector3(0,.04f,0);
+			transform.position-= new Vector3(0,.05f,0);
+			if(transform.position.y >end){
+				up = !up;
 			}
 		}
 	}

@@ -34,6 +34,7 @@ public class Player1Script : MonoBehaviour {
 	private bool launching;
 	private bool airborne; 
 	private bool stepmode;
+	private float run;
 	private float cameraAngleDiff;
 	private RaycastHit hit;
 	private Ray ray;
@@ -74,6 +75,7 @@ public class Player1Script : MonoBehaviour {
 		powerBoost = 1;
 		camAngleOnY=0;
 		camAngleOnX=0;
+		run = 2;
 
 		if(Player1){
 			barriers = GameObject.FindGameObjectsWithTag("Shadow Barrier");
@@ -168,6 +170,11 @@ public class Player1Script : MonoBehaviour {
 		}*/
 
 		if (Player1) {
+			if(Input.GetButton("P1T")){
+				run = 2;
+			} else {
+				run = 1;
+			}
 			if (climbing) {
 				this.transform.Translate (Vector3.up * -(Input.GetAxis ("P1LeftStickY") * speed * Time.deltaTime));
 			} else if (launching) {
@@ -183,8 +190,8 @@ public class Player1Script : MonoBehaviour {
 
 				GetComponent<Rigidbody> ().isKinematic = true;
 			} else {
-				movementVec.x = (Vector3.left * -(Input.GetAxis ("P1LeftStickX") * speed* powerBoost * Time.deltaTime)).x;
-				movementVec.z = (Vector3.forward * -(Input.GetAxis ("P1LeftStickY") * speed* powerBoost * Time.deltaTime)).z;
+				movementVec.x = (Vector3.left * -(Input.GetAxis ("P1LeftStickX") * speed*run * powerBoost * Time.deltaTime)).x;
+				movementVec.z = (Vector3.forward * -(Input.GetAxis ("P1LeftStickY") * speed*run * powerBoost * Time.deltaTime)).z;
 
 				movementVec = Quaternion.AngleAxis(cameraAngleDiff, Vector3.up) * movementVec;
 
@@ -234,6 +241,11 @@ public class Player1Script : MonoBehaviour {
 				}
 			}
 		} else {
+			if(Input.GetButton("P2T")){
+				run = 2;
+			} else {
+				run = 1;
+			}
 			if (climbing) {
 				this.transform.Translate (Vector3.up * -(Input.GetAxis ("P2LeftStickY") * speed * Time.deltaTime));
 			} else if (launching) {
@@ -249,8 +261,21 @@ public class Player1Script : MonoBehaviour {
 				
 				GetComponent<Rigidbody> ().isKinematic = true;
 			} else {
-				movementVec.x = (Vector3.left * -(Input.GetAxis ("P2LeftStickX") * speed* powerBoost * Time.deltaTime)).x;
-				movementVec.z = (Vector3.forward * -(Input.GetAxis ("P2LeftStickY") * speed* powerBoost * Time.deltaTime)).z;
+				movementVec.x = (Vector3.left * -(Input.GetAxis ("P2LeftStickX") * speed*run * powerBoost * Time.deltaTime)).x;
+				movementVec.z = (Vector3.forward * -(Input.GetAxis ("P2LeftStickY") * speed*run * powerBoost * Time.deltaTime)).z;
+
+				if(Input.GetKey(KeyCode.D)){
+					movementVec.x += .03f;
+				}
+				if(Input.GetKey(KeyCode.A)){
+					movementVec.x -= .03f;
+				}
+				if(Input.GetKey(KeyCode.W)){
+					movementVec.z += .03f;
+				}
+				if(Input.GetKey(KeyCode.S)){
+					movementVec.z -= .03f;
+				}
 				
 				movementVec = Quaternion.AngleAxis(cameraAngleDiff, Vector3.up) * movementVec;
 				
@@ -381,7 +406,26 @@ public class Player1Script : MonoBehaviour {
 		}
 		*/
 
-		if (col.gameObject.name == "ControlRock") {
+		if (col.gameObject.tag == "ControlRockS2") {
+			if(!col.GetComponent<ControlRockS2>().playerOneIn){
+				col.GetComponent<ControlRockS2>().playerOneIn = true;
+				if(!Player1){
+					col.GetComponent<ControlRockS2>().player1First = false;
+				}
+			} else {
+				col.GetComponent<ControlRockS2>().playerTwoIn = true;
+			}
+			if(Player1){
+				myCamera.GetComponent<CameraScript>().player1 = col.gameObject;
+			} else{
+				myCamera.GetComponent<CameraScript>().player2 = col.gameObject;
+			}
+
+			this.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+			this.transform.GetComponent<Collider>().enabled = false;
+		}
+
+		if (col.gameObject.tag == "ControlRock") {
 			if(!col.GetComponent<ControlRock>().playerOneIn){
 				col.GetComponent<ControlRock>().playerOneIn = true;
 				if(!Player1){
@@ -395,7 +439,7 @@ public class Player1Script : MonoBehaviour {
 			} else{
 				myCamera.GetComponent<CameraScript>().player2 = col.gameObject;
 			}
-
+			
 			this.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
 			this.transform.GetComponent<Collider>().enabled = false;
 		}
