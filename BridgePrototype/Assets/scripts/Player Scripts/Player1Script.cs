@@ -406,7 +406,7 @@ public class Player1Script : MonoBehaviour {
 		}
 		*/
 
-		if (col.gameObject.tag == "ControlRockS2") {
+		if (col.gameObject.tag == "ControlRockS2" && (Input.GetButtonDown("P1S") || Input.GetButtonDown("P2S"))) {
 			if(!col.GetComponent<ControlRockS2>().playerOneIn){
 				col.GetComponent<ControlRockS2>().playerOneIn = true;
 				if(!Player1){
@@ -425,7 +425,7 @@ public class Player1Script : MonoBehaviour {
 			this.transform.GetComponent<Collider>().enabled = false;
 		}
 
-		if (col.gameObject.tag == "ControlRock") {
+		if (col.gameObject.tag == "ControlRock" && (Input.GetButtonDown("P1S") || Input.GetButtonDown("P2S"))) {
 			if(!col.GetComponent<ControlRock>().playerOneIn){
 				col.GetComponent<ControlRock>().playerOneIn = true;
 				if(!Player1){

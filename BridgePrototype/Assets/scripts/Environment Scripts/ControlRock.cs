@@ -86,7 +86,7 @@ public class ControlRock : MonoBehaviour {
 			if(Input.GetAxis("P1LeftStickX")>.1f  || Input.GetAxis("P1LeftStickY") >.1f || Input.GetAxis("P1LeftStickX")<-.1f  || Input.GetAxis("P1LeftStickY")<-.1f){
 				this.transform.forward = movementVec;}
 		} else if (playerOneIn && !player1First) {
-			if(Input.GetButton("P2S")){
+			if(Input.GetButtonDown("P2S")){
 				if(playerTwoIn){
 					playerTwoIn = false;
 					player1First = true;
@@ -145,7 +145,7 @@ public class ControlRock : MonoBehaviour {
 				}
 			}
 		}else if(playerTwoIn && player1First){
-			if(Input.GetButton("P2S")){
+			if(Input.GetButtonDown("P2S")){
 				playerTwoIn = false;
 
 				GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
