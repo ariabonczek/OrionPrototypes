@@ -93,6 +93,10 @@ public class Player1Script : MonoBehaviour {
 	{
 		Rigidbody rig = this.GetComponent<Rigidbody>();
 
+		if (Player1) {
+			Debug.Log(rig.velocity.y);
+		}
+
 		if (!climbing)
 		{
 			rig.AddForce(0,-6.5f,0);
