@@ -55,7 +55,7 @@ public class ControlRockS2 : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (playerOneIn && player1First) {
-			if(Input.GetButton("P1S")){
+			if(Input.GetButtonDown("P1S")){
 				if(playerTwoIn){
 					playerTwoIn = false;
 					player1First = false;
@@ -84,7 +84,7 @@ public class ControlRockS2 : MonoBehaviour {
 				transform.RotateAround(transform.GetChild(0).position, Vector3.up, Input.GetAxis("P1LeftStickY") *  200 *Time.deltaTime);
 			}
 		} else if (playerOneIn && !player1First) {
-			if(Input.GetButton("P2S")){
+			if(Input.GetButtonDown("P2S")){
 				if(playerTwoIn){
 					playerTwoIn = false;
 					player1First = true;
@@ -118,7 +118,7 @@ public class ControlRockS2 : MonoBehaviour {
 		
 		
 		if (playerTwoIn && !player1First) {
-			if(Input.GetButton("P1S")){
+			if(Input.GetButtonDown("P1S")){
 				playerTwoIn = false;
 				
 				GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
@@ -135,7 +135,7 @@ public class ControlRockS2 : MonoBehaviour {
 				transform.RotateAround(transform.GetChild(0).position, Vector3.up, Input.GetAxis("P1LeftStickY") * 200 * Time.deltaTime);
 			}
 		}else if(playerTwoIn && player1First){
-			if(Input.GetButton("P2S")){
+			if(Input.GetButtonDown("P2S")){
 				playerTwoIn = false;
 				
 				GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");

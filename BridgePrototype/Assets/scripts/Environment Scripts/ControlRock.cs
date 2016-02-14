@@ -55,7 +55,7 @@ public class ControlRock : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (playerOneIn && player1First) {
-			if(Input.GetButton("P1S")){
+			if(Input.GetButtonDown("P1S")){
 				if(playerTwoIn){
 					playerTwoIn = false;
 					player1First = false;
@@ -122,7 +122,7 @@ public class ControlRock : MonoBehaviour {
 
 
 		if (playerTwoIn && !player1First) {
-			if(Input.GetButton("P1S")){
+			if(Input.GetButtonDown("P1S")){
 				playerTwoIn = false;
 
 				GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");

@@ -10,6 +10,8 @@ public class TTScript : MonoBehaviour {
 	public GameObject path;
 	private int totalNodes;
 	private Vector3 moveVec;
+	public bool needsTwo;
+	bool hasOne;
 	bool flung;
 	
 	// Use this for initialization
@@ -41,16 +43,32 @@ public class TTScript : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter(Collider col){
-		Debug.Log ("Hit");
 		if (col.gameObject == trigger && !flung) {
 			//rotate teeter totter
 			transform.GetChild (1).Rotate (0, 0, 30);
 			flung = true;
-			if(trigger.gameObject.tag=="ControlRock"){
+			if (trigger.gameObject.tag == "ControlRock") {
 				trigger.gameObject.GetComponent<ControlRock> ().DestroySelf (transform.GetChild (2).transform.position, transform.GetChild (3).transform.position);
 			}
 		} else if (!flung && !projectile) {
 			projectile = col.gameObject;
+		} else if (!needsTwo && projectile && projectile != col.gameObject && col.gameObject != trigger && (col.tag == "Player")) {
+			transform.GetChild (1).Rotate (0, 0, 30);
+			flung = true;
+		} else if (needsTwo && !hasOne && projectile != col.gameObject && col.gameObject != trigger && (col.tag == "Player") && !flung) {
+			hasOne = true;
+		} else if (needsTwo && hasOne && projectile != col.gameObject && col.gameObject != trigger && (col.tag == "Player") && !flung) {
+			transform.GetChild (1).Rotate (0, 0, 30);
+			flung = true;
 		}
 	}
+	void OnTriggerExit(Collider col){
+		if (col.gameObject == projectile && !flung) {
+			projectile = null;
+		}
+		if (hasOne) {
+			hasOne = false;
+		}
+	}
+
 }
