@@ -17,11 +17,11 @@ public class MoveScrpt : MonoBehaviour {
 	void Update () {
 		if(up){
 			if(!(transform.position.y >end)){
-				transform.position+= new Vector3(0,.04f,0);
+				transform.position+= (transform.up*.04f);
 			}
 		}else{
 			if(!(transform.position.y <start)){
-				transform.position-= new Vector3(0,.04f,0);
+				transform.position-= (transform.up*.04f);
 			}
 		}
 	}

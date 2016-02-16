@@ -15,35 +15,30 @@ public class Player1Script : MonoBehaviour {
 	private float hoverCount;
 	private float pressCount;
 	public float lifeforce;
-	private float resources;
 	private float distance;
 	
 	private Vector3 respawnPosition;
 	private Vector3 movementVec;
-	private float countdown;
-	private float stepCounter;
-	private float launchBuffer;
 	private float powerBoost;
 	private float camAngleOnY;
 	private float camAngleOnX;
 	private bool climbing;
 	private bool actionButton;
 	private bool actionButtonPrev;
-	// private bool jumpPrev;
-	private bool countRun;
-	private bool launching;
 	private bool airborne; 
-	private bool stepmode;
 	private float run;
 	private float cameraAngleDiff;
 	private RaycastHit hit;
 	private Ray ray;
 	GameObject[] barriers;
 
-	public bool Stepmode
-	{
-		get { return stepmode; }
-	}
+	public string mySButton;
+	public string myXButton;
+	public string myTButton;
+	public string myOButton;
+
+	public string myLeftStick;
+	public string myRightStick;
 
 	public Vector3 RespawnPosition
 	{
@@ -53,21 +48,14 @@ public class Player1Script : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		countRun = false;
-		countdown = 50;
 		actionButton = false;
 		actionButtonPrev = false;
 		climbing = false;
 		airborne = false;
-		stepmode = false;
-		launching = false;
-		stepCounter = 0;
 		speed = 3;
-		launchBuffer = .5f;
 		hoverCount = 0;
 		pressCount = 0;
 		lifeforce = 100;
-		resources = 0;
 		distance=0;
 		cameraAngleDiff = 0;
 		movementVec = new Vector3(0,0,0);
@@ -79,8 +67,20 @@ public class Player1Script : MonoBehaviour {
 
 		if(Player1){
 			barriers = GameObject.FindGameObjectsWithTag("Shadow Barrier");
+			myOButton = "P1O";
+			mySButton = "P1S";
+			myTButton = "P1T";
+			myXButton = "P1X";
+			myLeftStick = "P1LeftStick";
+			myRightStick = "P1RightStick";
 		}else {
 			barriers = GameObject.FindGameObjectsWithTag("Light Barrier");
+			myOButton = "P2O";
+			mySButton = "P2S";
+			myTButton = "P2T";
+			myXButton = "P2X";
+			myLeftStick = "P2LeftStick";
+			myRightStick = "P2RightStick";
 		}
 
 		for(int i=0;i<barriers.Length;i++)
@@ -93,16 +93,24 @@ public class Player1Script : MonoBehaviour {
 	{
 		Rigidbody rig = this.GetComponent<Rigidbody>();
 
-		if (Player1) {
-			Debug.Log(rig.velocity.y);
-		}
-
 		if (!climbing)
 		{
 			rig.AddForce(0,-6.5f,0);
 		}
 
-		if (rig.velocity.y <= 0)
+		ray = new Ray(transform.position, -transform.up);
+		if (Physics.Raycast(ray, out hit, .62f))
+		{
+			if(!hit.collider.isTrigger){
+			airborne = false;
+			}
+		}
+		else
+		{
+			airborne = true;
+		}
+
+		/*if (rig.velocity.y <= 0)
 		{
 			if (hoverCount < (7f* powerBoost) && pressCount >=1)
 			{
@@ -118,7 +126,7 @@ public class Player1Script : MonoBehaviour {
 			{
 				rig.isKinematic = false;
 			}
-		}
+		}*/
 	}
 	
 	// Update is called once per frame
@@ -159,194 +167,45 @@ public class Player1Script : MonoBehaviour {
 			lifeforce -= .025f;
 		}
 
-		ray = new Ray(transform.position, -transform.up);
-		if (Physics.Raycast(ray, out hit, 1f))
-		{
-			airborne = false;
-		}
-		else
-		{
-			airborne = true;
-		}
-
-		/*if(lifeforce>0){
-			lifeforce -=.05f;
-		}*/
-
-		if (Player1) {
-			if(Input.GetButton("P1T")){
-				run = 2;
-			} else {
-				run = 1;
-			}
-			if (climbing) {
-				this.transform.Translate (Vector3.up * -(Input.GetAxis ("P1LeftStickY") * speed * Time.deltaTime));
-			} else if (launching) {
-				Launch ();
-				launching = false;
-			} else if (stepmode) {
-				// no movement
-				if (Input.GetButton ("P1O"))
-					actionButton = true;
-				else {
-					actionButton = false;
-				}
-
-				GetComponent<Rigidbody> ().isKinematic = true;
-			} else {
-				movementVec.x = (Vector3.left * -(Input.GetAxis ("P1LeftStickX") * speed*run * powerBoost * Time.deltaTime)).x;
-				movementVec.z = (Vector3.forward * -(Input.GetAxis ("P1LeftStickY") * speed*run * powerBoost * Time.deltaTime)).z;
-
-				movementVec = Quaternion.AngleAxis(cameraAngleDiff, Vector3.up) * movementVec;
-
-				movementVec *= powerBoost;
-
-				//this.transform.Translate (Vector3.left * -(Input.GetAxis ("P1LeftStickX") * speed* /*((float)lifeforce/100)*/ Time.deltaTime));
-				//this.transform.Translate (Vector3.forward * -(Input.GetAxis ("P1LeftStickY") * speed* /*((float)lifeforce/100)*/ Time.deltaTime));
-
-				this.transform.Translate(movementVec);
-
-				if (Input.GetButton ("P1X") && airborne == false) {
-
-					if (pressCount <= 5f)
-					{
-						Jump();
-						pressCount++;
-					}
-				}
-
-				if(Input.GetButtonUp ("P1X")){
-					pressCount = 0;
-				}
-
-				if(Input.GetButton("P1O")  && distance<.5f){
-					GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraScript>().player2.GetComponent<Player1Script>().lifeforce += (resources); 
-					resources =0;
-				}
-
-				if(Input.GetAxis("P1LeftStickX")>.1f  || Input.GetAxis("P1LeftStickY") >.1f || Input.GetAxis("P1LeftStickX")<-.1f  || Input.GetAxis("P1LeftStickY")<-.1f){
-					this.gameObject.transform.GetChild(0).forward = movementVec;}
-
-				if(myCamera.tag == "Camera1" || myCamera.tag == "Camera2"){
-					Vector3 camForward = new Vector3(0,0,1);
-
-					camAngleOnY += Input.GetAxis("P1RightStickX");
-					camAngleOnX += Input.GetAxis("P1RightStickY");
-
-					camForward = Quaternion.AngleAxis(camAngleOnX, Vector3.right) * camForward;
-					camForward = Quaternion.AngleAxis(camAngleOnY, Vector3.up) * camForward;
-
-					myCamera.GetComponent<Player1CameraScript>().direction = camForward;
-				}
-
-				if(myCamera.tag == "MainCamera"){
-					camAngleOnX =0;
-					camAngleOnY = 0;
-				}
-			}
+		if(Input.GetButton(myTButton)){
+			run = 2;
 		} else {
-			if(Input.GetButton("P2T")){
-				run = 2;
-			} else {
-				run = 1;
-			}
-			if (climbing) {
-				this.transform.Translate (Vector3.up * -(Input.GetAxis ("P2LeftStickY") * speed * Time.deltaTime));
-			} else if (launching) {
-				Launch ();
-				launching = false;
-			} else if (stepmode) {
-				// no movement
-				if (Input.GetButton ("P2O"))
-					actionButton = true;
-				else {
-					actionButton = false;
-				}
-				
-				GetComponent<Rigidbody> ().isKinematic = true;
-			} else {
-				movementVec.x = (Vector3.left * -(Input.GetAxis ("P2LeftStickX") * speed*run * powerBoost * Time.deltaTime)).x;
-				movementVec.z = (Vector3.forward * -(Input.GetAxis ("P2LeftStickY") * speed*run * powerBoost * Time.deltaTime)).z;
+			run = 1;
+		}
 
-				if(Input.GetKey(KeyCode.D)){
-					movementVec.x += .03f;
-				}
-				if(Input.GetKey(KeyCode.A)){
-					movementVec.x -= .03f;
-				}
-				if(Input.GetKey(KeyCode.W)){
-					movementVec.z += .03f;
-				}
-				if(Input.GetKey(KeyCode.S)){
-					movementVec.z -= .03f;
-				}
+		if (climbing) {
+			this.transform.Translate (Vector3.up * -(Input.GetAxis (myLeftStick + "Y") * speed * Time.deltaTime));
+		} else {
+			movementVec.x = (Vector3.left * -(Input.GetAxis (myLeftStick + "X") * speed*run * powerBoost * Time.deltaTime)).x;
+			movementVec.z = (Vector3.forward * -(Input.GetAxis (myLeftStick + "Y") * speed*run * powerBoost * Time.deltaTime)).z;
+			
+			movementVec = Quaternion.AngleAxis(cameraAngleDiff, Vector3.up) * movementVec;
+			
+			movementVec *= powerBoost;
+			
+			this.transform.Translate(movementVec);
+			
+			if (Input.GetButton (myXButton) && airborne == false) {
 				
-				movementVec = Quaternion.AngleAxis(cameraAngleDiff, Vector3.up) * movementVec;
-				
-				movementVec *= powerBoost;
-				
-				//this.transform.Translate (Vector3.left * -(Input.GetAxis ("P1LeftStickX") * speed* /*((float)lifeforce/100)*/ Time.deltaTime));
-				//this.transform.Translate (Vector3.forward * -(Input.GetAxis ("P1LeftStickY") * speed* /*((float)lifeforce/100)*/ Time.deltaTime));
-				
-				this.transform.Translate(movementVec);
-				
-				if (Input.GetButton ("P2X") && airborne == false) {
-					
-					if (pressCount <= 5f)
-					{
-						Jump();
-						pressCount++;
-					}
-				}
-				
-				if(Input.GetButtonUp ("P2X")){
-					pressCount = 0;
-				}
-				
-				if(Input.GetButton("P2O")  && distance<.5f){
-					GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraScript>().player1.GetComponent<Player1Script>().lifeforce += (resources); 
-					resources =0;
-				}
-				
-				if(Input.GetAxis("P2LeftStickX")>.1f  || Input.GetAxis("P2LeftStickY") >.1f || Input.GetAxis("P2LeftStickX")<-.1f  || Input.GetAxis("P2LeftStickY")<-.1f){
-					this.gameObject.transform.GetChild(0).forward = movementVec;}
-
-				if(myCamera.tag == "Camera1" || myCamera.tag == "Camera2"){
-					Vector3 camForward = new Vector3(0,0,1);
-					
-					camAngleOnY += Input.GetAxis("P2RightStickX");
-					camAngleOnX += Input.GetAxis("P2RightStickY");
-
-					camForward = Quaternion.AngleAxis(camAngleOnX, Vector3.right) * camForward;
-					camForward = Quaternion.AngleAxis(camAngleOnY, Vector3.up) * camForward;
-					
-					myCamera.GetComponent<Player2CameraScript>().direction = camForward;
-				}
-
-				if(myCamera.tag == "MainCamera"){
-					camAngleOnX =0;
-					camAngleOnY = 0;
+				if (pressCount <= 5f)
+				{
+					Jump();
+					pressCount++;
 				}
 			}
 			
-			if (Input.GetButton("P2O"))
-			{
-				actionButton = true;
+			if(Input.GetButtonUp (myXButton)){
+				pressCount = 0;
 			}
-			else
-			{
-				actionButton = false;
-			}
-		}
-
-		if (countRun) {
-			countdown--;
-			if(countdown<0){
-				countRun=false;
-				countdown=50;
+			
+			if(Input.GetAxis(myLeftStick + "X")>.1f  || Input.GetAxis(myLeftStick + "Y") >.1f || Input.GetAxis(myLeftStick + "X")<-.1f  || Input.GetAxis(myLeftStick + "Y")<-.1f){
+				this.gameObject.transform.GetChild(0).forward = movementVec;}
+			
+			if(myCamera.tag == "MainCamera"){
+				camAngleOnX =0;
+				camAngleOnY = 0;
 			}
 		}
-
 	}
 
 	public void OnGUI()
@@ -363,12 +222,6 @@ public class Player1Script : MonoBehaviour {
 			GUI.Box(new Rect(0, 30, lifeforce, 20), life);
 			GUI.EndGroup ();
 		}
-	}
-
-	void Launch()
-	{
-		Rigidbody rig = GetComponent<Rigidbody>();
-		rig.velocity += (jumpheight / launchBuffer) * transform.up;
 	}
 
 	void Jump()
@@ -402,23 +255,14 @@ public class Player1Script : MonoBehaviour {
 
 	void OnTriggerStay(Collider col)
 	{
-		/*
-		if(col.gameObject.tag=="Resource"){
-			col.GetComponent<Renderer>().enabled=false;
-			col.GetComponent<Collider>().enabled=false;
-			resources += col.gameObject.GetComponent<Resource>().Value;
-		}
-		*/
 
-		if (col.gameObject.tag == "ControlRockS2" && (Input.GetButtonUp("P1S") || Input.GetButtonUp("P2S"))) {
-			if(!col.GetComponent<ControlRockS2>().playerOneIn){
-				col.GetComponent<ControlRockS2>().playerOneIn = true;
-				if(!Player1){
-					col.GetComponent<ControlRockS2>().player1First = false;
-				}
+		if (col.gameObject.tag == "ControlRockS2" && (Input.GetButtonDown(mySButton))) {
+			if(!col.GetComponent<ControlRockS2>().player1){
+				col.GetComponent<ControlRockS2>().player1 = this.gameObject;
 			} else {
-				col.GetComponent<ControlRockS2>().playerTwoIn = true;
+				col.GetComponent<ControlRockS2>().player2 = this.gameObject;
 			}
+			col.GetComponent<ControlRockS2>().justEntered=true;
 			if(Player1){
 				myCamera.GetComponent<CameraScript>().player1 = col.gameObject;
 			} else{
@@ -429,7 +273,7 @@ public class Player1Script : MonoBehaviour {
 			this.transform.GetComponent<Collider>().enabled = false;
 		}
 
-		if (col.gameObject.tag == "ControlRock" && (Input.GetButtonUp("P1S") || Input.GetButtonUp("P2S"))) {
+		if (col.gameObject.tag == "ControlRock" && (Input.GetButtonDown(mySButton))) {
 			if(!col.GetComponent<ControlRock>().playerOneIn){
 				col.GetComponent<ControlRock>().playerOneIn = true;
 				if(!Player1){
@@ -448,29 +292,24 @@ public class Player1Script : MonoBehaviour {
 			this.transform.GetComponent<Collider>().enabled = false;
 		}
 
+		if (col.gameObject.tag == "SingleControlRock" && (Input.GetButtonDown(mySButton))) {
+			col.GetComponent<SingleControlRock>().player1 = this.gameObject;
+			col.GetComponent<SingleControlRock>().justEntered=true;
+			if(Player1){
+				myCamera.GetComponent<CameraScript>().player1 = col.gameObject;
+			} else{
+				myCamera.GetComponent<CameraScript>().player2 = col.gameObject;
+			}
+			
+			this.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+			this.transform.GetComponent<Collider>().enabled = false;
+		}
+
 		if (col.gameObject.name == "top" && climbing)
 		{
 			climbing = false;
 			GetComponent<Rigidbody>().useGravity = true;
 			transform.parent = null;
-		}
-
-		if (col.gameObject.name == "launchpad" && actionButton && actionButtonPrev == false)
-		{
-			if (!col.gameObject.GetComponent<LaunchPadScript>().set)
-			{
-				stepmode = true;
-				col.gameObject.GetComponent<LaunchPadScript>().set = true;
-			}
-			else if(!stepmode) 
-			{
-				launching = true;
-			} 
-			else 
-			{
-				stepmode = false;
-				col.gameObject.GetComponent<LaunchPadScript>().set = false;
-			}
 		}
 
 		if(col.gameObject.name.Contains("Control Panel") && actionButton)
@@ -488,7 +327,7 @@ public class Player1Script : MonoBehaviour {
 				transform.parent = col.gameObject.transform;
 		}
 
-		if(Input.GetButton("P1O") && col.gameObject.tag == "Shadow Gate")
+		if(Input.GetButton(myOButton) && col.gameObject.tag == "Shadow Gate")
 		{
 			if (col.gameObject.GetComponent<GateControl>().paid >= col.gameObject.GetComponent<GateControl>().cost)
 			{
@@ -516,7 +355,7 @@ public class Player1Script : MonoBehaviour {
 			}
 		}
 
-		if(Input.GetButton("P1O") && col.gameObject.tag == "Recepticle")
+		if(Input.GetButton(myOButton) && col.gameObject.tag == "Recepticle")
 		{
 			if (lifeforce > 0 && col.gameObject.GetComponent<RecepticleScript>().paid < col.gameObject.GetComponent<RecepticleScript>().cost)
 			{

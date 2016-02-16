@@ -15,6 +15,10 @@ public class CameraScript : MonoBehaviour {
 	private float playerDist;
 	private GameObject closestPoint;
 	private GameObject prevClosestPoint;
+	private Ray obstructionRay;
+	private RaycastHit hit;
+	private GameObject obstruction;
+	private bool noObstruct;
 
 	private float medX;
 	private float medY;
@@ -51,11 +55,14 @@ public class CameraScript : MonoBehaviour {
 	{
 		lerpTime = 2f;
 		lerping = false;
+		hit = new RaycastHit ();
+		noObstruct = true;
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
+
 		medX = (player1.transform.position.x + player2.transform.position.x) / 2;
 		medY = (player1.transform.position.y + player2.transform.position.y) / 2;
 		medZ = (player1.transform.position.z + player2.transform.position.z) / 2;
@@ -133,7 +140,6 @@ public class CameraScript : MonoBehaviour {
 		float minLength = float.MaxValue;
 		GameObject tempClosestPoint = null;
 		foreach(GameObject point in points){
-			Debug.DrawLine(point.transform.position, median, Color.blue);
 			if((median-point.transform.position).magnitude<minLength){
 				minLength=(median-point.transform.position).magnitude;
 				tempClosestPoint= point;
@@ -148,4 +154,37 @@ public class CameraScript : MonoBehaviour {
 			closestPoint = tempClosestPoint;
 		}
 	}
+
+	/*void checkObstruction(){
+		noObstruct = true;
+		obstructionRay = new Ray(transform.position, player1.transform.position-transform.position);
+		if (Physics.Raycast(obstructionRay, out hit, (player1.transform.position-transform.position).magnitude))
+		{
+			if(hit.transform.gameObject.tag != "Player" && !hit.collider.isTrigger){
+				noObstruct = false;
+				obstruction = hit.transform.gameObject;
+			}
+		}
+		obstructionRay = new Ray(transform.position, player2.transform.position-transform.position);
+		if (Physics.Raycast(obstructionRay, out hit, (player2.transform.position-transform.position).magnitude))
+		{
+			if(hit.transform.gameObject.tag != "Player" && !hit.collider.isTrigger){
+				noObstruct = false;
+				obstruction = hit.transform.gameObject;
+			}
+		}
+
+		if (obstruction) {
+			Renderer[] renderToInvis = obstruction.GetComponentsInChildren<Renderer> ();
+			if (!noObstruct) {
+				foreach (Renderer r in renderToInvis) {
+					r.material.SetColor ("_Color", new Color (r.material.color.r, r.material.color.b, r.material.color.g, .1f));
+				}
+			} else {
+				foreach (Renderer r in renderToInvis) {
+					r.material.SetColor ("_Color", new Color (r.material.color.r, r.material.color.b, r.material.color.g, 1f));
+				}
+			}
+		}
+	}*/
 }

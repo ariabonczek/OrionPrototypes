@@ -50,6 +50,7 @@ public class ControlRock : MonoBehaviour {
 			c.enabled = false;
 		}
 
+		Destroy (this);
 	}
 	
 	// Update is called once per frame

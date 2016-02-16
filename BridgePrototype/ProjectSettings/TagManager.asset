@@ -23,6 +23,8 @@ TagManager:
   - Camera2
   - ControlRock
   - ControlRockS2
+  - SingleControlRock
+  - Harmful
   layers:
   - Default
   - TransparentFX
