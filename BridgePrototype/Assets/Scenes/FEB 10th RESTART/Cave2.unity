@@ -162,7 +162,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 408616, guid: 8858111a0c00f3e47a21d1d745082984, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 56.8699989
+      value: 66.4400024
       objectReference: {fileID: 0}
     - target: {fileID: 408616, guid: 8858111a0c00f3e47a21d1d745082984, type: 2}
       propertyPath: m_LocalPosition.y
@@ -170,7 +170,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 408616, guid: 8858111a0c00f3e47a21d1d745082984, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -18.7099991
+      value: -14.5799999
       objectReference: {fileID: 0}
     - target: {fileID: 408616, guid: 8858111a0c00f3e47a21d1d745082984, type: 2}
       propertyPath: m_LocalRotation.x
@@ -206,7 +206,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11403754, guid: 8858111a0c00f3e47a21d1d745082984, type: 2}
       propertyPath: jumpheight
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 458490, guid: 8858111a0c00f3e47a21d1d745082984, type: 2}
       propertyPath: m_LocalPosition.y
@@ -3908,7 +3908,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 446094, guid: b5efed7dbd56de647ab46b09de81462c, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 54.0999985
+      value: 63.6699982
       objectReference: {fileID: 0}
     - target: {fileID: 446094, guid: b5efed7dbd56de647ab46b09de81462c, type: 2}
       propertyPath: m_LocalPosition.y
@@ -3916,7 +3916,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 446094, guid: b5efed7dbd56de647ab46b09de81462c, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -18.1499996
+      value: -14.0200005
       objectReference: {fileID: 0}
     - target: {fileID: 446094, guid: b5efed7dbd56de647ab46b09de81462c, type: 2}
       propertyPath: m_LocalRotation.x
@@ -3952,7 +3952,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11486138, guid: b5efed7dbd56de647ab46b09de81462c, type: 2}
       propertyPath: jumpheight
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 13627072, guid: b5efed7dbd56de647ab46b09de81462c, type: 2}
       propertyPath: m_Radius

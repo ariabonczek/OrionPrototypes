@@ -68,10 +68,10 @@ public class CameraScript : MonoBehaviour {
 		medZ = (player1.transform.position.z + player2.transform.position.z) / 2;
 		median = new Vector3(medX, medY, medZ);
 
-		playerDist = (player1.transform.position-player2.transform.position).magnitude;
+		playerDist = (player1.transform.position-player2.transform.position).magnitude*.8f;
 
-		if(playerDist<10){
-			playerDist =10;
+		if(playerDist<8){
+			playerDist =8;
 		}
 
 		/*if(playerDist>15){

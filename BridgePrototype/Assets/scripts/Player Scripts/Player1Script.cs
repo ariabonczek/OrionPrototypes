@@ -99,7 +99,7 @@ public class Player1Script : MonoBehaviour {
 		}
 
 		ray = new Ray(transform.position, -transform.up);
-		if (Physics.Raycast(ray, out hit, .62f))
+		if (Physics.Raycast(ray, out hit, .7f))
 		{
 			if(!hit.collider.isTrigger){
 			airborne = false;
@@ -185,7 +185,7 @@ public class Player1Script : MonoBehaviour {
 			
 			this.transform.Translate(movementVec);
 			
-			if (Input.GetButton (myXButton) && airborne == false) {
+			if (Input.GetButtonDown (myXButton) && airborne == false) {
 				
 				if (pressCount <= 5f)
 				{

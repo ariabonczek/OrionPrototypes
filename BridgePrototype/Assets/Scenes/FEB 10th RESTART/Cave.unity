@@ -2580,7 +2580,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11486138, guid: b5efed7dbd56de647ab46b09de81462c, type: 2}
       propertyPath: jumpheight
-      value: 1.20000005
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b5efed7dbd56de647ab46b09de81462c, type: 2}
@@ -3895,7 +3895,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11403754, guid: 8858111a0c00f3e47a21d1d745082984, type: 2}
       propertyPath: jumpheight
-      value: 1.20000005
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 408616, guid: 8858111a0c00f3e47a21d1d745082984, type: 2}
       propertyPath: m_LocalScale.z
