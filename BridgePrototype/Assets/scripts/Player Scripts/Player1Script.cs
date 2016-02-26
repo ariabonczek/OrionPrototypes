@@ -255,6 +255,20 @@ public class Player1Script : MonoBehaviour {
 
 	void OnTriggerStay(Collider col)
 	{
+		if (col.gameObject.tag == "Screw" && (Input.GetButtonDown (mySButton))) {
+			if(!col.GetComponent<ScrewScript>().player){
+				transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+				transform.GetComponent<Rigidbody>().useGravity = false;
+				transform.GetComponent<Collider>().enabled = false;
+				col.GetComponent<ScrewScript>().player = this.gameObject;
+				col.GetComponent<ScrewScript>().justEntered=true;
+				if(Player1){
+					myCamera.GetComponent<CameraScript>().player1 = col.gameObject;
+				} else{
+					myCamera.GetComponent<CameraScript>().player2 = col.gameObject;
+				}
+			}
+		}
 
 		if (col.gameObject.tag == "ControlRockS2" && (Input.GetButtonDown(mySButton))) {
 			if(!col.GetComponent<ControlRockS2>().player1){
