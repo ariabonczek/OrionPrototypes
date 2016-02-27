@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 408616}
   - 54: {fileID: 5412892}
   - 114: {fileID: 11403754}
-  - 65: {fileID: 6524326}
+  - 136: {fileID: 13646822}
   m_Layer: 0
   m_Name: Player 1 1
   m_TagString: Player
@@ -42,7 +42,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 128134}
   m_LocalRotation: {x: 0, y: .00655026175, z: 0, w: .999978602}
-  m_LocalPosition: {x: 94.5599976, y: 27.0900002, z: -13.9899998}
+  m_LocalPosition: {x: 54.2268295, y: 30.9300003, z: 3.85506725}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 458490}
@@ -106,18 +106,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!65 &6524326
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 128134}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: .550092041, y: 1.24563408, z: .345066637}
-  m_Center: {x: -.00827158056, y: .0368309021, z: .0297480132}
 --- !u!114 &11403754
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -143,6 +131,19 @@ MonoBehaviour:
   myOButton: 
   myLeftStick: 
   myRightStick: 
+--- !u!136 &13646822
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 128134}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: .3395468
+  m_Height: 1.29999995
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

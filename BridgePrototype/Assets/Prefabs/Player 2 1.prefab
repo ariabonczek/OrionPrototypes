@@ -54,7 +54,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 149926}
   m_LocalRotation: {x: 0, y: .0244138762, z: 0, w: .999701977}
-  m_LocalPosition: {x: 53.8899994, y: 2.00999999, z: 2.49000001}
+  m_LocalPosition: {x: 3.75, y: -6.5, z: 23.0400009}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 431466}
@@ -117,11 +117,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f69df9dbd814541489aafd008470213c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myCamera: {fileID: 0}
+  otherPlayer: {fileID: 0}
+  dyingdistance: 15
   speed: 3
-  jumpheight: 4
+  jumpheight: 6
   Player1: 0
   life: {fileID: 2800000, guid: dbf9a58511767cf4f85f515912bdb4a8, type: 3}
   lifeforce: 0
+  mySButton: 
+  myXButton: 
+  myTButton: 
+  myOButton: 
+  myLeftStick: 
+  myRightStick: 
 --- !u!136 &13627072
 CapsuleCollider:
   m_ObjectHideFlags: 1
