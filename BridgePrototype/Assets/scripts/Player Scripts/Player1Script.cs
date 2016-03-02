@@ -37,6 +37,9 @@ public class Player1Script : MonoBehaviour {
 	public string myTButton;
 	public string myOButton;
 
+	public string myR2Trigger;
+	public string myL2Trigger;
+
 	public string myLeftStick;
 	public string myRightStick;
 
@@ -71,6 +74,8 @@ public class Player1Script : MonoBehaviour {
 			mySButton = "P1S";
 			myTButton = "P1T";
 			myXButton = "P1X";
+			myR2Trigger = "P1R2";
+			myL2Trigger = "P1L2";
 			myLeftStick = "P1LeftStick";
 			myRightStick = "P1RightStick";
 		}else {
@@ -79,6 +84,8 @@ public class Player1Script : MonoBehaviour {
 			mySButton = "P2S";
 			myTButton = "P2T";
 			myXButton = "P2X";
+			myR2Trigger = "P2R2";
+			myL2Trigger = "P2L2";
 			myLeftStick = "P2LeftStick";
 			myRightStick = "P2RightStick";
 		}
@@ -271,52 +278,46 @@ public class Player1Script : MonoBehaviour {
 		}
 
 		if (col.gameObject.tag == "ControlRockS2" && (Input.GetButtonDown(mySButton))) {
-			if(!col.GetComponent<ControlRockS2>().player1){
+			if(Player1){
 				col.GetComponent<ControlRockS2>().player1 = this.gameObject;
+				myCamera.GetComponent<CameraScript>().player1 = col.gameObject;
 			} else {
 				col.GetComponent<ControlRockS2>().player2 = this.gameObject;
-			}
-			col.GetComponent<ControlRockS2>().justEntered=true;
-			if(Player1){
-				myCamera.GetComponent<CameraScript>().player1 = col.gameObject;
-			} else{
 				myCamera.GetComponent<CameraScript>().player2 = col.gameObject;
 			}
+			col.GetComponent<ControlRockS2>().justEntered=true;
 
 			this.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
 			this.transform.GetComponent<Collider>().enabled = false;
 		}
 
 		if (col.gameObject.tag == "ControlRock" && (Input.GetButtonDown(mySButton))) {
-			if(!col.GetComponent<ControlRock>().playerOneIn){
-				col.GetComponent<ControlRock>().playerOneIn = true;
-				if(!Player1){
-					col.GetComponent<ControlRock>().player1First = false;
-				}
-			} else {
-				col.GetComponent<ControlRock>().playerTwoIn = true;
-			}
 			if(Player1){
+				col.GetComponent<ControlRock>().player1 = this.gameObject;
 				myCamera.GetComponent<CameraScript>().player1 = col.gameObject;
-			} else{
+			} else {
+				col.GetComponent<ControlRock>().player2 = this.gameObject;
 				myCamera.GetComponent<CameraScript>().player2 = col.gameObject;
 			}
+			col.GetComponent<ControlRock>().justEntered=true;
 			
 			this.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
 			this.transform.GetComponent<Collider>().enabled = false;
 		}
 
 		if (col.gameObject.tag == "SingleControlRock" && (Input.GetButtonDown(mySButton))) {
-			col.GetComponent<SingleControlRock>().player1 = this.gameObject;
-			col.GetComponent<SingleControlRock>().justEntered=true;
-			if(Player1){
-				myCamera.GetComponent<CameraScript>().player1 = col.gameObject;
-			} else{
-				myCamera.GetComponent<CameraScript>().player2 = col.gameObject;
+			if(!col.GetComponent<SingleControlRock>().player1){
+				col.GetComponent<SingleControlRock>().player1 = this.gameObject;
+				col.GetComponent<SingleControlRock>().justEntered=true;
+				if(Player1){
+					myCamera.GetComponent<CameraScript>().player1 = col.gameObject;
+				} else{
+					myCamera.GetComponent<CameraScript>().player2 = col.gameObject;
+				}
+				
+				this.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+				this.transform.GetComponent<Collider>().enabled = false;
 			}
-			
-			this.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
-			this.transform.GetComponent<Collider>().enabled = false;
 		}
 
 		if (col.gameObject.name == "top" && climbing)

@@ -16,21 +16,23 @@ public class TTUpper : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter(Collider col){
-		if (col.gameObject == parentTTScript.trigger && !parentTTScript.flung) {
-			//rotate teeter totter
-			parent.transform.GetChild (1).Rotate (0, 0, 30);
-			parentTTScript.flung = true;
-			if (parentTTScript.trigger.gameObject.tag == "ControlRock") {
-				parentTTScript.trigger.gameObject.GetComponent<ControlRock> ().DestroySelf (parent.transform.position + new Vector3(1,0,1), parent.transform.position+ new Vector3(1,0,1));
+		if (!parentTTScript.flung) {
+			if (col.gameObject == parentTTScript.trigger) {
+				//rotate teeter totter
+				parent.transform.GetChild (1).Rotate (0, 0, 30);
+				parentTTScript.flung = true;
+				if (parentTTScript.trigger.gameObject.tag == "ControlRock") {
+					parentTTScript.trigger.gameObject.GetComponent<ControlRock> ().DestroySelf (parent.transform.position + new Vector3 (1, 0, 1), parent.transform.position + new Vector3 (1, 0, 1));
+				}
+			} else if (!needsTwo && !parentTTScript.trigger && (col.tag == "Player") && col.gameObject.GetComponent<Rigidbody> ().velocity.y < velocityNeeded) {
+				parent.transform.GetChild (1).Rotate (0, 0, 30);
+				parent.GetComponent<TTScript> ().flung = true;
+			} else if (needsTwo && !hasOne && parentTTScript.projectile != col.gameObject && !parentTTScript.trigger && (col.tag == "Player") && !parentTTScript.flung) {
+				hasOne = true;
+			} else if (needsTwo && hasOne && parentTTScript.projectile != col.gameObject && !parentTTScript.trigger && (col.tag == "Player") && !parentTTScript.flung && col.gameObject.GetComponent<Rigidbody> ().velocity.y < velocityNeeded) {
+				parent.transform.GetChild (1).Rotate (0, 0, 30);
+				parentTTScript.flung = true;
 			}
-		}else if (!needsTwo && parentTTScript.projectile && parentTTScript.projectile != col.gameObject && !parentTTScript.trigger && (col.tag == "Player") && col.gameObject.GetComponent<Rigidbody>().velocity.y< velocityNeeded) {
-			parent.transform.GetChild (1).Rotate (0, 0, 30);
-			parent.GetComponent<TTScript>().flung = true;
-		} else if (needsTwo && !hasOne && parentTTScript.projectile != col.gameObject && !parentTTScript.trigger && (col.tag == "Player") && !parentTTScript.flung) {
-			hasOne = true;
-		} else if (needsTwo && hasOne && parentTTScript.projectile != col.gameObject && !parentTTScript.trigger && (col.tag == "Player") && !parentTTScript.flung && col.gameObject.GetComponent<Rigidbody>().velocity.y< velocityNeeded) {
-			parent.transform.GetChild (1).Rotate (0, 0, 30);
-			parentTTScript.flung = true;
 		}
 	}
 	void OnTriggerExit(Collider col){

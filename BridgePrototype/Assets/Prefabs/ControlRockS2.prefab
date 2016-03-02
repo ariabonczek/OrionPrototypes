@@ -131,9 +131,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 124078}
-  m_LocalRotation: {x: 0, y: -.937881231, z: 0, w: .346956462}
-  m_LocalPosition: {x: -20.2999992, y: -2.54000092, z: -28.3600006}
-  m_LocalScale: {x: 2.30389595, y: 3.56401157, z: 2.30389428}
+  m_LocalRotation: {x: 0, y: .99976182, z: 0, w: .0218251646}
+  m_LocalPosition: {x: 55.0830002, y: 31.0270004, z: -12.6210003}
+  m_LocalScale: {x: .704838216, y: 1.09034944, z: .70483768}
   m_Children:
   - {fileID: 454086}
   - {fileID: 407020}
@@ -278,7 +278,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 124078}
   serializedVersion: 2
-  m_Mass: 1000
+  m_Mass: 100
   m_Drag: 0
   m_AngularDrag: .0500000007
   m_UseGravity: 1
@@ -338,6 +338,8 @@ MonoBehaviour:
   player2: {fileID: 0}
   respawn: {fileID: 0}
   jumpHeight: 0
+  speed: 1
+  playerMoveErrorMargin: 0
   myCamera: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:

@@ -8,7 +8,11 @@ public class ControlRockS2 : MonoBehaviour {
 	public GameObject player2;
 	public GameObject respawn;
 	public float jumpHeight;
+	public float speed;
+	public float playerMoveErrorMargin;
 	private Ray ray;
+	private float p1Rotation;
+	private float p2Rotation;
 	public GameObject myCamera;
 	
 	private float cameraAngleDiff;
@@ -64,18 +68,9 @@ public class ControlRockS2 : MonoBehaviour {
 				player1.transform.GetChild (0).GetComponent<Renderer> ().enabled = true;
 				player1.transform.GetComponent<Collider> ().enabled = true;
 
-				if(myCamera.GetComponent<CameraScript> ().player1 == this.gameObject){
-					myCamera.GetComponent<CameraScript> ().player1 = player1;
-				}else {
-					myCamera.GetComponent<CameraScript> ().player2 = player1;
-				}
+				myCamera.GetComponent<CameraScript> ().player1 = player1;
 
-				if (player2) {
-					player1 = player1;
-					player2 = null;
-				} else {
-					player1 = null;
-				}
+				player1 = null;
 			}
 
 			if (player2 && Input.GetButtonDown (player2.GetComponent<Player1Script> ().mySButton)) {
@@ -84,11 +79,7 @@ public class ControlRockS2 : MonoBehaviour {
 				player2.transform.GetChild (0).GetComponent<Renderer> ().enabled = true;
 				player2.transform.GetComponent<Collider> ().enabled = true;
 
-				if(myCamera.GetComponent<CameraScript> ().player1 == this.gameObject){
-					myCamera.GetComponent<CameraScript> ().player1 = player2;
-				}else {
-					myCamera.GetComponent<CameraScript> ().player2 = player2;
-				}
+				myCamera.GetComponent<CameraScript> ().player2 = player2;
 
 				player2 = null;
 			}
@@ -103,10 +94,10 @@ public class ControlRockS2 : MonoBehaviour {
 				cameraAngleDiff = -cameraAngleDiff;
 			}
 			
-			if (Input.GetAxis(player1.GetComponent<Player1Script>().myLeftStick + "Y") >.1f){
-				transform.RotateAround(transform.GetChild(0).position, Vector3.up, Input.GetAxis(player1.GetComponent<Player1Script>().myLeftStick + "Y") *200 * Time.deltaTime);
-			} else if(Input.GetAxis(player1.GetComponent<Player1Script>().myLeftStick + "Y") <-.1){
-				transform.RotateAround(transform.GetChild(0).position, Vector3.up, Input.GetAxis(player1.GetComponent<Player1Script>().myLeftStick + "Y") *  200 *Time.deltaTime);
+			if ((Input.GetAxis(player1.GetComponent<Player1Script>().myLeftStick + "Y") >.1f) || (Input.GetAxis(player1.GetComponent<Player1Script>().myLeftStick + "Y")<-.1f)){
+				p1Rotation = Input.GetAxis(player1.GetComponent<Player1Script>().myLeftStick + "Y") * 100 * speed * Time.deltaTime;
+			} else {
+				p1Rotation = 0;
 			}
 		}
 		
@@ -114,11 +105,25 @@ public class ControlRockS2 : MonoBehaviour {
 		
 		
 		if (player2) {
-			if (Input.GetAxis(player2.GetComponent<Player1Script>().myLeftStick + "Y") >.1f){
-				transform.RotateAround(transform.GetChild(1).position, Vector3.up, -Input.GetAxis(player2.GetComponent<Player1Script>().myLeftStick + "Y") * 200 * Time.deltaTime);
-			} else if(Input.GetAxis(player2.GetComponent<Player1Script>().myLeftStick + "Y") <-.1){
-				transform.RotateAround(transform.GetChild(1).position, Vector3.up, -Input.GetAxis(player2.GetComponent<Player1Script>().myLeftStick + "Y") * 200 * Time.deltaTime);
+			if ((Input.GetAxis(player2.GetComponent<Player1Script>().myLeftStick + "Y") >.1f) || (Input.GetAxis(player2.GetComponent<Player1Script>().myLeftStick + "Y")<-.1f)){
+				p2Rotation = Input.GetAxis(player2.GetComponent<Player1Script>().myLeftStick + "Y") * 100 * speed * Time.deltaTime;
+			} else {
+				p2Rotation = 0;
 			}
+		}
+
+		if (Mathf.Abs (p1Rotation - p2Rotation) < playerMoveErrorMargin) {
+			float average = (p1Rotation + p2Rotation) / 2;
+			p1Rotation = average;
+			p2Rotation = average;
+		}
+
+		if (player1) {
+			transform.RotateAround(transform.GetChild(0).position, Vector3.up, p1Rotation);
+		}
+
+		if (player2) {
+			transform.RotateAround(transform.GetChild(1).position, Vector3.up, -p2Rotation);
 		}
 	}
 

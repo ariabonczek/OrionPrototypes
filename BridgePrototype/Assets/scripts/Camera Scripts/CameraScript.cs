@@ -3,6 +3,7 @@ using System.Collections;
 
 public class CameraScript : MonoBehaviour {
 
+	public bool dynamic;
 	public GameObject player1;
     public GameObject player2;
 	public GameObject Camera1;
