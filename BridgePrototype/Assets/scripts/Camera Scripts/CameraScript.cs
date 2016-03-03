@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CameraScript : MonoBehaviour {
 
-	public bool dynamic;
+	public bool dynamicOn;
 	public GameObject player1;
     public GameObject player2;
 	public GameObject Camera1;
@@ -12,7 +12,7 @@ public class CameraScript : MonoBehaviour {
 
     private Vector3 median;
 	private Vector3 cross;
-	private float camDistance;
+	public float camDistance;
 	private float playerDist;
 	private GameObject closestPoint;
 	private GameObject prevClosestPoint;
@@ -21,22 +21,27 @@ public class CameraScript : MonoBehaviour {
 	private GameObject obstruction;
 	private bool noObstruct;
 
+	private Vector3 dynamicLoc;
+	private Vector3 dynamicForward;
 	private float medX;
 	private float medY;
 	private float medZ;
-	/*private float distanceX;
+	private float distanceX;
 	private float distanceY;
 	private float distanceZ;
 	private float distance;
 	private float upperLimit;
 	private float lowerLimit;
-	private float cameraAngle;
+	private float originalCamDist;
+	public float cameraAngle;
 	private float yVal;
-	private float xzVal;*/
+	private float xzVal;
 
 	private float timerStart;
 	private float timer;
 	private float lerpTime;
+	private Vector3 oldPos;
+	private Vector3 newPos;
 
 	private bool lerping;
 
@@ -46,10 +51,14 @@ public class CameraScript : MonoBehaviour {
 	}
 
     //CAMERA IMPLEMENTATION TO WORK AS FOLLOWS:
+	//IF IN NON-DYNAMIC MODE
     //---Calculate closest Perspective Point
     //---Set closest Perspective Point's direction as forward.
     //---Set camera position to be Perspective points specified distance from the player midepiont in the direction of the negated PP direction
     //---If it find a different closest point than the one it is using then it enters lerp mode
+	//IF IN DYNAMIC MODE
+	//---Get the cross of the vector distance between players
+	//---Use dynamic angle and distance to calculate camera offset from median
 
 	// Use this for initialization
 	void Start ()
@@ -58,6 +67,9 @@ public class CameraScript : MonoBehaviour {
 		lerping = false;
 		hit = new RaycastHit ();
 		noObstruct = true;
+		//dynamicOn = true;
+		cameraAngle = cameraAngle * (Mathf.PI/180);
+		originalCamDist = camDistance;
 	}
 	
 	// Update is called once per frame
@@ -75,6 +87,8 @@ public class CameraScript : MonoBehaviour {
 			playerDist =8;
 		}
 
+		camDistance = originalCamDist * (1 + (playerDist * .1f));
+
 		/*if(playerDist>15){
 			this.GetComponent<Camera>().enabled = false;
 			Camera1.GetComponent<Camera>().enabled = true;
@@ -91,46 +105,73 @@ public class CameraScript : MonoBehaviour {
 			player2.GetComponent<Player1Script>().myCamera = this.gameObject;
 		}*/
 
-		if (lerping) {
-			timer = (Time.time - timerStart);
-			if(timer<lerpTime){
-				Vector3 oldPos;
-				Vector3 newPos;
-				if(prevClosestPoint.GetComponent<PPointScript>().isFixed){
-					oldPos = median -(prevClosestPoint.GetComponent<PPointScript> ().direction * prevClosestPoint.GetComponent<PPointScript> ().distance);
-				}
-				else
-				{
-					oldPos = median -(prevClosestPoint.GetComponent<PPointScript> ().direction * playerDist);
-				}
-
-				if(closestPoint.GetComponent<PPointScript>().isFixed){
-					newPos = median -(closestPoint.GetComponent<PPointScript> ().direction * prevClosestPoint.GetComponent<PPointScript> ().distance);
-				}
-				else
-				{
-					newPos = median -(closestPoint.GetComponent<PPointScript> ().direction * playerDist);
-				}
-
-				transform.position = Vector3.Lerp(oldPos, newPos, timer/lerpTime);
-
-				transform.forward = Vector3.Lerp(prevClosestPoint.GetComponent<PPointScript> ().direction, closestPoint.GetComponent<PPointScript> ().direction, timer/lerpTime );
-			}else{
-				lerping= false;
+		if (!dynamicOn && lerping) {
+			if (prevClosestPoint.GetComponent<PPointScript> ().isFixed) {
+				oldPos = median - (prevClosestPoint.GetComponent<PPointScript> ().direction * prevClosestPoint.GetComponent<PPointScript> ().distance);
+			} else {
+				oldPos = median - (prevClosestPoint.GetComponent<PPointScript> ().direction * playerDist);
 			}
+			
+			if (closestPoint.GetComponent<PPointScript> ().isFixed) {
+				newPos = median - (closestPoint.GetComponent<PPointScript> ().direction * prevClosestPoint.GetComponent<PPointScript> ().distance);
+			} else {
+				newPos = median - (closestPoint.GetComponent<PPointScript> ().direction * playerDist);
+			}
+		} else if (dynamicOn && lerping) {
+			if (closestPoint.GetComponent<PPointScript> ().isFixed) {
+				oldPos = median - (closestPoint.GetComponent<PPointScript> ().direction * prevClosestPoint.GetComponent<PPointScript> ().distance);
+			} else {
+				oldPos = median - (closestPoint.GetComponent<PPointScript> ().direction * playerDist);
+			}
+			
+			newPos = dynamicLoc;
 		}
 
-		checkPPoints ();
+		if (!dynamicOn) {
+			if (lerping) {
+				timer = (Time.time - timerStart);
+				if (timer < lerpTime) {
 
-		if (!lerping) {
-			transform.forward = closestPoint.GetComponent<PPointScript> ().direction;
+					transform.position = Vector3.Lerp (oldPos, newPos, timer / lerpTime);
 
-			if(closestPoint.GetComponent<PPointScript> ().isFixed){
-				transform.position = median -(closestPoint.GetComponent<PPointScript> ().direction * closestPoint.GetComponent<PPointScript> ().distance);
+					transform.forward = Vector3.Lerp (prevClosestPoint.GetComponent<PPointScript> ().direction, closestPoint.GetComponent<PPointScript> ().direction, timer / lerpTime);
+				} else {
+					lerping = false;
+				}
 			}
-			else
-			{
-				transform.position = median -(closestPoint.GetComponent<PPointScript> ().direction * playerDist);
+
+			checkPPoints ();
+
+			if (!lerping) {
+				transform.forward = closestPoint.GetComponent<PPointScript> ().direction;
+
+				if (closestPoint.GetComponent<PPointScript> ().isFixed) {
+					transform.position = median - (closestPoint.GetComponent<PPointScript> ().direction * closestPoint.GetComponent<PPointScript> ().distance);
+				} else {
+					transform.position = median - (closestPoint.GetComponent<PPointScript> ().direction * playerDist);
+				}
+			}
+		} else {
+			cross = Vector3.Cross((player1.transform.position-player2.transform.position),Vector3.up).normalized;
+			yVal = Mathf.Sin(cameraAngle)*camDistance;
+			xzVal = Mathf.Cos(cameraAngle)*camDistance;
+			dynamicLoc = median + (cross * xzVal) + (Vector3.up * yVal);
+
+			dynamicForward = median - dynamicLoc;
+
+			if(lerping){
+				timer = (Time.time - timerStart);
+				if (timer < lerpTime) {
+					
+					transform.position = Vector3.Lerp (oldPos, newPos, timer / lerpTime);
+					
+					transform.forward = Vector3.Lerp (closestPoint.GetComponent<PPointScript> ().direction, dynamicForward, timer / lerpTime);
+				} else {
+					lerping = false;
+				}
+			}else {
+				transform.position = dynamicLoc;
+				transform.forward = dynamicForward;
 			}
 		}
 	}
@@ -154,6 +195,11 @@ public class CameraScript : MonoBehaviour {
 			prevClosestPoint = closestPoint;
 			closestPoint = tempClosestPoint;
 		}
+	}
+
+	public void SwitchIt(){
+		lerping = true;
+		timerStart = Time.time;
 	}
 
 	/*void checkObstruction(){

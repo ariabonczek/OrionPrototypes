@@ -11,6 +11,9 @@ public class PPointScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		if (direction == Vector3.zero) {
+			direction = transform.forward;
+		}
 		direction.Normalize ();
 	}
 }

@@ -5556,12 +5556,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64aeb8fe2ad0b2740ba7fc3e66cf111f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dynamic: 0
+  dynamicOn: 0
   player1: {fileID: 376125142}
   player2: {fileID: 1548373492}
   Camera1: {fileID: 0}
   Camera2: {fileID: 0}
   Distance: 0
+  camDistance: 5
+  cameraAngle: 35
 --- !u!81 &895261215
 AudioListener:
   m_ObjectHideFlags: 0
@@ -8981,6 +8983,48 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1678440380}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &1681455131
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 493692, guid: ca3de0e30e458d6479427432219a1afc, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 58.4300003
+      objectReference: {fileID: 0}
+    - target: {fileID: 493692, guid: ca3de0e30e458d6479427432219a1afc, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 30.3299999
+      objectReference: {fileID: 0}
+    - target: {fileID: 493692, guid: ca3de0e30e458d6479427432219a1afc, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 4.46999979
+      objectReference: {fileID: 0}
+    - target: {fileID: 493692, guid: ca3de0e30e458d6479427432219a1afc, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 493692, guid: ca3de0e30e458d6479427432219a1afc, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 493692, guid: ca3de0e30e458d6479427432219a1afc, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 493692, guid: ca3de0e30e458d6479427432219a1afc, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 493692, guid: ca3de0e30e458d6479427432219a1afc, type: 2}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: ca3de0e30e458d6479427432219a1afc, type: 2}
+  m_IsPrefabParent: 0
 --- !u!4 &1728500048 stripped
 Transform:
   m_PrefabParentObject: {fileID: 471710, guid: 39509c3680102f14da7d63f855a905e5, type: 2}
@@ -10449,7 +10493,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 439672, guid: 9f68c085b924f1d438f66609ab799ad4, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -6.42000008
+      value: -6.42000198
       objectReference: {fileID: 0}
     - target: {fileID: 439672, guid: 9f68c085b924f1d438f66609ab799ad4, type: 2}
       propertyPath: m_LocalPosition.z
@@ -10457,7 +10501,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 439672, guid: 9f68c085b924f1d438f66609ab799ad4, type: 2}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: .430392653
       objectReference: {fileID: 0}
     - target: {fileID: 439672, guid: 9f68c085b924f1d438f66609ab799ad4, type: 2}
       propertyPath: m_LocalRotation.y
@@ -10469,7 +10513,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 439672, guid: 9f68c085b924f1d438f66609ab799ad4, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: .902641773
       objectReference: {fileID: 0}
     - target: {fileID: 439672, guid: 9f68c085b924f1d438f66609ab799ad4, type: 2}
       propertyPath: m_RootOrder
@@ -10477,11 +10521,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11477296, guid: 9f68c085b924f1d438f66609ab799ad4, type: 2}
       propertyPath: direction.z
-      value: .600000024
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11477296, guid: 9f68c085b924f1d438f66609ab799ad4, type: 2}
       propertyPath: direction.y
-      value: -.839999974
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 11477296, guid: 9f68c085b924f1d438f66609ab799ad4, type: 2}
       propertyPath: isFixed
