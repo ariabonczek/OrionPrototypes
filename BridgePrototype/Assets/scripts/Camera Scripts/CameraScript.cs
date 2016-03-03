@@ -22,7 +22,6 @@ public class CameraScript : MonoBehaviour {
 	private bool noObstruct;
 
 	private Vector3 dynamicLoc;
-	private Vector3 dynamicForward;
 	private float medX;
 	private float medY;
 	private float medZ;
@@ -105,43 +104,60 @@ public class CameraScript : MonoBehaviour {
 			player2.GetComponent<Player1Script>().myCamera = this.gameObject;
 		}*/
 
-		if (!dynamicOn && lerping) {
-			if (prevClosestPoint.GetComponent<PPointScript> ().isFixed) {
-				oldPos = median - (prevClosestPoint.GetComponent<PPointScript> ().direction * prevClosestPoint.GetComponent<PPointScript> ().distance);
-			} else {
-				oldPos = median - (prevClosestPoint.GetComponent<PPointScript> ().direction * playerDist);
-			}
+		// This code sets up what two points the camera is lerping between if it is lerping
+		if (lerping) {
+			// If it is not Dynamic then we are just lerping from the old perspective point settings to the new one
+			if (!dynamicOn) {
+				if(prevClosestPoint.GetComponent<PPointScript> ().isDynamic){
+					oldPos = dynamicLoc;
+				}else {
+					if (prevClosestPoint.GetComponent<PPointScript> ().isFixed) {
+						oldPos = median - (prevClosestPoint.GetComponent<PPointScript> ().direction * prevClosestPoint.GetComponent<PPointScript> ().distance);
+					} else {
+						oldPos = median - (prevClosestPoint.GetComponent<PPointScript> ().direction * playerDist);
+					}
+				}
 			
-			if (closestPoint.GetComponent<PPointScript> ().isFixed) {
-				newPos = median - (closestPoint.GetComponent<PPointScript> ().direction * prevClosestPoint.GetComponent<PPointScript> ().distance);
-			} else {
-				newPos = median - (closestPoint.GetComponent<PPointScript> ().direction * playerDist);
-			}
-		} else if (dynamicOn && lerping) {
-			if (closestPoint.GetComponent<PPointScript> ().isFixed) {
-				oldPos = median - (closestPoint.GetComponent<PPointScript> ().direction * prevClosestPoint.GetComponent<PPointScript> ().distance);
-			} else {
-				oldPos = median - (closestPoint.GetComponent<PPointScript> ().direction * playerDist);
-			}
+				if (closestPoint.GetComponent<PPointScript> ().isFixed) {
+					newPos = median - (closestPoint.GetComponent<PPointScript> ().direction * prevClosestPoint.GetComponent<PPointScript> ().distance);
+				} else {
+					newPos = median - (closestPoint.GetComponent<PPointScript> ().direction * playerDist);
+				}
+
+			} 
+			// if it is dynamic then we are lerping from the old perspective point settings to the dynamic settings
+			else if (dynamicOn) {
+				if (closestPoint.GetComponent<PPointScript> ().isFixed) {
+					oldPos = median - (prevClosestPoint.GetComponent<PPointScript> ().direction * prevClosestPoint.GetComponent<PPointScript> ().distance);
+				} else {
+					oldPos = median - (prevClosestPoint.GetComponent<PPointScript> ().direction * playerDist);
+				}
 			
-			newPos = dynamicLoc;
+				newPos = dynamicLoc;
+			}
 		}
 
+		//Handling the camera placement when in Perspective Point Mode
 		if (!dynamicOn) {
+			// If we're lerping then we move the camera using a timer between the old positioning and the new positioning
 			if (lerping) {
 				timer = (Time.time - timerStart);
 				if (timer < lerpTime) {
-
 					transform.position = Vector3.Lerp (oldPos, newPos, timer / lerpTime);
-
-					transform.forward = Vector3.Lerp (prevClosestPoint.GetComponent<PPointScript> ().direction, closestPoint.GetComponent<PPointScript> ().direction, timer / lerpTime);
+					if(prevClosestPoint.GetComponent<PPointScript> ().isDynamic){
+						transform.forward = Vector3.Lerp (median - transform.position, closestPoint.GetComponent<PPointScript> ().direction, timer / lerpTime);
+					} else {
+						transform.forward = Vector3.Lerp (prevClosestPoint.GetComponent<PPointScript> ().direction, closestPoint.GetComponent<PPointScript> ().direction, timer / lerpTime);
+					}
 				} else {
 					lerping = false;
 				}
 			}
 
+			//We do a check here to make sure we've got the most up-to-date perspective point locations
 			checkPPoints ();
 
+			// If we are not lerping then we simply position the camera behind the median of the players using the perspective point positioning
 			if (!lerping) {
 				transform.forward = closestPoint.GetComponent<PPointScript> ().direction;
 
@@ -151,28 +167,29 @@ public class CameraScript : MonoBehaviour {
 					transform.position = median - (closestPoint.GetComponent<PPointScript> ().direction * playerDist);
 				}
 			}
-		} else {
+		}
+		// if we're using dynamic then we position the camera based aruond player location
+		else {
 			cross = Vector3.Cross((player1.transform.position-player2.transform.position),Vector3.up).normalized;
 			yVal = Mathf.Sin(cameraAngle)*camDistance;
 			xzVal = Mathf.Cos(cameraAngle)*camDistance;
 			dynamicLoc = median + (cross * xzVal) + (Vector3.up * yVal);
-
-			dynamicForward = median - dynamicLoc;
+			newPos = dynamicLoc;
 
 			if(lerping){
 				timer = (Time.time - timerStart);
 				if (timer < lerpTime) {
-					
 					transform.position = Vector3.Lerp (oldPos, newPos, timer / lerpTime);
-					
-					transform.forward = Vector3.Lerp (closestPoint.GetComponent<PPointScript> ().direction, dynamicForward, timer / lerpTime);
+					transform.forward = median - transform.position;
 				} else {
 					lerping = false;
 				}
 			}else {
 				transform.position = dynamicLoc;
-				transform.forward = dynamicForward;
+				transform.forward = median - transform.position;
 			}
+
+			checkPPoints ();
 		}
 	}
 
@@ -188,6 +205,14 @@ public class CameraScript : MonoBehaviour {
 			}
 		}
 		if (closestPoint != tempClosestPoint&& !lerping) {
+			if(tempClosestPoint.GetComponent<PPointScript>().isDynamic && !dynamicOn){
+				dynamicOn = true;
+				SwitchIt();
+			}
+			if(tempClosestPoint.GetComponent<PPointScript>().isDynamic == false && dynamicOn){
+				dynamicOn = false;
+				SwitchIt();
+			}
 			if(closestPoint!=null){
 				lerping = true;
 				timerStart = Time.time;

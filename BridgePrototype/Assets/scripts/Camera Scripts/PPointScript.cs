@@ -6,8 +6,10 @@ public class PPointScript : MonoBehaviour {
 	public Vector3 direction;
 	// The float representing the magnitude of the camera's "arm"
 	public float distance;
-	//The bool that tells the camera whether it is fixed or not
+	// The bool that tells the camera whether it is fixed or not
 	public bool isFixed;
+	// The bool that changes hwether the camera turns to dynamic or not when it is the closest perspective poitn
+	public bool isDynamic;
 
 	// Use this for initialization
 	void Start () {
