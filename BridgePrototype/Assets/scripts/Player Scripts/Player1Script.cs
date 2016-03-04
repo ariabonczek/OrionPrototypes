@@ -31,6 +31,10 @@ public class Player1Script : MonoBehaviour {
 	private RaycastHit hit;
 	private Ray ray;
 	GameObject[] barriers;
+	public float buttonPromptIntroTimer;
+	private float buttonPromptTimerCurrent;
+	private bool buttonPromptOn;
+	private float timeStart;
 
 	public string mySButton;
 	public string myXButton;
@@ -67,6 +71,10 @@ public class Player1Script : MonoBehaviour {
 		camAngleOnY=0;
 		camAngleOnX=0;
 		run = 2;
+
+		Color tempColor = transform.GetChild (1).GetComponent<SpriteRenderer> ().color;
+		tempColor.a = 0f;
+		transform.GetChild (1).GetComponent<SpriteRenderer> ().color = tempColor;
 
 		if(Player1){
 			barriers = GameObject.FindGameObjectsWithTag("Shadow Barrier");
@@ -138,6 +146,10 @@ public class Player1Script : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		transform.GetChild (1).forward = (myCamera.transform.forward);
+
+		DisplayPrompts ();
+
 		actionButtonPrev = actionButton;
 		GetComponent<Rigidbody> ().isKinematic = false;
 		Rigidbody rig = GetComponent<Rigidbody> ();
@@ -231,6 +243,23 @@ public class Player1Script : MonoBehaviour {
 		}
 	}
 
+	void DisplayPrompts(){
+		if (buttonPromptOn) {
+			if (buttonPromptTimerCurrent < buttonPromptIntroTimer) {
+				buttonPromptTimerCurrent += (Time.time - timeStart);
+
+				Color tempColor = transform.GetChild (1).GetComponent<SpriteRenderer> ().color;
+				tempColor.a = (buttonPromptTimerCurrent / buttonPromptIntroTimer);
+				transform.GetChild (1).GetComponent<SpriteRenderer> ().color = tempColor;
+			}
+		} else {
+			Color tempColor = transform.GetChild (1).GetComponent<SpriteRenderer> ().color;
+			tempColor.a = 0f;
+			transform.GetChild (1).GetComponent<SpriteRenderer> ().color = tempColor;
+			buttonPromptTimerCurrent =0;
+		}
+	}
+
 	void Jump()
 	{
 		hoverCount = 0;
@@ -259,9 +288,14 @@ public class Player1Script : MonoBehaviour {
 			GetComponent<Rigidbody>().useGravity = true;
 		}
 	}
-
+	
 	void OnTriggerStay(Collider col)
 	{
+		if (col.gameObject.tag == "Screw" || col.gameObject.tag == "ControlRockS2" || col.gameObject.tag == "ControlRock" || col.gameObject.tag == "SingleControlRock") {
+			buttonPromptOn = true;
+			timeStart = Time.time;
+		}
+
 		if (col.gameObject.tag == "Screw" && (Input.GetButtonDown (mySButton))) {
 			if(!col.GetComponent<ScrewScript>().player){
 				transform.GetChild(0).GetComponent<Renderer>().enabled = false;
@@ -274,18 +308,22 @@ public class Player1Script : MonoBehaviour {
 				} else{
 					myCamera.GetComponent<CameraScript>().player2 = col.gameObject;
 				}
+
+				buttonPromptOn = false;
 			}
 		}
 
 		if (col.gameObject.tag == "ControlRockS2" && (Input.GetButtonDown(mySButton))) {
 			if(Player1){
 				col.GetComponent<ControlRockS2>().player1 = this.gameObject;
-				myCamera.GetComponent<CameraScript>().player1 = col.gameObject;
+				myCamera.GetComponent<CameraScript>().player1 = col.transform.GetChild(0).gameObject;
 			} else {
 				col.GetComponent<ControlRockS2>().player2 = this.gameObject;
-				myCamera.GetComponent<CameraScript>().player2 = col.gameObject;
+				myCamera.GetComponent<CameraScript>().player2 = col.transform.GetChild(1).gameObject;
 			}
 			col.GetComponent<ControlRockS2>().justEntered=true;
+
+			buttonPromptOn = false;
 
 			this.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
 			this.transform.GetComponent<Collider>().enabled = false;
@@ -303,6 +341,8 @@ public class Player1Script : MonoBehaviour {
 			
 			this.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
 			this.transform.GetComponent<Collider>().enabled = false;
+
+			buttonPromptOn = false;
 		}
 
 		if (col.gameObject.tag == "SingleControlRock" && (Input.GetButtonDown(mySButton))) {
@@ -318,6 +358,7 @@ public class Player1Script : MonoBehaviour {
 				this.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
 				this.transform.GetComponent<Collider>().enabled = false;
 			}
+			buttonPromptOn = false;
 		}
 
 		if (col.gameObject.name == "top" && climbing)
@@ -385,6 +426,10 @@ public class Player1Script : MonoBehaviour {
 		if (col.gameObject.name.Contains("platform move")|| col.gameObject.tag=="Pad")
 		{
 			transform.parent = null;
+		}
+
+		if (col.gameObject.tag == "Screw" || col.gameObject.tag == "ControlRockS2" || col.gameObject.tag == "ControlRock" || col.gameObject.tag == "SingleControlRock") {
+			buttonPromptOn = false;
 		}
 	}
 }

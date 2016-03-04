@@ -88,6 +88,10 @@ public class CameraScript : MonoBehaviour {
 
 		camDistance = originalCamDist * (1 + (playerDist * .1f));
 
+		if (!prevClosestPoint) {
+			lerping = false;
+		}
+
 		/*if(playerDist>15){
 			this.GetComponent<Camera>().enabled = false;
 			Camera1.GetComponent<Camera>().enabled = true;
@@ -217,6 +221,7 @@ public class CameraScript : MonoBehaviour {
 				lerping = true;
 				timerStart = Time.time;
 			}
+
 			prevClosestPoint = closestPoint;
 			closestPoint = tempClosestPoint;
 		}

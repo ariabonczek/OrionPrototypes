@@ -19,11 +19,14 @@ public class MushroomScripts : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider col){
-		if (additive) {
-			col.GetComponent<Rigidbody>().velocity = new Vector3(col.GetComponent<Rigidbody>().velocity.x, 0 ,col.GetComponent<Rigidbody>().velocity.z);
-			col.GetComponent<Rigidbody>().velocity += transform.up * bounceForce;;
-		} else {
-			col.GetComponent<Rigidbody>().velocity = transform.up * bounceForce;
+		if (col.gameObject.tag != "Mushroom") {
+			if (additive) {
+				col.GetComponent<Rigidbody> ().velocity = new Vector3 (col.GetComponent<Rigidbody> ().velocity.x, 0, col.GetComponent<Rigidbody> ().velocity.z);
+				col.GetComponent<Rigidbody> ().velocity += transform.up * bounceForce;
+				;
+			} else {
+				col.GetComponent<Rigidbody> ().velocity = transform.up * bounceForce;
+			}
 		}
 	}
 }
