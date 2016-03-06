@@ -268,9 +268,16 @@ public class Player1Script : MonoBehaviour {
 		airborne = true;
 	}
 
-	public void Respawn(string message)
+	public void Respawn()
 	{
 		transform.position = respawnPosition;
+	}
+
+	void OnCollisionEnter(Collision col)
+	{
+		if (col.gameObject.tag == "Harmful") {
+			Respawn();
+		}
 	}
 
 	void OnCollisionStay(Collision col)

@@ -12,11 +12,11 @@ public class BallScript : MonoBehaviour {
 		this.GetComponentInParent<RockShooterScript> ().distGone += velo.magnitude;
 	}
 
-	void OnCollisionEnter(Collision col){
+	/*void OnCollisionEnter(Collision col){
 		if (col.gameObject.tag == "Mushroom") {
 			float speed = velo.magnitude;
 			velo = col.transform.up;
 			velo = velo.normalized * speed;
 		}
-	}
+	}*/
 }

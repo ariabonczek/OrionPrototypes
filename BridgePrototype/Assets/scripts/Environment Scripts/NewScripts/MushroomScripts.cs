@@ -19,7 +19,7 @@ public class MushroomScripts : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider col){
-		if (col.gameObject.tag != "Mushroom") {
+		if (col.gameObject.tag == "Player" || col.gameObject.tag == "ControlRockS2") {
 			if (additive) {
 				col.GetComponent<Rigidbody> ().velocity = new Vector3 (col.GetComponent<Rigidbody> ().velocity.x, 0, col.GetComponent<Rigidbody> ().velocity.z);
 				col.GetComponent<Rigidbody> ().velocity += transform.up * bounceForce;
@@ -27,6 +27,12 @@ public class MushroomScripts : MonoBehaviour {
 			} else {
 				col.GetComponent<Rigidbody> ().velocity = transform.up * bounceForce;
 			}
+		}
+
+		if (col.gameObject.tag == "Harmful") {
+			float speed = col.GetComponent<BallScript>().velo.magnitude;
+			col.GetComponent<BallScript>().velo = transform.up;
+			col.GetComponent<BallScript>().velo = col.GetComponent<BallScript>().velo.normalized * speed;
 		}
 	}
 }

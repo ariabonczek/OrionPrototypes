@@ -12,9 +12,13 @@ public class PressurePad : MonoBehaviour {
 			target.GetComponent<MoveScrpt>().up = true;
 			if(trigger.gameObject.tag == "ControlRock"){
 				trigger.gameObject.GetComponent<ControlRock>().DestroySelf(transform.GetChild(0).transform.position,transform.GetChild(1).transform.position);
+			}
+			if(trigger.gameObject.tag == "SingleControlRock"){
+					trigger.gameObject.GetComponent<SingleControlRock>().DestroySelf(transform.GetChild(0).transform.position);
 			} else {
 			trigger.gameObject.GetComponent<ControlRockS2>().DestroySelf(transform.GetChild(0).transform.position,transform.GetChild(1).transform.position);
 			}
 		}
 	}
 }
+

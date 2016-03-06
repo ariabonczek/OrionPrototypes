@@ -65,6 +65,29 @@ public class ControlRockS2 : MonoBehaviour {
 		Destroy (this);
 		
 	}
+
+	public void DestroySelf(Vector3 loc, Collision col){
+		Renderer[] rens = GetComponentsInChildren<Renderer> ();
+		Collider[] cols = GetComponents<Collider>();
+		col.gameObject.transform.position = loc;
+		col.gameObject.transform.GetChild(0).GetComponent<Renderer>().enabled = true;
+		col.gameObject.transform.GetComponent<Collider>().enabled = true;
+		col.gameObject.transform.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+		
+		myCamera.GetComponent<CameraScript> ().player1 = player1;
+		myCamera.GetComponent<CameraScript> ().player2 = player2;
+		
+		foreach (Renderer r in rens) {
+			r.enabled = false;
+		}
+		
+		foreach (Collider c in cols) {
+			c.enabled = false;
+		}
+		
+		Destroy (this);
+		
+	}
 	
 	// Update is called once per frame
 	void Update () {

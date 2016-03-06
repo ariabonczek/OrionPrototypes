@@ -25,6 +25,8 @@ TagManager:
   - ControlRockS2
   - SingleControlRock
   - Harmful
+  - Screw
+  - Mushroom
   layers:
   - Default
   - TransparentFX
