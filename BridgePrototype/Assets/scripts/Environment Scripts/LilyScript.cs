@@ -29,7 +29,7 @@ public class LilyScript : MonoBehaviour {
 			GetComponent<BoxCollider> ().enabled = true;
 			for (int i=0;i<gameObject.transform.GetChildCount();i++) {
 				if(gameObject.transform.GetChild(i).tag=="Player"){
-					gameObject.transform.GetChild(i).GetComponent<Player1Script>().Respawn("");
+					gameObject.transform.GetChild(i).GetComponent<Player1Script>().Respawn();
 				}
 			}
 		}

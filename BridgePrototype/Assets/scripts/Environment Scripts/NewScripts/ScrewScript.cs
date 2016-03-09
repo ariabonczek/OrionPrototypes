@@ -16,6 +16,11 @@ public class ScrewScript : MonoBehaviour {
 	private float angleDiff;
 	private float bottomY;
 	private float currentHoverValue;
+	public float rotatePromptIntroTimer;
+	private float rotatePromptTimerCurrent;
+	private bool rotatePromptOn;
+	private float timeStart;
+	private GameObject rotationSprite;
 
 	// Use this for initialization
 	void Start () {
@@ -23,13 +28,27 @@ public class ScrewScript : MonoBehaviour {
 		prevAnalogStickPos = new Vector2 (0, 0);
 		bottomY = transform.GetChild(0).position.y;
 		currentHoverValue = hoverTime;
+		Color tempColor = transform.GetChild(0).GetChild(3).GetComponent<SpriteRenderer> ().color;
+		tempColor.a = 0f;
+		transform.GetChild (0).GetChild (3).GetComponent<SpriteRenderer> ().color = tempColor;
+		tempColor = transform.GetChild(0).GetChild(4).GetComponent<SpriteRenderer> ().color;
+		tempColor.a = 0f;
+		transform.GetChild (0).GetChild (4).GetComponent<SpriteRenderer> ().color = tempColor;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (justEntered == true) {
 			justEntered = false;
+			rotatePromptOn = true;
+			rotatePromptTimerCurrent =0;
+			timeStart = Time.time;
 		} else {
+			transform.GetChild (0).GetChild (3).forward = (myCamera.transform.forward);
+			transform.GetChild (0).GetChild (4).forward = (myCamera.transform.forward);
+
+			DisplayPrompts();
+
 			if(transform.GetChild(0).position.y<bottomY){
 				transform.GetChild(0).position=new Vector3(transform.GetChild(0).position.x,bottomY,transform.GetChild(0).position.z);
 			}
@@ -47,6 +66,9 @@ public class ScrewScript : MonoBehaviour {
 					myCamera.GetComponent<CameraScript> ().player2 = player;
 				}
 
+				rotatePromptOn = false;
+				rotatePromptTimerCurrent =0;
+
 				player = null;
 			}
 
@@ -54,6 +76,11 @@ public class ScrewScript : MonoBehaviour {
 				analogStickPos = new Vector2(Input.GetAxis(player.GetComponent<Player1Script>().myLeftStick + "X"),Input.GetAxis(player.GetComponent<Player1Script>().myLeftStick + "Y"));
 				if(Mathf.Abs(prevAnalogStickPos.magnitude)>.95f && Mathf.Abs(analogStickPos.magnitude)>.95f){
 					if(Vector3.Cross(new Vector3(prevAnalogStickPos.x,prevAnalogStickPos.y),new Vector3(analogStickPos.x,analogStickPos.y)).z<0){
+						if(rotatePromptOn) {
+							rotatePromptOn = false;
+							rotatePromptTimerCurrent =0;
+						}
+
 						currentHoverValue = hoverTime;
 						angleDiff = Vector2.Angle(prevAnalogStickPos,analogStickPos);
 					} else if(canGoDown && transform.GetChild(0).position.y!=bottomY) {
@@ -77,6 +104,45 @@ public class ScrewScript : MonoBehaviour {
 					transform.GetChild(0).position -= new Vector3(0,(.001f * descendingSpeed),0);
 				}
 			}
+		}
+	}
+
+	void DisplayPrompts(){
+		if (player) {
+			if (rotatePromptOn) {
+				if (rotatePromptTimerCurrent < rotatePromptIntroTimer) {
+					rotatePromptTimerCurrent += (Time.time - timeStart);
+
+					if (player.GetComponent<Player1Script> ().Player1) {
+						Color tempColor = transform.GetChild (0).GetChild (3).GetComponent<SpriteRenderer> ().color;
+						tempColor.a = (rotatePromptTimerCurrent / rotatePromptIntroTimer);
+						transform.GetChild (0).GetChild (3).GetComponent<SpriteRenderer> ().color = tempColor;
+					} else {
+						Color tempColor = transform.GetChild (0).GetChild (4).GetComponent<SpriteRenderer> ().color;
+						tempColor.a = (rotatePromptTimerCurrent / rotatePromptIntroTimer);
+						transform.GetChild (0).GetChild (4).GetComponent<SpriteRenderer> ().color = tempColor;
+					}
+				}
+			} else {
+				if (rotatePromptTimerCurrent < rotatePromptIntroTimer) {
+					rotatePromptTimerCurrent += (Time.time - timeStart);
+
+					if (player.GetComponent<Player1Script> ().Player1) {
+						Color tempColor = transform.GetChild (0).GetChild (3).GetComponent<SpriteRenderer> ().color;
+						tempColor.a = 1 - (rotatePromptTimerCurrent / rotatePromptIntroTimer);
+						transform.GetChild (0).GetChild (3).GetComponent<SpriteRenderer> ().color = tempColor;
+					} else {
+						Color tempColor = transform.GetChild (0).GetChild (4).GetComponent<SpriteRenderer> ().color;
+						tempColor.a = 1 - (rotatePromptTimerCurrent / rotatePromptIntroTimer);
+						transform.GetChild (0).GetChild (4).GetComponent<SpriteRenderer> ().color = tempColor;
+					}
+				}
+			}
+		}
+		else{
+			Color tempColor = transform.GetChild (0).GetChild(3).GetComponent<SpriteRenderer> ().color;
+			tempColor.a = 0;
+			transform.GetChild (0).GetChild(3).GetComponent<SpriteRenderer> ().color = tempColor;
 		}
 	}
 }
