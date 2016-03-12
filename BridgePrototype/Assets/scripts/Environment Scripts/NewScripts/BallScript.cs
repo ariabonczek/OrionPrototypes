@@ -13,7 +13,6 @@ public class BallScript : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision col){
-        Debug.Log(col.gameObject.name);
 		if (col.gameObject.tag == "Screw" || col.gameObject.tag == "Protected") {
             this.GetComponent<Renderer>().enabled = false;
             this.GetComponent<Collider>().enabled = false;
