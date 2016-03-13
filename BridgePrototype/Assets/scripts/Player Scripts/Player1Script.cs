@@ -304,12 +304,12 @@ public class Player1Script : MonoBehaviour {
 		}
 
 		if (col.gameObject.tag == "Screw" && (Input.GetButtonDown (mySButton))) {
-			if(!col.GetComponent<ScrewScript>().player){
+			if(!col.GetComponentInParent<ScrewScript>().player){
 				transform.GetChild(0).GetComponent<Renderer>().enabled = false;
 				transform.GetComponent<Rigidbody>().useGravity = false;
 				transform.GetComponent<Collider>().enabled = false;
-				col.GetComponent<ScrewScript>().player = this.gameObject;
-				col.GetComponent<ScrewScript>().justEntered=true;
+				col.GetComponentInParent<ScrewScript>().player = this.gameObject;
+				col.GetComponentInParent<ScrewScript>().justEntered=true;
 				if(Player1){
 					myCamera.GetComponent<CameraScript>().player1 = col.gameObject;
 				} else{

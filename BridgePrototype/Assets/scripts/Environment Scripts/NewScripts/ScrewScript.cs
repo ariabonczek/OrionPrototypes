@@ -54,7 +54,7 @@ public class ScrewScript : MonoBehaviour {
 			}
 			angleDiff = 0;
 			if (player && Input.GetButtonDown (player.GetComponent<Player1Script> ().mySButton)) {
-				player.transform.position = transform.position + (transform.right * 1) + (transform.forward *1.5f);
+				player.transform.position = transform.GetChild(3).position;
 				player.transform.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 				player.transform.GetComponent<Rigidbody> ().useGravity = true;
 				player.transform.GetChild (0).GetComponent<Renderer> ().enabled = true;
@@ -92,16 +92,18 @@ public class ScrewScript : MonoBehaviour {
 			prevAnalogStickPos = analogStickPos;
 
 			if(transform.GetChild(0).position.y<topLimit.transform.position.y && transform.GetChild(0).position.y>=bottomY){
-				transform.GetChild(0).Rotate(new Vector3(0,-(angleDiff * risingSpeed * .5f),0));
-				transform.GetChild(0).position += new Vector3(0,(angleDiff* risingSpeed *.0005f),0);
+				//transform.GetChild(0).Rotate(new Vector3(0,-(angleDiff * risingSpeed * .5f),0).magnitude * -(transform.GetChild(1).position - transform.GetChild(0).position));
+				transform.GetChild(0).RotateAround(transform.GetChild(0).position,-(transform.GetChild(1).position - transform.GetChild(0).position),-(angleDiff * risingSpeed * .5f));
+				transform.GetChild(0).position += (new Vector3(0,(angleDiff* risingSpeed *.0005f),0).magnitude * (transform.GetChild(1).position - transform.GetChild(0).position).normalized);
 			}
 
 			if(transform.GetChild(0).position.y>bottomY && angleDiff==0){
 				if(currentHoverValue>0){
 					currentHoverValue -=.1f;
 				} else {
-					transform.GetChild(0).Rotate(new Vector3(0,descendingSpeed,0));
-					transform.GetChild(0).position -= new Vector3(0,(.001f * descendingSpeed),0);
+					//transform.GetChild(0).Rotate(new Vector3(0,descendingSpeed,0).magnitude * (transform.GetChild(1).position - transform.GetChild(0).position).normalized);
+					transform.GetChild(0).RotateAround(transform.GetChild(0).position,-(transform.GetChild(1).position - transform.GetChild(0).position),descendingSpeed);
+					transform.GetChild(0).position -= (new Vector3(0,(.001f * descendingSpeed),0).magnitude * (transform.GetChild(1).position - transform.GetChild(0).position).normalized);
 				}
 			}
 		}
