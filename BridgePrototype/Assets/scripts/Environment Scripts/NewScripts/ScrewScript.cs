@@ -20,6 +20,7 @@ public class ScrewScript : MonoBehaviour {
 	private float rotatePromptTimerCurrent;
 	private bool rotatePromptOn;
 	private float timeStart;
+	public bool ColliderRotates;
 	private GameObject rotationSprite;
 
 	// Use this for initialization
@@ -93,17 +94,35 @@ public class ScrewScript : MonoBehaviour {
 
 			if(transform.GetChild(0).position.y<topLimit.transform.position.y && transform.GetChild(0).position.y>=bottomY){
 				//transform.GetChild(0).Rotate(new Vector3(0,-(angleDiff * risingSpeed * .5f),0).magnitude * -(transform.GetChild(1).position - transform.GetChild(0).position));
-				transform.GetChild(0).RotateAround(transform.GetChild(0).position,-(transform.GetChild(1).position - transform.GetChild(0).position),-(angleDiff * risingSpeed * .5f));
-				transform.GetChild(0).position += (new Vector3(0,(angleDiff* risingSpeed *.0005f),0).magnitude * (transform.GetChild(1).position - transform.GetChild(0).position).normalized);
+				if(ColliderRotates){
+					transform.GetChild(0).RotateAround(transform.GetChild(0).position,-(transform.GetChild(1).position - transform.GetChild(0).position),-(angleDiff * risingSpeed * .5f));
+					transform.GetChild(0).position += (new Vector3(0,(angleDiff* risingSpeed *.0005f),0).magnitude * (transform.GetChild(1).position - transform.GetChild(0).position).normalized);
+				}
+				else{
+					Renderer[] rS = transform.GetChild(0).GetComponentsInChildren<Renderer>();
+					for(int i = 0;i<rS.Length;i++){
+						rS[i].transform.RotateAround(transform.GetChild(0).position,-(transform.GetChild(1).position - transform.GetChild(0).position),-(angleDiff * risingSpeed * .5f));
+					}
+					//transform.GetChild(0).GetComponentInChildren<Renderer>().transform.RotateAround(transform.GetChild(0).position,-(transform.GetChild(1).position - transform.GetChild(0).position),-(angleDiff * risingSpeed * .5f));
+					transform.GetChild(0).position += (new Vector3(0,(angleDiff* risingSpeed *.0005f),0).magnitude * (transform.GetChild(1).position - transform.GetChild(0).position).normalized);
+				}
 			}
 
 			if(transform.GetChild(0).position.y>bottomY && angleDiff==0){
 				if(currentHoverValue>0){
 					currentHoverValue -=.1f;
 				} else {
-					//transform.GetChild(0).Rotate(new Vector3(0,descendingSpeed,0).magnitude * (transform.GetChild(1).position - transform.GetChild(0).position).normalized);
-					transform.GetChild(0).RotateAround(transform.GetChild(0).position,-(transform.GetChild(1).position - transform.GetChild(0).position),descendingSpeed);
-					transform.GetChild(0).position -= (new Vector3(0,(.001f * descendingSpeed),0).magnitude * (transform.GetChild(1).position - transform.GetChild(0).position).normalized);
+					if(ColliderRotates){
+						transform.GetChild(0).RotateAround(transform.GetChild(0).position,-(transform.GetChild(1).position - transform.GetChild(0).position),descendingSpeed);
+						transform.GetChild(0).position -= (new Vector3(0,(.001f * descendingSpeed),0).magnitude * (transform.GetChild(1).position - transform.GetChild(0).position).normalized);
+					} else {
+						Renderer[] rS = transform.GetChild(0).GetComponentsInChildren<Renderer>();
+						for(int i = 0;i<rS.Length;i++){
+							rS[i].transform.RotateAround(transform.GetChild(0).position,-(transform.GetChild(1).position - transform.GetChild(0).position),descendingSpeed);
+						}
+						//transform.GetChild(0).GetComponentInChildren<Renderer>().transform.RotateAround(transform.GetChild(0).position,-(transform.GetChild(1).position - transform.GetChild(0).position),descendingSpeed);
+						transform.GetChild(0).position -= (new Vector3(0,(.001f * descendingSpeed),0).magnitude * (transform.GetChild(1).position - transform.GetChild(0).position).normalized);
+					}
 				}
 			}
 		}
