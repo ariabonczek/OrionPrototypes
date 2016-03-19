@@ -6,4 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/FEB 10th RESTART/Cave.unity
+    path: Assets/Scenes/FEB 10th RESTART/Chunk-A-Day Blane/LongPuzz.unity
+  - enabled: 1
+    path: Assets/Scenes/FEB 10th RESTART/Chunk-A-Day Blane/ReflectionAlley.unity
+  - enabled: 1
+    path: Assets/Scenes/FEB 10th RESTART/KickTheCanTest.unity

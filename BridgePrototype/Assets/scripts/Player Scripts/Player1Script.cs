@@ -40,6 +40,7 @@ public class Player1Script : MonoBehaviour {
 	public string myXButton;
 	public string myTButton;
 	public string myOButton;
+	public string myShareButton;
 
 	public string myR2Trigger;
 	public string myL2Trigger;
@@ -86,6 +87,7 @@ public class Player1Script : MonoBehaviour {
 			myL2Trigger = "P1L2";
 			myLeftStick = "P1LeftStick";
 			myRightStick = "P1RightStick";
+			myShareButton = "P1Share";
 		}else {
 			barriers = GameObject.FindGameObjectsWithTag("Light Barrier");
 			myOButton = "P2O";
@@ -96,6 +98,7 @@ public class Player1Script : MonoBehaviour {
 			myL2Trigger = "P2L2";
 			myLeftStick = "P2LeftStick";
 			myRightStick = "P2RightStick";
+			myShareButton = "P2Share";
 		}
 
 		for(int i=0;i<barriers.Length;i++)
@@ -146,6 +149,12 @@ public class Player1Script : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		if (Input.GetButton (myShareButton)) {
+			Debug.Log("Pressed");
+			Application.Quit();
+		}
+
 		transform.GetChild (1).forward = (myCamera.transform.forward);
 
 		DisplayPrompts ();
@@ -189,7 +198,8 @@ public class Player1Script : MonoBehaviour {
 		if(Input.GetButton(myTButton)){
 			run = 2;
 		} else {
-			run = 1;
+			//Patchwork to make Run constant, put back to one for run controls
+			run = 2;
 		}
 
 		if (climbing) {
