@@ -19,7 +19,7 @@ public class MushroomScripts : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider col){
-		if (col.gameObject.tag == "Player" || col.gameObject.tag == "ControlRockS2") {
+		if (col.gameObject.tag == "Player" || col.gameObject.tag == "SingleControlRock") {
 			if (additive) {
 				col.GetComponent<Rigidbody> ().velocity = new Vector3 (col.GetComponent<Rigidbody> ().velocity.x, 0, col.GetComponent<Rigidbody> ().velocity.z);
 				col.GetComponent<Rigidbody> ().velocity += transform.up * bounceForce;
