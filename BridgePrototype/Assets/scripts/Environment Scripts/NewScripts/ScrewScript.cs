@@ -48,8 +48,8 @@ public class ScrewScript : MonoBehaviour {
 			rotatePromptTimerCurrent =0;
 			timeStart = Time.time;
 		} else {
-			transform.GetChild (0).GetChild (3).forward = (myCamera.transform.forward);
-			transform.GetChild (0).GetChild (4).forward = (myCamera.transform.forward);
+			transform.GetChild(0).GetChild(3).forward = (myCamera.transform.forward);
+			transform.GetChild(0).GetChild(4).forward = (myCamera.transform.forward);
 
 			DisplayPrompts();
 
@@ -87,20 +87,22 @@ public class ScrewScript : MonoBehaviour {
 
 						currentHoverValue = hoverTime;
 						angleDiff = Vector2.Angle(prevAnalogStickPos,analogStickPos);
-					} else if(canGoDown && transform.GetChild(0).position.y!=bottomY) {
+					}
+					else if(canGoDown && transform.GetChild(0).position.y!=bottomY) {
 						currentHoverValue = hoverTime;
-						angleDiff = -Vector2.Angle(prevAnalogStickPos,analogStickPos);
+						angleDiff = Vector2.Angle(-prevAnalogStickPos,-analogStickPos);
 					}
 				}
 			}
 			prevAnalogStickPos = analogStickPos;
 
-			if(transform.GetChild(0).position.y<topLimit.transform.position.y && transform.GetChild(0).position.y>=bottomY){
+			if(transform.GetChild(0).position.y<=topLimit.transform.position.y && transform.GetChild(0).position.y>=bottomY){
 				//transform.GetChild(0).Rotate(new Vector3(0,-(angleDiff * risingSpeed * .5f),0).magnitude * -(transform.GetChild(1).position - transform.GetChild(0).position));
 				if(spinsInPlace){
 					transform.GetChild(0).RotateAround(transform.GetChild(0).position,(transform.GetChild(1).position - transform.GetChild(0).position),-(angleDiff * risingSpeed * .5f));
 					spinVal += -(angleDiff * risingSpeed * .5f);
-				} else {
+				} 
+				else {
 					if(ColliderRotates){
 						transform.GetChild(0).RotateAround(transform.GetChild(0).position,(transform.GetChild(1).position - transform.GetChild(0).position),-(angleDiff * risingSpeed * .5f));
 						transform.GetChild(0).position += (new Vector3(0,(angleDiff* risingSpeed *.0005f),0).magnitude * (transform.GetChild(1).position - transform.GetChild(0).position).normalized);
@@ -144,6 +146,9 @@ public class ScrewScript : MonoBehaviour {
 			}
 		}
 	}
+
+
+	//Show the UI "above" the screw
 
 	void DisplayPrompts(){
 		if (player) {
