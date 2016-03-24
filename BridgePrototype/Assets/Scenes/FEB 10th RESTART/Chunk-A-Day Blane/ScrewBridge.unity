@@ -292,6 +292,10 @@ Prefab:
       propertyPath: m_LocalPosition.y
       value: -1.69000006
       objectReference: {fileID: 0}
+    - target: {fileID: 408054, guid: d8e33cd63bdf8e24f9246187e606705d, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 4.73000002
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d8e33cd63bdf8e24f9246187e606705d, type: 2}
   m_IsPrefabParent: 0
@@ -345,6 +349,10 @@ Prefab:
     - target: {fileID: 156208, guid: d8e33cd63bdf8e24f9246187e606705d, type: 2}
       propertyPath: m_Name
       value: Screw (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 408054, guid: d8e33cd63bdf8e24f9246187e606705d, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 4.3499999
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d8e33cd63bdf8e24f9246187e606705d, type: 2}
@@ -468,15 +476,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 408616, guid: 8858111a0c00f3e47a21d1d745082984, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 4.53000021
+      value: 4.76999998
       objectReference: {fileID: 0}
     - target: {fileID: 408616, guid: 8858111a0c00f3e47a21d1d745082984, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -3.86999989
+      value: 7.96999979
       objectReference: {fileID: 0}
     - target: {fileID: 408616, guid: 8858111a0c00f3e47a21d1d745082984, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 19.0400009
+      value: 37.6100006
       objectReference: {fileID: 0}
     - target: {fileID: 408616, guid: 8858111a0c00f3e47a21d1d745082984, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1186,6 +1194,14 @@ Prefab:
       propertyPath: m_Name
       value: Screw (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 408054, guid: d8e33cd63bdf8e24f9246187e606705d, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 5.03999996
+      objectReference: {fileID: 0}
+    - target: {fileID: 408054, guid: d8e33cd63bdf8e24f9246187e606705d, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d8e33cd63bdf8e24f9246187e606705d, type: 2}
   m_IsPrefabParent: 0
@@ -1769,6 +1785,10 @@ Prefab:
     - target: {fileID: 156208, guid: d8e33cd63bdf8e24f9246187e606705d, type: 2}
       propertyPath: m_Name
       value: Screw (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 11436496, guid: d8e33cd63bdf8e24f9246187e606705d, type: 2}
+      propertyPath: canGoDown
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d8e33cd63bdf8e24f9246187e606705d, type: 2}
