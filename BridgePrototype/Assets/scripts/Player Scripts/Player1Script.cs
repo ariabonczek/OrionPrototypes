@@ -119,9 +119,10 @@ public class Player1Script : MonoBehaviour {
 		ray = new Ray(transform.position, -transform.up);
 		if (Physics.Raycast(ray, out hit, .7f))
 		{
-			if(!hit.collider.isTrigger){
+			if(!hit.collider.isTrigger && hit.transform.gameObject.tag!= "Player"){
 			airborne = false;
 			}
+
 		}
 		else
 		{
@@ -149,6 +150,9 @@ public class Player1Script : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		this.transform.up = Vector3.up;
+		transform.GetChild (0).eulerAngles = new Vector3 (0, transform.GetChild (0).eulerAngles.y, 0);
 
 		if (Input.GetButton (myShareButton)) {
 			Debug.Log("Pressed");
@@ -435,6 +439,10 @@ public class Player1Script : MonoBehaviour {
 				lifeforce -= .5f;
 				col.gameObject.GetComponent<GateControl>().paid += .05f;
 			}
+		}
+
+		if (transform.GetComponent<Collider> ().enabled == false) {
+			buttonPromptOn =false;
 		}
 	}
 
