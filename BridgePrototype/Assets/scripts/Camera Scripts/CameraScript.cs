@@ -37,6 +37,7 @@ public class CameraScript : MonoBehaviour {
             if (timer > lerpTime)
             {
                 lerping = false;
+				transform.position = lerpNext.transform.position;
             }
             else
             {
@@ -60,7 +61,11 @@ public class CameraScript : MonoBehaviour {
             lerpTime = lerpT;
             lerping = true;
 
+			if(lerpNext.transform.position==transform.position){
             lerpPrev = lerpNext;
+			}else {
+				lerpPrev = this.gameObject;
+			}
 
             lerpNext = newPPoint;
 

@@ -14,7 +14,7 @@ public class PPointTrigger : MonoBehaviour {
 
     public void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "Player")
+        if (col.tag == "Player" || col.tag == "SingleControlRock")
         {
             camera.GetComponent<CameraScript>().TransitionTo(PPoint, lerpTime);
         }

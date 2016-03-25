@@ -8,6 +8,7 @@ public class SingleControlRock : MonoBehaviour {
 	public float jumpHeight;
 	private float speed;
 	private Ray ray;
+	private RaycastHit hit;
 	public GameObject myCamera;
 	
 	private float cameraAngleDiff;
@@ -55,7 +56,7 @@ public class SingleControlRock : MonoBehaviour {
 		if (justEntered == true) {
 			justEntered = false;
 		} else {
-			if (player1 && Input.GetButtonDown (player1.GetComponent<Player1Script> ().mySButton)) {
+			if (player1 && Input.GetButtonDown (player1.GetComponent<Player1Script> ().mySButton) && Physics.Raycast(ray, out hit, .7f)) {
 				player1.transform.position = transform.position + transform.up;
 				player1.transform.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 				player1.transform.GetChild (0).GetComponent<Renderer> ().enabled = true;
@@ -89,9 +90,11 @@ public class SingleControlRock : MonoBehaviour {
 			this.transform.Translate(movementVec);
 		}
 
-		if(Physics.Raycast(ray, .7f)){
+		if(Physics.Raycast(ray, out hit, .7f)){
 			if(player1 && Input.GetButton(player1.GetComponent<Player1Script>().myXButton) || Input.GetKey(KeyCode.Space)){
-				GetComponent<Rigidbody>().velocity += jumpHeight * transform.up;
+				if(!hit.collider.isTrigger){
+					GetComponent<Rigidbody>().velocity += jumpHeight * transform.up;
+				}
 			}
 		}
 		
