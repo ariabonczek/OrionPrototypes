@@ -2,16 +2,27 @@ using UnityEngine;
 using System.Collections;
 
 public class CameraScript : MonoBehaviour {
-
-	public bool dynamicOn;
+	
 	public GameObject player1;
     public GameObject player2;
+	public float minDistance;
+	private Vector3 median;
 	private float playerDist;
+
+	private GameObject queuedPPoint;
+	private float queuedLerpT;
+
+	private bool collided;
+
+	private Ray ray;
+	private RaycastHit hit;
+
+	private float camDistance;
 
     private bool lerping;
 
-    private GameObject lerpPrev;
-    private GameObject lerpNext;
+    private GameObject previousPPoint;
+    private GameObject currentPPoint;
 
     private float timer;
     private float timerStart;
@@ -22,27 +33,51 @@ public class CameraScript : MonoBehaviour {
 	void Start ()
 	{
         lerping = false;
+		playerDist = (player1.transform.position - player2.transform.position).magnitude;
+		median = player1.transform.position + ((player1.transform.position - player2.transform.position).normalized * playerDist/2);
+		collided = false;
 	}
 	
 	// Update is called once per frame
     void Update()
     {
-        playerDist = (player1.transform.position - player2.transform.position).magnitude * .8f;
+
+        playerDist = (player1.transform.position - player2.transform.position).magnitude;
+
+		camDistance = currentPPoint.GetComponent<PPointScript> ().distance * playerDist;
+
+		camDistance = Mathf.Max (camDistance, minDistance);
+
+		median = player2.transform.position + ((player1.transform.position - player2.transform.position).normalized * playerDist/2);
+
+		currentPPoint.transform.position = median - (currentPPoint.transform.forward * camDistance);
+
+		this.transform.position = currentPPoint.transform.position;
+
+		ray = new Ray(median, this.transform.position -median);
+		if (Physics.Raycast (ray, out hit, (this.transform.position -median).magnitude)) {
+			if (hit.collider.gameObject != this.gameObject && hit.collider.gameObject.tag != "Player" && !hit.collider.isTrigger) {
+				this.transform.position = median + (this.transform.position - median).normalized * (hit.distance);
+			}
+		}
 
         if (lerping)
         {
-            Debug.Log(timer);
             timer = Time.time - timerStart;
 
             if (timer > lerpTime)
             {
                 lerping = false;
-				transform.position = lerpNext.transform.position;
+				transform.position = currentPPoint.transform.position;
+				if(queuedPPoint){
+					TransitionTo(queuedPPoint, queuedLerpT);
+					queuedPPoint =null;
+				}
             }
             else
             {
-                transform.position = Vector3.Lerp(lerpPrev.transform.position, lerpNext.transform.position, (timer / lerpTime));
-                transform.forward = Vector3.Lerp(lerpPrev.transform.forward, lerpNext.transform.forward, (timer / lerpTime));
+                transform.position = Vector3.Lerp(previousPPoint.transform.position, currentPPoint.transform.position, (timer / lerpTime));
+                transform.forward = Vector3.Lerp(previousPPoint.transform.forward, currentPPoint.transform.forward, (timer / lerpTime));
             }
 
         }
@@ -50,28 +85,28 @@ public class CameraScript : MonoBehaviour {
 
     public void TransitionTo(GameObject newPPoint, float lerpT)
     {
-        if (!lerpNext || lerpNext == newPPoint)
-        {
-            transform.position = newPPoint.transform.position;
-            transform.forward = newPPoint.transform.forward;
-            lerpNext = newPPoint;
-        }
-        else
-        {
-            lerpTime = lerpT;
-            lerping = true;
+		if (!lerping) {
+			newPPoint.transform.position = median;
 
-			if(lerpNext.transform.position==transform.position){
-            lerpPrev = lerpNext;
-			}else {
-				lerpPrev = this.gameObject;
+			if (!currentPPoint || currentPPoint == newPPoint) {
+				transform.position = newPPoint.transform.position;
+				transform.forward = newPPoint.transform.forward;
+				currentPPoint = newPPoint;
+			} else {
+				lerpTime = lerpT;
+
+				previousPPoint = currentPPoint;
+
+				currentPPoint = newPPoint;
+
+				timerStart = Time.time;
+
+				lerping = true;
 			}
-
-            lerpNext = newPPoint;
-
-            timerStart = Time.time;
-        }
-
+		} else {
+			queuedPPoint = newPPoint;
+			queuedLerpT = lerpT;
+		}
     }
 
 	void checkPPoints(){
