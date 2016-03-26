@@ -62,7 +62,7 @@ public class CameraScript : MonoBehaviour {
 			
 			ray = new Ray(median, this.transform.position -median);
 			if (Physics.Raycast (ray, out hit, (this.transform.position -median).magnitude)) {
-				if (hit.collider.gameObject != this.gameObject && hit.collider.gameObject.tag != "Player" && !hit.collider.isTrigger) {
+				if (hit.collider.gameObject != this.gameObject && hit.collider.gameObject.tag != "Player" && !hit.collider.isTrigger && hit.collider.gameObject.tag != "Othe") {
 					this.transform.position = median + (this.transform.position - median).normalized * (hit.distance);
 				}
 			}

@@ -27,30 +27,6 @@ public class SingleControlRock : MonoBehaviour {
 		GetComponent<Rigidbody>().AddForce(0,-6.5f,0);
 	}
 	
-	public void DestroySelf(Vector3 loc){
-		Renderer[] rens = GetComponentsInChildren<Renderer> ();
-		Collider[] cols = GetComponents<Collider>();
-		player1.transform.position = loc;
-		player1.transform.GetChild(0).GetComponent<Renderer>().enabled = true;
-		player1.transform.GetComponent<Collider>().enabled = true;
-		player1.transform.GetComponent<Rigidbody> ().velocity = Vector3.zero;
-
-		if(myCamera.GetComponent<CameraScript> ().player1 == this.gameObject){
-			myCamera.GetComponent<CameraScript> ().player1 = player1;
-		}
-		
-		foreach (Renderer r in rens) {
-			r.enabled = false;
-		}
-		
-		foreach (Collider c in cols) {
-			c.enabled = false;
-		}
-		
-		Destroy (this);
-		
-	}
-	
 	// Update is called once per frame
 	void Update () {
 		if (justEntered == true) {
