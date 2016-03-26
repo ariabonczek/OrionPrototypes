@@ -3,25 +3,26 @@ using System.Collections;
 
 public class MoveScrpt : MonoBehaviour {
 
-	float start;
-	float end;
-	public bool up;
+	public GameObject endPoint;
+	private Vector3 startPoint;
+	public bool triggered;
+	Vector3 moveDir;
 	
 	// Use this for initialization
 	void Start () {
-		start = transform.position.y;
-		end = transform.position.y + 5;
+		moveDir = (endPoint.transform.position - transform.position).normalized;
+		startPoint = this.transform.position;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(up){
-			if(!(transform.position.y >end)){
-				transform.position+= (transform.up*.04f);
+		if (triggered) {
+			if (Vector3.Dot (endPoint.transform.position, moveDir) > Vector3.Dot (transform.position, moveDir)) {
+				transform.position += moveDir * .04f;
 			}
-		}else{
-			if(!(transform.position.y <start)){
-				transform.position-= (transform.up*.04f);
+		} else {
+			if (Vector3.Dot (startPoint, moveDir) < Vector3.Dot (transform.position, moveDir)) {
+				transform.position -= moveDir * .04f;
 			}
 		}
 	}

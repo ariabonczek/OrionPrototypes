@@ -6,18 +6,17 @@ public class PressurePad : MonoBehaviour {
 	public GameObject trigger;
 	public GameObject target;
 
-	void OnCollisionEnter(Collision col){
+	void OnTriggerEnter(Collider col){
 		if (col.gameObject == trigger) {
-			transform.position -= new Vector3(0,.5f,0);
-			target.GetComponent<MoveScrpt>().up = true;
-			if(trigger.gameObject.tag == "ControlRock"){
-				trigger.gameObject.GetComponent<ControlRock>().DestroySelf(transform.GetChild(0).transform.position,transform.GetChild(1).transform.position);
-			}
-			if(trigger.gameObject.tag == "SingleControlRock"){
-					trigger.gameObject.GetComponent<SingleControlRock>().DestroySelf(transform.GetChild(0).transform.position);
-			} else {
-			trigger.gameObject.GetComponent<ControlRockS2>().DestroySelf(transform.GetChild(0).transform.position,transform.GetChild(1).transform.position);
-			}
+			transform.GetChild(0).transform.position -= new Vector3(0,.5f,0);
+			target.GetComponent<MoveScrpt>().triggered = true;
+		}
+	}
+
+	void OnTriggerExit(Collider col){
+		if (col.gameObject == trigger) {
+			transform.GetChild(0).transform.position += new Vector3(0,.5f,0);
+			target.GetComponent<MoveScrpt>().triggered = false;
 		}
 	}
 }

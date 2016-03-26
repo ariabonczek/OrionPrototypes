@@ -386,7 +386,6 @@ public class Player1Script : MonoBehaviour {
 		{
 			climbing = false;
 			GetComponent<Rigidbody>().useGravity = true;
-			transform.parent = null;
 		}
 
 		if(col.gameObject.name.Contains("Control Panel") && actionButton)

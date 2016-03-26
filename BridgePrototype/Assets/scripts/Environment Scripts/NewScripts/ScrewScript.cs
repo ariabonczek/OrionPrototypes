@@ -112,7 +112,7 @@ public class ScrewScript : MonoBehaviour {
 				player.transform.GetChild (0).GetComponent<Renderer> ().enabled = true;
 				player.transform.GetComponent<Collider> ().enabled = true;
 
-				if(myCamera.GetComponent<CameraScript> ().player1 == this.gameObject){
+				if(myCamera.GetComponent<CameraScript> ().player1 == this.transform.GetChild(2).gameObject){
 					myCamera.GetComponent<CameraScript> ().player1 = player;
 				}else {
 					myCamera.GetComponent<CameraScript> ().player2 = player;
