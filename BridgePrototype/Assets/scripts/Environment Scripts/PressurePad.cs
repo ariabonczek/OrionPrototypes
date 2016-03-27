@@ -9,14 +9,14 @@ public class PressurePad : MonoBehaviour {
 	void OnTriggerEnter(Collider col){
 		if (col.gameObject == trigger) {
 			transform.GetChild(0).transform.position -= new Vector3(0,.5f,0);
-			target.GetComponent<MoveScrpt>().triggered = true;
+			target.GetComponent<TriggerScript>().triggered = true;
 		}
 	}
 
 	void OnTriggerExit(Collider col){
 		if (col.gameObject == trigger) {
 			transform.GetChild(0).transform.position += new Vector3(0,.5f,0);
-			target.GetComponent<MoveScrpt>().triggered = false;
+            target.GetComponent<TriggerScript>().triggered = false;
 		}
 	}
 }
