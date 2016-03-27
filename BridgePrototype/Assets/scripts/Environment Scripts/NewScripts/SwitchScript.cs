@@ -38,5 +38,14 @@ public class SwitchScript : MonoBehaviour {
         {
             target.GetComponent<TriggerScript>().triggered = !target.GetComponent<TriggerScript>().triggered;
         }
+
+        if (target.gameObject.GetComponent<TriggerScript>().triggered)
+        {
+            this.gameObject.GetComponent<Renderer>().material.color = Color.red;
+        }
+        else
+        {
+            this.gameObject.GetComponent<Renderer>().material.color = Color.blue;
+        }
 	}
 }

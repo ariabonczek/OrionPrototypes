@@ -312,160 +312,183 @@ public class Player1Script : MonoBehaviour {
 	
 	void OnTriggerStay(Collider col)
 	{
-        if (col.gameObject.tag == "Screw" || col.gameObject.tag == "ControlRockS2" || col.gameObject.tag == "ControlRock" || col.gameObject.tag == "SingleControlRock" || col.gameObject.tag == "Switch")
+        if (col.GetComponent<ColorScript>() && ((col.GetComponent<ColorScript>().isWhite && !Player1) || (!col.GetComponent<ColorScript>().isWhite && Player1)))
         {
-			buttonPromptOn = true;
-			timeStart = Time.time;
-		}
 
-        if (col.gameObject.tag == "Switch" && (Input.GetButtonDown(mySButton)))
-        {
-            if (!col.GetComponentInParent<SwitchScript>().player1)
+            if (col.gameObject.tag == "Screw" || col.gameObject.tag == "ControlRockS2" || col.gameObject.tag == "ControlRock" || col.gameObject.tag == "SingleControlRock" || col.gameObject.tag == "Switch")
             {
-                transform.GetChild(0).GetComponent<Renderer>().enabled = false;
-                transform.GetComponent<Rigidbody>().useGravity = false;
-                transform.GetComponent<Collider>().enabled = false;
-                col.GetComponentInParent<SwitchScript>().player1 = this.gameObject;
-                col.GetComponentInParent<SwitchScript>().justEntered = true;
+                buttonPromptOn = true;
+                timeStart = Time.time;
+            }
+
+            if (col.gameObject.tag == "Switch" && (Input.GetButtonDown(mySButton)))
+            {
+                if (!col.GetComponentInParent<SwitchScript>().player1)
+                {
+                    transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+                    transform.GetComponent<Rigidbody>().useGravity = false;
+                    transform.GetComponent<Collider>().enabled = false;
+                    col.GetComponentInParent<SwitchScript>().player1 = this.gameObject;
+                    col.GetComponentInParent<SwitchScript>().justEntered = true;
+                    if (Player1)
+                    {
+                        myCamera.GetComponent<CameraScript>().player1 = col.gameObject;
+                    }
+                    else
+                    {
+                        myCamera.GetComponent<CameraScript>().player2 = col.gameObject;
+                    }
+
+                    buttonPromptOn = false;
+                }
+            }
+
+            if (col.gameObject.tag == "Screw" && (Input.GetButtonDown(mySButton)))
+            {
+                if (!col.GetComponentInParent<ScrewScript>().player)
+                {
+                    transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+                    transform.GetComponent<Rigidbody>().useGravity = false;
+                    transform.GetComponent<Collider>().enabled = false;
+                    col.GetComponentInParent<ScrewScript>().player = this.gameObject;
+                    col.GetComponentInParent<ScrewScript>().justEntered = true;
+                    if (Player1)
+                    {
+                        myCamera.GetComponent<CameraScript>().player1 = col.gameObject;
+                    }
+                    else
+                    {
+                        myCamera.GetComponent<CameraScript>().player2 = col.gameObject;
+                    }
+
+                    buttonPromptOn = false;
+                }
+            }
+
+            if (col.gameObject.tag == "ControlRockS2" && (Input.GetButtonDown(mySButton)))
+            {
                 if (Player1)
                 {
+                    col.GetComponent<ControlRockS2>().player1 = this.gameObject;
+                    myCamera.GetComponent<CameraScript>().player1 = col.transform.GetChild(0).gameObject;
+                }
+                else
+                {
+                    col.GetComponent<ControlRockS2>().player2 = this.gameObject;
+                    myCamera.GetComponent<CameraScript>().player2 = col.transform.GetChild(1).gameObject;
+                }
+                col.GetComponent<ControlRockS2>().justEntered = true;
+
+                buttonPromptOn = false;
+
+                this.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+                this.transform.GetComponent<Collider>().enabled = false;
+            }
+
+            if (col.gameObject.tag == "ControlRock" && (Input.GetButtonDown(mySButton)))
+            {
+                if (Player1)
+                {
+                    col.GetComponent<ControlRock>().player1 = this.gameObject;
                     myCamera.GetComponent<CameraScript>().player1 = col.gameObject;
                 }
                 else
                 {
+                    col.GetComponent<ControlRock>().player2 = this.gameObject;
                     myCamera.GetComponent<CameraScript>().player2 = col.gameObject;
                 }
+                col.GetComponent<ControlRock>().justEntered = true;
+
+                this.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+                this.transform.GetComponent<Collider>().enabled = false;
 
                 buttonPromptOn = false;
             }
+
+            if (col.gameObject.tag == "SingleControlRock" && (Input.GetButtonDown(mySButton)))
+            {
+                if (!col.GetComponent<SingleControlRock>().player1)
+                {
+                    col.GetComponent<SingleControlRock>().player1 = this.gameObject;
+                    col.GetComponent<SingleControlRock>().justEntered = true;
+                    if (Player1)
+                    {
+                        myCamera.GetComponent<CameraScript>().player1 = col.gameObject;
+                    }
+                    else
+                    {
+                        myCamera.GetComponent<CameraScript>().player2 = col.gameObject;
+                    }
+
+                    this.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+                    this.transform.GetComponent<Collider>().enabled = false;
+                }
+                buttonPromptOn = false;
+            }
+
+            if (col.gameObject.name == "top" && climbing)
+            {
+                climbing = false;
+                GetComponent<Rigidbody>().useGravity = true;
+            }
+
+            if (col.gameObject.name.Contains("Control Panel") && actionButton)
+            {
+                GameObject.Find(col.gameObject.name).SendMessage("ActivatePanel", "move");
+            }
+
+            if (col.gameObject.tag == "DamControl" && actionButton)
+            {
+                col.GetComponent<DamControlScript>().Dam.GetComponent<DamScript>().goingUp = false;
+            }
+
+            if (col.gameObject.name.Contains("platform move") || col.gameObject.tag == "Pad")
+            {
+                transform.parent = col.gameObject.transform;
+            }
+
+            if (Input.GetButton(myOButton) && col.gameObject.tag == "Shadow Gate")
+            {
+                if (col.gameObject.GetComponent<GateControl>().paid >= col.gameObject.GetComponent<GateControl>().cost)
+                {
+                    col.gameObject.GetComponent<GateControl>().CloseGate();
+                }
+                if (lifeforce > 0 && col.gameObject.GetComponent<GateControl>().paid < col.gameObject.GetComponent<GateControl>().cost)
+                {
+                    col.gameObject.GetComponent<GateControl>().ShrinkGate();
+                    lifeforce -= .5f;
+                    col.gameObject.GetComponent<GateControl>().paid += .05f;
+                }
+            }
+
+            if (Input.GetButton("P2O") && col.gameObject.tag == "Light Gate")
+            {
+                if (col.gameObject.GetComponent<GateControl>().paid >= col.gameObject.GetComponent<GateControl>().cost)
+                {
+                    col.gameObject.GetComponent<GateControl>().CloseGate();
+                }
+                if (lifeforce > 0 && col.gameObject.GetComponent<GateControl>().paid < col.gameObject.GetComponent<GateControl>().cost)
+                {
+                    col.gameObject.GetComponent<GateControl>().ShrinkGate();
+                    lifeforce -= .5f;
+                    col.gameObject.GetComponent<GateControl>().paid += .05f;
+                }
+            }
+
+            if (Input.GetButton(myOButton) && col.gameObject.tag == "Recepticle")
+            {
+                if (lifeforce > 0 && col.gameObject.GetComponent<RecepticleScript>().paid < col.gameObject.GetComponent<RecepticleScript>().cost)
+                {
+                    lifeforce -= .5f;
+                    col.gameObject.GetComponent<GateControl>().paid += .05f;
+                }
+            }
+
+            if (transform.GetComponent<Collider>().enabled == false)
+            {
+                buttonPromptOn = false;
+            }
         }
-
-		if (col.gameObject.tag == "Screw" && (Input.GetButtonDown (mySButton))) {
-			if(!col.GetComponentInParent<ScrewScript>().player){
-				transform.GetChild(0).GetComponent<Renderer>().enabled = false;
-				transform.GetComponent<Rigidbody>().useGravity = false;
-				transform.GetComponent<Collider>().enabled = false;
-				col.GetComponentInParent<ScrewScript>().player = this.gameObject;
-				col.GetComponentInParent<ScrewScript>().justEntered=true;
-				if(Player1){
-					myCamera.GetComponent<CameraScript>().player1 = col.gameObject;
-				} else{
-					myCamera.GetComponent<CameraScript>().player2 = col.gameObject;
-				}
-
-				buttonPromptOn = false;
-			}
-		}
-
-		if (col.gameObject.tag == "ControlRockS2" && (Input.GetButtonDown(mySButton))) {
-			if(Player1){
-				col.GetComponent<ControlRockS2>().player1 = this.gameObject;
-				myCamera.GetComponent<CameraScript>().player1 = col.transform.GetChild(0).gameObject;
-			} else {
-				col.GetComponent<ControlRockS2>().player2 = this.gameObject;
-				myCamera.GetComponent<CameraScript>().player2 = col.transform.GetChild(1).gameObject;
-			}
-			col.GetComponent<ControlRockS2>().justEntered=true;
-
-			buttonPromptOn = false;
-
-			this.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
-			this.transform.GetComponent<Collider>().enabled = false;
-		}
-
-		if (col.gameObject.tag == "ControlRock" && (Input.GetButtonDown(mySButton))) {
-			if(Player1){
-				col.GetComponent<ControlRock>().player1 = this.gameObject;
-				myCamera.GetComponent<CameraScript>().player1 = col.gameObject;
-			} else {
-				col.GetComponent<ControlRock>().player2 = this.gameObject;
-				myCamera.GetComponent<CameraScript>().player2 = col.gameObject;
-			}
-			col.GetComponent<ControlRock>().justEntered=true;
-			
-			this.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
-			this.transform.GetComponent<Collider>().enabled = false;
-
-			buttonPromptOn = false;
-		}
-
-		if (col.gameObject.tag == "SingleControlRock" && (Input.GetButtonDown(mySButton))) {
-			if(!col.GetComponent<SingleControlRock>().player1){
-				col.GetComponent<SingleControlRock>().player1 = this.gameObject;
-				col.GetComponent<SingleControlRock>().justEntered=true;
-				if(Player1){
-					myCamera.GetComponent<CameraScript>().player1 = col.gameObject;
-				} else{
-					myCamera.GetComponent<CameraScript>().player2 = col.gameObject;
-				}
-				
-				this.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
-				this.transform.GetComponent<Collider>().enabled = false;
-			}
-			buttonPromptOn = false;
-		}
-
-		if (col.gameObject.name == "top" && climbing)
-		{
-			climbing = false;
-			GetComponent<Rigidbody>().useGravity = true;
-		}
-
-		if(col.gameObject.name.Contains("Control Panel") && actionButton)
-		{
-			GameObject.Find(col.gameObject.name).SendMessage("ActivatePanel", "move");
-		}
-
-		if(col.gameObject.tag=="DamControl" && actionButton)
-		{
-			col.GetComponent<DamControlScript>().Dam.GetComponent<DamScript>().goingUp=false;
-		}
-
-		if(col.gameObject.name.Contains("platform move") || col.gameObject.tag=="Pad")
-		{
-				transform.parent = col.gameObject.transform;
-		}
-
-		if(Input.GetButton(myOButton) && col.gameObject.tag == "Shadow Gate")
-		{
-			if (col.gameObject.GetComponent<GateControl>().paid >= col.gameObject.GetComponent<GateControl>().cost)
-			{
-				col.gameObject.GetComponent<GateControl>().CloseGate();
-			}
-			if (lifeforce > 0 && col.gameObject.GetComponent<GateControl>().paid < col.gameObject.GetComponent<GateControl>().cost)
-			{
-				col.gameObject.GetComponent<GateControl>().ShrinkGate();
-				lifeforce -= .5f;
-				col.gameObject.GetComponent<GateControl>().paid += .05f;
-			}
-		}
-
-		if(Input.GetButton("P2O") && col.gameObject.tag == "Light Gate")
-		{
-			if (col.gameObject.GetComponent<GateControl>().paid >= col.gameObject.GetComponent<GateControl>().cost)
-			{
-				col.gameObject.GetComponent<GateControl>().CloseGate();
-			}
-			if (lifeforce > 0 && col.gameObject.GetComponent<GateControl>().paid < col.gameObject.GetComponent<GateControl>().cost)
-			{
-				col.gameObject.GetComponent<GateControl>().ShrinkGate();
-				lifeforce -= .5f;
-				col.gameObject.GetComponent<GateControl>().paid += .05f;
-			}
-		}
-
-		if(Input.GetButton(myOButton) && col.gameObject.tag == "Recepticle")
-		{
-			if (lifeforce > 0 && col.gameObject.GetComponent<RecepticleScript>().paid < col.gameObject.GetComponent<RecepticleScript>().cost)
-			{
-				lifeforce -= .5f;
-				col.gameObject.GetComponent<GateControl>().paid += .05f;
-			}
-		}
-
-		if (transform.GetComponent<Collider> ().enabled == false) {
-			buttonPromptOn =false;
-		}
 	}
 
 	void OnTriggerExit(Collider col)
