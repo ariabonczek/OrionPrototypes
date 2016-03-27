@@ -10,7 +10,7 @@ public class SwitchScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+        myCamera = GameObject.FindGameObjectWithTag("MainCamera");
 	}
 	
 	// Update is called once per frame
@@ -34,8 +34,9 @@ public class SwitchScript : MonoBehaviour {
 			}
 		}
 
-		if(player1 && Input.GetButtonDown (player1.GetComponent<Player1Script> ().myXButton){
-			Debug.Log("Lol");
-		}
+        if (player1 && Input.GetButtonDown(player1.GetComponent<Player1Script>().myXButton))
+        {
+            target.GetComponent<TriggerScript>().triggered = !target.GetComponent<TriggerScript>().triggered;
+        }
 	}
 }

@@ -312,10 +312,33 @@ public class Player1Script : MonoBehaviour {
 	
 	void OnTriggerStay(Collider col)
 	{
-		if (col.gameObject.tag == "Screw" || col.gameObject.tag == "ControlRockS2" || col.gameObject.tag == "ControlRock" || col.gameObject.tag == "SingleControlRock") {
+        if (col.gameObject.tag == "Screw" || col.gameObject.tag == "ControlRockS2" || col.gameObject.tag == "ControlRock" || col.gameObject.tag == "SingleControlRock" || col.gameObject.tag == "Switch")
+        {
 			buttonPromptOn = true;
 			timeStart = Time.time;
 		}
+
+        if (col.gameObject.tag == "Switch" && (Input.GetButtonDown(mySButton)))
+        {
+            if (!col.GetComponentInParent<SwitchScript>().player1)
+            {
+                transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+                transform.GetComponent<Rigidbody>().useGravity = false;
+                transform.GetComponent<Collider>().enabled = false;
+                col.GetComponentInParent<SwitchScript>().player1 = this.gameObject;
+                col.GetComponentInParent<SwitchScript>().justEntered = true;
+                if (Player1)
+                {
+                    myCamera.GetComponent<CameraScript>().player1 = col.gameObject;
+                }
+                else
+                {
+                    myCamera.GetComponent<CameraScript>().player2 = col.gameObject;
+                }
+
+                buttonPromptOn = false;
+            }
+        }
 
 		if (col.gameObject.tag == "Screw" && (Input.GetButtonDown (mySButton))) {
 			if(!col.GetComponentInParent<ScrewScript>().player){
@@ -452,7 +475,8 @@ public class Player1Script : MonoBehaviour {
 			transform.parent = null;
 		}
 
-		if (col.gameObject.tag == "Screw" || col.gameObject.tag == "ControlRockS2" || col.gameObject.tag == "ControlRock" || col.gameObject.tag == "SingleControlRock") {
+        if (col.gameObject.tag == "Screw" || col.gameObject.tag == "ControlRockS2" || col.gameObject.tag == "ControlRock" || col.gameObject.tag == "SingleControlRock" || col.gameObject.tag == "Switch")
+        {
 			buttonPromptOn = false;
 		}
 	}
