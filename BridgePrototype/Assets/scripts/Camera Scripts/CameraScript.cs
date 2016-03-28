@@ -55,7 +55,7 @@ public class CameraScript : MonoBehaviour {
 			
 			camDistance = currentPPoint.GetComponent<PPointScript> ().distance * playerDist;
 			
-			camDistance = Mathf.Max (camDistance, minDistance);
+			camDistance = Mathf.Max (camDistance, minDistance + currentPPoint.GetComponent<PPointScript>().offset);
 			
 			camDistance = Mathf.Min (camDistance, maxDistance);
 			
@@ -71,14 +71,14 @@ public class CameraScript : MonoBehaviour {
 			//Doing raycast checks to be sure we can see the players
 			ray = new Ray(player1.transform.position, this.transform.position -player1.transform.position);
 			if (Physics.Raycast (ray, out hit, (this.transform.position -player1.transform.position).magnitude)) {
-				if (hit.collider.gameObject != this.gameObject && hit.collider.gameObject.tag != "Player" && !hit.collider.isTrigger && hit.collider.gameObject.tag != "Othe" && !hit.collider.isTrigger && hit.collider.gameObject.tag != "Screw") {
+				if (hit.collider.gameObject != this.gameObject && hit.collider.gameObject.tag != "Player" && !hit.collider.isTrigger && hit.collider.gameObject.tag != "Othe" && !hit.collider.isTrigger && hit.collider.gameObject.tag != "Screw" && hit.collider.gameObject.tag != "Invis" && hit.collider.gameObject.tag != "Mushroom") {
 					obstructed1 = true;
 				}
 			}
 
 			ray = new Ray(player2.transform.position, this.transform.position -player2.transform.position);
 			if (Physics.Raycast (ray, out hit, (this.transform.position -player2.transform.position).magnitude)) {
-				if (hit.collider.gameObject != this.gameObject && hit.collider.gameObject.tag != "Player" && !hit.collider.isTrigger && hit.collider.gameObject.tag != "Othe" && !hit.collider.isTrigger && hit.collider.gameObject.tag != "Screw") {
+				if (hit.collider.gameObject != this.gameObject && hit.collider.gameObject.tag != "Player" && !hit.collider.isTrigger && hit.collider.gameObject.tag != "Othe" && !hit.collider.isTrigger && hit.collider.gameObject.tag != "Screw" && hit.collider.gameObject.tag != "Invis" && hit.collider.gameObject.tag != "Mushroom") {
 					obstructed2 =true;
 				}
 			}
