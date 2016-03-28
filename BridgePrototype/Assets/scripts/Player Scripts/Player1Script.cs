@@ -296,12 +296,6 @@ public class Player1Script : MonoBehaviour {
 				Respawn ();
 			}
 		}
-
-		if (col.gameObject.tag == "Platform" && col.gameObject.GetComponent<ColorScript> () && col.gameObject.GetComponent<ColorScript> ().IsMyColor (Player1)) {
-			Physics.IgnoreCollision (this.GetComponent<Collider> (), col.gameObject.GetComponent<Collider> ());
-		} else {
-			Physics.IgnoreCollision(this.GetComponent<Collider> (), col.gameObject.GetComponent<Collider> (), false);
-		}
 	}
 
 	void OnCollisionStay(Collision col)

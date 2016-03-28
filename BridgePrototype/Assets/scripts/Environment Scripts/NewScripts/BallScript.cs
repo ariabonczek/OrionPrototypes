@@ -14,7 +14,7 @@ public class BallScript : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision col){
-		if (col.gameObject.tag == "Screw" || col.gameObject.tag == "Protected") {
+		if (col.gameObject.tag == "Screw" || col.gameObject.tag == "Protected" || col.gameObject.tag == "Platform") {
             this.GetComponent<Renderer>().enabled = false;
             this.GetComponent<Collider>().enabled = false;
 		}

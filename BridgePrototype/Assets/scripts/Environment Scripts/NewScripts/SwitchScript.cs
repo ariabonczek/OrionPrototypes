@@ -4,6 +4,8 @@ using System.Collections;
 public class SwitchScript : MonoBehaviour {
 
 	public bool justEntered;
+	public bool OnColorOffMovement;
+	private bool active;
 	public GameObject player1;
 	public GameObject myCamera;
 	public GameObject target;
@@ -36,10 +38,16 @@ public class SwitchScript : MonoBehaviour {
 
         if (player1 && Input.GetButtonDown(player1.GetComponent<Player1Script>().myXButton))
         {
-            target.GetComponent<TriggerScript>().triggered = !target.GetComponent<TriggerScript>().triggered;
+			active = !active;
+
+			if(OnColorOffMovement){
+				target.GetComponent<ColorScript>().isWhite = !target.GetComponent<ColorScript>().isWhite;
+			}else{
+				target.GetComponent<TriggerScript>().triggered = !target.GetComponent<TriggerScript>().triggered;
+			}
         }
 
-        if (target.gameObject.GetComponent<TriggerScript>().triggered)
+		if (!active)
         {
             this.gameObject.GetComponent<Renderer>().material.color = Color.red;
         }

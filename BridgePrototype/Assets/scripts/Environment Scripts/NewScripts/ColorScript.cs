@@ -4,6 +4,11 @@ using System.Collections;
 public class ColorScript : MonoBehaviour {
 
     public bool isWhite;
+	private CameraScript cam;
+
+	void Start(){
+		cam = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<CameraScript>();
+	}
 
 	// Update is called once per frame
 	void Update () {
@@ -18,6 +23,9 @@ public class ColorScript : MonoBehaviour {
             {
                 rS[i].material.color = Color.white;
             }
+
+			Physics.IgnoreCollision(transform.GetComponent<Collider>(),cam.player2.GetComponent<Collider>());
+			Physics.IgnoreCollision(transform.GetComponent<Collider>(),cam.player1.GetComponent<Collider>(),false);
         }
         else
         {
@@ -30,6 +38,9 @@ public class ColorScript : MonoBehaviour {
             {
                 rS[i].material.color = Color.black;
             }
+
+			Physics.IgnoreCollision(transform.GetComponent<Collider>(),cam.player1.GetComponent<Collider>());
+			Physics.IgnoreCollision(transform.GetComponent<Collider>(),cam.player2.GetComponent<Collider>(),false);
         }
 	}
 
