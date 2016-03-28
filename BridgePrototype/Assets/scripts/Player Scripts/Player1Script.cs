@@ -290,7 +290,17 @@ public class Player1Script : MonoBehaviour {
 	void OnCollisionEnter(Collision col)
 	{
 		if (col.gameObject.tag == "Harmful") {
-			Respawn();
+			if ((col.gameObject.GetComponent<ColorScript> () && col.gameObject.GetComponent<ColorScript> ().IsMyColor (Player1))) {
+				col.gameObject.GetComponent<BallScript>().DestroyBall();
+			} else if (!col.gameObject.GetComponent<ColorScript> () || (col.gameObject.GetComponent<ColorScript> () && !col.gameObject.GetComponent<ColorScript> ().IsMyColor (Player1))){
+				Respawn ();
+			}
+		}
+
+		if (col.gameObject.tag == "Platform" && col.gameObject.GetComponent<ColorScript> () && col.gameObject.GetComponent<ColorScript> ().IsMyColor (Player1)) {
+			Physics.IgnoreCollision (this.GetComponent<Collider> (), col.gameObject.GetComponent<Collider> ());
+		} else {
+			Physics.IgnoreCollision(this.GetComponent<Collider> (), col.gameObject.GetComponent<Collider> (), false);
 		}
 	}
 
@@ -312,7 +322,7 @@ public class Player1Script : MonoBehaviour {
 	
 	void OnTriggerStay(Collider col)
 	{
-        if (col.GetComponent<ColorScript>() && ((col.GetComponent<ColorScript>().isWhite && !Player1) || (!col.GetComponent<ColorScript>().isWhite && Player1)))
+        if (!col.GetComponent<ColorScript>() || (col.GetComponent<ColorScript>() && ((col.GetComponent<ColorScript>().isWhite && !Player1) || (!col.GetComponent<ColorScript>().isWhite && Player1))))
         {
 
             if (col.gameObject.tag == "Screw" || col.gameObject.tag == "ControlRockS2" || col.gameObject.tag == "ControlRock" || col.gameObject.tag == "SingleControlRock" || col.gameObject.tag == "Switch")

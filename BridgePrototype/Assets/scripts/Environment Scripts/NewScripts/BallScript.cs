@@ -4,12 +4,13 @@ using System.Collections;
 public class BallScript : MonoBehaviour {
 
 	public Vector3 velo;
+	public int ballNum;
 
 
 	// Update is called once per frame
 	void Update () {
 		transform.position += velo;
-		this.GetComponentInParent<RockShooterScript> ().distGone += velo.magnitude;
+		this.transform.GetComponentInParent<RockShooterScript> ().distGone[ballNum] += velo.magnitude;
 	}
 
 	void OnCollisionEnter(Collision col){
@@ -17,5 +18,9 @@ public class BallScript : MonoBehaviour {
             this.GetComponent<Renderer>().enabled = false;
             this.GetComponent<Collider>().enabled = false;
 		}
+	}
+
+	public void DestroyBall(){
+		transform.parent.GetComponent<RockShooterScript> ().DestroyBall (ballNum);
 	}
 }

@@ -34,26 +34,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &188584
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 458496}
-  - 33: {fileID: 3352470}
-  - 135: {fileID: 13572846}
-  - 23: {fileID: 2326712}
-  - 54: {fileID: 5461470}
-  - 114: {fileID: 11450854}
-  m_Layer: 0
-  m_Name: Rock
-  m_TagString: Harmful
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &190844
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,31 +73,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 478940}
   m_RootOrder: 0
---- !u!4 &458496
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 188584}
-  m_LocalRotation: {x: 0, y: 0, z: .707106829, w: .707106709}
-  m_LocalPosition: {x: 0, y: 1.82000005, z: 0}
-  m_LocalScale: {x: 1.45699573, y: .476362199, z: .476361752}
-  m_Children: []
-  m_Father: {fileID: 478940}
-  m_RootOrder: 2
 --- !u!4 &478940
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 101418}
-  m_LocalRotation: {x: 2.08616271e-07, y: 2.98023224e-07, z: -.707106948, w: -.70710665}
-  m_LocalPosition: {x: 38.5880013, y: 46.1899986, z: 124.050003}
-  m_LocalScale: {x: 1.5543344, y: .508186817, z: 1.55433595}
+  m_LocalRotation: {x: 0, y: 0, z: -.707106829, w: .707106709}
+  m_LocalPosition: {x: -12.1237602, y: 3.83999991, z: 1.94000006}
+  m_LocalScale: {x: 1.55433452, y: .508186817, z: 1.55433607}
   m_Children:
   - {fileID: 452712}
   - {fileID: 446992}
-  - {fileID: 458496}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!23 &2308986
@@ -144,30 +111,6 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!23 &2326712
-MeshRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 188584}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_Materials:
-  - {fileID: 2100000, guid: 5cb4def8828936b4489e6ac6e3cd2482, type: 2}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 1
-  m_ReflectionProbeUsage: 1
-  m_ProbeAnchor: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 1
-  m_ImportantGI: 0
-  m_AutoUVMaxDistance: .5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
 --- !u!33 &3348038
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -175,28 +118,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 101418}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!33 &3352470
-MeshFilter:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 188584}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!54 &5461470
-Rigidbody:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 188584}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: .0500000007
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0
 --- !u!114 &11417126
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -208,35 +129,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be241abc75c584147a4751bccf2fe38b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Rock: {fileID: 188584}
+  rockPrefab: {fileID: 168044, guid: 8e2c151129951e845ad9bca476f2c929, type: 2}
+  Rocks: []
   MaxDistPoint: {fileID: 116024}
   RockStartPoint: {fileID: 190844}
-  rockSpeed: .150000006
-  distGone: 0
---- !u!114 &11450854
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 188584}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b66b2556471c0cd4486c3c1a60d5cfb9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  velo: {x: 0, y: 0, z: 0}
---- !u!135 &13572846
-SphereCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 188584}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: .5
-  m_Center: {x: 0, y: 0, z: 0}
+  rockSpeed: 1
+  DDRMode: 0
+  distGone: []
+  totalShotTime: 0
+  shotTimeOffset: 0
 --- !u!136 &13629792
 CapsuleCollider:
   m_ObjectHideFlags: 1

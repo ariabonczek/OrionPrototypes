@@ -32,4 +32,8 @@ public class ColorScript : MonoBehaviour {
             }
         }
 	}
+
+	public bool IsMyColor(bool player1){
+		return (player1 != isWhite);
+	}
 }

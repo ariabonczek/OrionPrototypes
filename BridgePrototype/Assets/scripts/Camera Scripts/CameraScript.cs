@@ -29,6 +29,8 @@ public class CameraScript : MonoBehaviour {
     private float timerStart;
     private float lerpTime;
 
+	private bool obstructed1;
+	private bool obstructed2;
 
 	// Use this for initialization
 	void Start ()
@@ -39,6 +41,9 @@ public class CameraScript : MonoBehaviour {
 		collided = false;
 		if (maxDistance == 0) {
 			maxDistance = 100;
+		}
+		if (minDistance == 0) {
+			minDistance =3;
 		}
 	}
 	
@@ -59,12 +64,29 @@ public class CameraScript : MonoBehaviour {
 			currentPPoint.transform.position = median - (currentPPoint.transform.forward * camDistance);
 			
 			this.transform.position = currentPPoint.transform.position;
-			
-			ray = new Ray(median, this.transform.position -median);
-			if (Physics.Raycast (ray, out hit, (this.transform.position -median).magnitude)) {
-				if (hit.collider.gameObject != this.gameObject && hit.collider.gameObject.tag != "Player" && !hit.collider.isTrigger && hit.collider.gameObject.tag != "Othe") {
-					this.transform.position = median + (this.transform.position - median).normalized * (hit.distance);
+
+			obstructed1 = false;
+			obstructed2 = false;
+
+			//Doing raycast checks to be sure we can see the players
+			ray = new Ray(player1.transform.position, this.transform.position -player1.transform.position);
+			if (Physics.Raycast (ray, out hit, (this.transform.position -player1.transform.position).magnitude)) {
+				if (hit.collider.gameObject != this.gameObject && hit.collider.gameObject.tag != "Player" && !hit.collider.isTrigger && hit.collider.gameObject.tag != "Othe" && !hit.collider.isTrigger && hit.collider.gameObject.tag != "Screw") {
+					obstructed1 = true;
 				}
+			}
+
+			ray = new Ray(player2.transform.position, this.transform.position -player2.transform.position);
+			if (Physics.Raycast (ray, out hit, (this.transform.position -player2.transform.position).magnitude)) {
+				if (hit.collider.gameObject != this.gameObject && hit.collider.gameObject.tag != "Player" && !hit.collider.isTrigger && hit.collider.gameObject.tag != "Othe" && !hit.collider.isTrigger && hit.collider.gameObject.tag != "Screw") {
+					obstructed2 =true;
+				}
+			}
+
+			ray = new Ray(median, this.transform.position -median);
+			Physics.Raycast (ray, out hit, (this.transform.position -median).magnitude);
+			if (obstructed1 && obstructed2) {
+				this.transform.position = median + (this.transform.position - median).normalized * (hit.distance);
 			}
 			
 			if (lerping)

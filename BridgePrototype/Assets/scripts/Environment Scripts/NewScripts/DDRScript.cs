@@ -46,38 +46,38 @@ public class DDRScript : MonoBehaviour {
             switch (num1)
             {
                 case 0:
-                    cannon1.GetComponent<RockShooterScript>().ReFire();
+                    cannon1.GetComponent<RockShooterScript>().Fire();
                     break;
 
                 case 1:
-                    cannon2.GetComponent<RockShooterScript>().ReFire();
+                    cannon2.GetComponent<RockShooterScript>().Fire();
                     break;
 
                 case 2:
-                    cannon3.GetComponent<RockShooterScript>().ReFire();
+                    cannon3.GetComponent<RockShooterScript>().Fire();
                     break;
 
                 case 3:
-                    cannon4.GetComponent<RockShooterScript>().ReFire();
+                    cannon4.GetComponent<RockShooterScript>().Fire();
                     break;
             }
 
             switch (num2)
             {
                 case 0:
-                    cannon1.GetComponent<RockShooterScript>().ReFire();
+                    cannon1.GetComponent<RockShooterScript>().Fire();
                     break;
 
                 case 1:
-                    cannon2.GetComponent<RockShooterScript>().ReFire();
+                    cannon2.GetComponent<RockShooterScript>().Fire();
                     break;
 
                 case 2:
-                    cannon3.GetComponent<RockShooterScript>().ReFire();
+                    cannon3.GetComponent<RockShooterScript>().Fire();
                     break;
 
                 case 3:
-                    cannon4.GetComponent<RockShooterScript>().ReFire();
+                    cannon4.GetComponent<RockShooterScript>().Fire();
                     break;
             }
 
