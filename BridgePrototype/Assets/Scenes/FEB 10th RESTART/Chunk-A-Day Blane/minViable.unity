@@ -1185,6 +1185,10 @@ Prefab:
       propertyPath: needsTwoPlayers
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11496174, guid: 0582df0d7b0977249ade2eea3f24626a, type: 2}
+      propertyPath: pPoint
+      value: 
+      objectReference: {fileID: 545132606}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0582df0d7b0977249ade2eea3f24626a, type: 2}
   m_IsPrefabParent: 0
@@ -2841,7 +2845,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11477296, guid: 9f68c085b924f1d438f66609ab799ad4, type: 2}
       propertyPath: distance
-      value: 4
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11477296, guid: 9f68c085b924f1d438f66609ab799ad4, type: 2}
+      propertyPath: offset
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9f68c085b924f1d438f66609ab799ad4, type: 2}
@@ -3634,6 +3642,10 @@ Prefab:
       propertyPath: needsTwoPlayers
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11496174, guid: 0582df0d7b0977249ade2eea3f24626a, type: 2}
+      propertyPath: pPoint
+      value: 
+      objectReference: {fileID: 545132606}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0582df0d7b0977249ade2eea3f24626a, type: 2}
   m_IsPrefabParent: 0
@@ -3854,6 +3866,10 @@ Prefab:
       propertyPath: needsTwoPlayers
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11496174, guid: 0582df0d7b0977249ade2eea3f24626a, type: 2}
+      propertyPath: pPoint
+      value: 
+      objectReference: {fileID: 104654595}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0582df0d7b0977249ade2eea3f24626a, type: 2}
   m_IsPrefabParent: 0
@@ -4224,6 +4240,10 @@ Prefab:
       propertyPath: needsTwoPlayers
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11496174, guid: 0582df0d7b0977249ade2eea3f24626a, type: 2}
+      propertyPath: pPoint
+      value: 
+      objectReference: {fileID: 1030522050}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0582df0d7b0977249ade2eea3f24626a, type: 2}
   m_IsPrefabParent: 0
@@ -5011,6 +5031,10 @@ Prefab:
       propertyPath: needsTwoPlayers
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11496174, guid: 0582df0d7b0977249ade2eea3f24626a, type: 2}
+      propertyPath: pPoint
+      value: 
+      objectReference: {fileID: 545132606}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0582df0d7b0977249ade2eea3f24626a, type: 2}
   m_IsPrefabParent: 0

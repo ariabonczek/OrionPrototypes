@@ -20,10 +20,10 @@ public class DDRScript : MonoBehaviour {
         cannon3.GetComponent<RockShooterScript>().rockSpeed = shotSpeed;
         cannon4.GetComponent<RockShooterScript>().rockSpeed = shotSpeed;
 
-        cannon1.GetComponent<RockShooterScript>().DDRMode = true;
+        /*cannon1.GetComponent<RockShooterScript>().DDRMode = true;
         cannon2.GetComponent<RockShooterScript>().DDRMode = true;
         cannon3.GetComponent<RockShooterScript>().DDRMode = true;
-        cannon4.GetComponent<RockShooterScript>().DDRMode = true;
+        cannon4.GetComponent<RockShooterScript>().DDRMode = true;*/
         timerStart = Time.time;
 	}
 	
