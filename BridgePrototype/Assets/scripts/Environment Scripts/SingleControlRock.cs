@@ -41,7 +41,11 @@ public class SingleControlRock : MonoBehaviour {
 		// apply gravitational force to the rock
 		GetComponent<Rigidbody>().AddForce(0,-6.5f,0);
 
-		GetComponent<Rigidbody> ().velocity = new Vector3 (GetComponent<Rigidbody> ().velocity.x, Mathf.Min(GetComponent<Rigidbody> ().velocity.y, 6.02f), GetComponent<Rigidbody> ().velocity.z);
+		GetComponent<Rigidbody> ().velocity = new Vector3 (GetComponent<Rigidbody> ().velocity.x, Mathf.Min(GetComponent<Rigidbody> ().velocity.y, 6.0f), GetComponent<Rigidbody> ().velocity.z);
+
+		max = Mathf.Max (GetComponent<Rigidbody> ().velocity.y, max);
+
+		Debug.Log (max);
 	}
 	
 	// Update is called once per frame
@@ -91,7 +95,7 @@ public class SingleControlRock : MonoBehaviour {
 		// raycast check used to see if block is on the gruond
 		if(Physics.Raycast(ray, out hit, .7f)){
 			if(hit.collider.gameObject.tag != "Player" && player1 && Input.GetButton(player1.GetComponent<PlayerScript>().myXButton)){
-				if(!hit.collider.isTrigger){
+				if(!(hit.collider.isTrigger && hit.collider.gameObject.tag!="Parenting")){
 					GetComponent<Rigidbody>().velocity += jumpHeight * transform.up;
 				}
 			}

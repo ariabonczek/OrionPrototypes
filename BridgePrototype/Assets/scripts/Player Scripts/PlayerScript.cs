@@ -125,7 +125,7 @@ public class PlayerScript : MonoBehaviour {
 		ray = new Ray(transform.position, -transform.up);
 		if (Physics.Raycast(ray, out hit, .7f))
 		{
-			if (!hit.collider.isTrigger && hit.transform.gameObject.tag != "Player")
+			if (!(hit.collider.isTrigger && hit.collider.gameObject.tag!="Parenting") && hit.transform.gameObject.tag != "Player" )
 			{
 				airborne = false;
 			}
@@ -263,10 +263,12 @@ public class PlayerScript : MonoBehaviour {
 		if (!colorComponent || (colorComponent && ((colorComponent.isWhite && !Player1) || (!colorComponent.isWhite && Player1))))
 		{
 			// here we display the ui prompt for entering a meld-able object now that we're close enough
-			if (col.gameObject.tag == "Screw" || col.gameObject.tag == "ControlRockS2" || col.gameObject.tag == "ControlRock" || col.gameObject.tag == "SingleControlRock" || col.gameObject.tag == "Switch")
+			if ((col.gameObject.tag == "Screw" && !col.GetComponentInParent<SwitchScript>().player1) || (col.gameObject.tag == "SingleControlRock" && !col.GetComponent<SingleControlRock>().player1) || (col.gameObject.tag == "Switch" && !col.GetComponentInParent<ScrewScript>().player))
 			{
 				buttonPromptOn = true;
 				timeStart = Time.time;
+			} else {
+				buttonPromptOn = false;
 			}
 			
 			// if the player hits the square button and the object nearby is meld-able (i.e. a switch, screw, or control rock), then we call the meld in function to transition the player there
