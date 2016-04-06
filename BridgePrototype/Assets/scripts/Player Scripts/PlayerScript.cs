@@ -263,7 +263,7 @@ public class PlayerScript : MonoBehaviour {
 		if (!colorComponent || (colorComponent && ((colorComponent.isWhite && !Player1) || (!colorComponent.isWhite && Player1))))
 		{
 			// here we display the ui prompt for entering a meld-able object now that we're close enough
-			if ((col.gameObject.tag == "Screw" && !col.GetComponentInParent<SwitchScript>().player1) || (col.gameObject.tag == "SingleControlRock" && !col.GetComponent<SingleControlRock>().player1) || (col.gameObject.tag == "Switch" && !col.GetComponentInParent<ScrewScript>().player))
+			if ((col.gameObject.tag == "Screw" && !col.GetComponentInParent<ScrewScript>().player) || (col.gameObject.tag == "SingleControlRock" && !col.GetComponent<SingleControlRock>().player1) || (col.gameObject.tag == "Switch" && !col.GetComponentInParent<ScrewScript>().player))
 			{
 				buttonPromptOn = true;
 				timeStart = Time.time;

@@ -42,10 +42,6 @@ public class SingleControlRock : MonoBehaviour {
 		GetComponent<Rigidbody>().AddForce(0,-6.5f,0);
 
 		GetComponent<Rigidbody> ().velocity = new Vector3 (GetComponent<Rigidbody> ().velocity.x, Mathf.Min(GetComponent<Rigidbody> ().velocity.y, 6.0f), GetComponent<Rigidbody> ().velocity.z);
-
-		max = Mathf.Max (GetComponent<Rigidbody> ().velocity.y, max);
-
-		Debug.Log (max);
 	}
 	
 	// Update is called once per frame
