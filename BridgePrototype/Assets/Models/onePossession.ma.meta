@@ -1,0 +1,139 @@
+fileFormatVersion: 2
+guid: 81630a4a60920c141a38765cdd0f4e17
+timeCreated: 1459965861
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: gem:imagePlane1
+    100002: group1
+    100004: group10
+    100006: group11
+    100008: group12
+    100010: group13
+    100012: group14
+    100014: group15
+    100016: group17
+    100018: group18
+    100020: group19
+    100022: group2
+    100024: group21
+    100026: group3
+    100028: group4
+    100030: group5
+    100032: group7
+    100034: group8
+    100036: group9
+    100038: group9 1
+    100040: //RootNode
+    100042: pCube4
+    100044: pCube4 1
+    100046: pCube4 2
+    100048: pCube5
+    100050: pCube5 1
+    100052: pCube5 2
+    100054: pCube6
+    100056: pCube6 1
+    100058: pCube6 2
+    100060: polySurface10
+    100062: polySurface4
+    100064: polySurface9
+    400000: gem:imagePlane1
+    400002: group1
+    400004: group10
+    400006: group11
+    400008: group12
+    400010: group13
+    400012: group14
+    400014: group15
+    400016: group17
+    400018: group18
+    400020: group19
+    400022: group2
+    400024: group21
+    400026: group3
+    400028: group4
+    400030: group5
+    400032: group7
+    400034: group8
+    400036: group9
+    400038: group9 1
+    400040: //RootNode
+    400042: pCube4
+    400044: pCube4 1
+    400046: pCube4 2
+    400048: pCube5
+    400050: pCube5 1
+    400052: pCube5 2
+    400054: pCube6
+    400056: pCube6 1
+    400058: pCube6 2
+    400060: polySurface10
+    400062: polySurface4
+    400064: polySurface9
+    2300000: polySurface10
+    3300000: polySurface10
+    4300000: polySurface10
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
