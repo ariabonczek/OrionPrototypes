@@ -27,6 +27,10 @@ TagManager:
   - Harmful
   - Screw
   - Mushroom
+  - Platform
+  - Switch
+  - Invis
+  - Parenting
   layers:
   - Default
   - TransparentFX
