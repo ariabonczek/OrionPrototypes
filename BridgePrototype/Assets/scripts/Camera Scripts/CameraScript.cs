@@ -138,8 +138,8 @@ public class CameraScript : MonoBehaviour
 					}
 				} else
 				{
-					transform.position = Vector3.Lerp(previousPPoint.transform.position, currentPPoint.transform.position, (timer / lerpTime));
-					transform.forward = Vector3.Lerp(previousPPoint.transform.forward, currentPPoint.transform.forward, (timer / lerpTime));
+					transform.position = Vector3.Slerp(previousPPoint.transform.position, currentPPoint.transform.position, (timer / lerpTime));
+					transform.forward = Vector3.Slerp(previousPPoint.transform.forward, currentPPoint.transform.forward, (timer / lerpTime));
 				}
 				
 			}
