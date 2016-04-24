@@ -67,6 +67,13 @@ public class PlayerScript : MonoBehaviour {
 	
 	// a reference to the character's rigidbody
 	private Rigidbody rig;
+
+    //Blane Touched this
+    //sounds
+    public AudioClip meld;
+    public AudioClip walk;
+    public AudioClip jump;
+    private AudioSource soundSource;
 	
 	// the initialization of the player
 	void Start()
@@ -82,6 +89,9 @@ public class PlayerScript : MonoBehaviour {
 		interactSprite = transform.GetChild(1).GetComponent<SpriteRenderer>();
 		rig = GetComponent<Rigidbody>();
 		characterRenderer = transform.GetChild(0).GetComponent<Renderer>();
+
+        //Sound References
+        soundSource = GetComponent<AudioSource>();
 		
 		// set the ui prompt alpha to 0 so it begins invisible
 		Color tempColor = interactSprite.color;
@@ -175,6 +185,21 @@ public class PlayerScript : MonoBehaviour {
 		
 		// translate the player by the finalized movement vector
 		this.transform.Translate(movementVec);
+
+        //Play walking sounds
+        //Play if not jumping or melding,and moving
+        if (new Vector3(movementVec.x, 0f, movementVec.z) != new Vector3(0f, 0f, 0f) && !airborne && characterRenderer.enabled == true)
+        {
+            if (!soundSource.isPlaying)
+                soundSource.Play();
+        }
+        else
+        {
+            //dont stop other sounds
+            if (!airborne && characterRenderer.enabled == true)
+                soundSource.Stop();
+        }
+        //soundSource.loop = true;
 		
 		// if the player is trying to jump and we aren't already airborne
 		if (Input.GetButtonDown(myXButton) && airborne == false)
@@ -227,6 +252,9 @@ public class PlayerScript : MonoBehaviour {
 	// the jump function simply gives the velocity of the character a great increase (mimicing the acceleration being applied almost all instantly) and we set airborn to true
 	void Jump()
 	{
+        //Play sounds
+        soundSource.Stop();
+        soundSource.PlayOneShot(jump, 1.0f);
 		rig.velocity += jumpheight * transform.up;
 		airborne = true;
 	}
@@ -263,7 +291,7 @@ public class PlayerScript : MonoBehaviour {
 		if (!colorComponent || (colorComponent && ((colorComponent.isWhite && !Player1) || (!colorComponent.isWhite && Player1))))
 		{
 			// here we display the ui prompt for entering a meld-able object now that we're close enough
-			if ((col.gameObject.tag == "Screw" && !col.GetComponentInParent<ScrewScript>().player) || (col.gameObject.tag == "SingleControlRock" && !col.GetComponent<SingleControlRock>().player1) || (col.gameObject.tag == "Switch" && !col.GetComponentInParent<ScrewScript>().player))
+            if ((col.gameObject.tag == "Screw" && !col.GetComponentInParent<ScrewScript>().player) || (col.gameObject.tag == "SingleControlRock" && !col.GetComponent<SingleControlRock>().player1) || (col.gameObject.tag == "Switch" && !col.GetComponentInParent<ScrewScript>().player) || (col.gameObject.tag == "EndObject" && (!col.GetComponentInParent<EndObject>().player1 || !col.GetComponentInParent<EndObject>().player2)))
 			{
 				buttonPromptOn = true;
 				timeStart = Time.time;
@@ -302,6 +330,23 @@ public class PlayerScript : MonoBehaviour {
 				}
 				buttonPromptOn = false;
 			}
+
+            if (col.gameObject.tag == "EndObject" && (Input.GetButtonDown(mySButton)))
+            {
+                if (Player1)
+                {
+                    MeldIn(col.gameObject, col.GetComponentInParent<EndObject>().player1);
+                    col.GetComponent<EndObject>().player1 = this.gameObject;
+                    col.GetComponent<EndObject>().p1justEntered = true;
+                }
+                else
+                {
+                    MeldIn(col.gameObject, col.GetComponentInParent<EndObject>().player2);
+                    col.GetComponent<EndObject>().player2 = this.gameObject;
+                    col.GetComponent<EndObject>().p2justEntered = true;
+                }
+                buttonPromptOn = false;
+            }
 			
 			if (transform.GetComponent<Collider>().enabled == false)
 			{
@@ -313,6 +358,10 @@ public class PlayerScript : MonoBehaviour {
 	// the function used for the player melding into objects, which stops the player
 	void MeldIn(GameObject meldTarget, GameObject playerRef)
 	{
+        //Play meld sound
+        soundSource.Stop();
+        soundSource.PlayOneShot(meld, 1.0f);
+
 		characterRenderer.enabled = false;
 		transform.GetComponent<Collider>().enabled = false;
 		if (Player1)

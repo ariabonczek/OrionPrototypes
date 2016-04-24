@@ -11,6 +11,11 @@ public class SingleControlRock : MonoBehaviour {
 	
 	// rock's jump height value
 	public float jumpHeight;
+
+    //sounds
+    public AudioClip jump;
+    public AudioClip unmeld;
+    private AudioSource soundSource;
 	
 	// applies to movement vector to adjust how fast the rock can move at a time
 	private float speed;
@@ -35,6 +40,7 @@ public class SingleControlRock : MonoBehaviour {
 		// setting up the camera from the scene
 		myCamera = GameObject.FindGameObjectWithTag ("MainCamera");
 		speed = 2;
+        soundSource = GetComponent<AudioSource>();
 	}
 	
 	void FixedUpdate(){
@@ -52,6 +58,9 @@ public class SingleControlRock : MonoBehaviour {
 		} else {
 			// if the player pressed square to get out and the rock is on the ground then we put the player on top of the block and turn its renderers and colliders on
 			if (player1 && Input.GetButtonDown (player1.GetComponent<PlayerScript> ().mySButton) && Physics.Raycast(ray, out hit, .7f)) {
+                //play unmeld
+                soundSource.PlayOneShot(unmeld, 1.0f);
+
 				player1.transform.position = transform.position + transform.up;
 				player1.transform.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 				player1.transform.GetChild (0).GetComponent<Renderer> ().enabled = true;
@@ -92,6 +101,10 @@ public class SingleControlRock : MonoBehaviour {
 		if(Physics.Raycast(ray, out hit, .7f)){
 			if(hit.collider.gameObject.tag != "Player" && player1 && Input.GetButton(player1.GetComponent<PlayerScript>().myXButton)){
 				if(!(hit.collider.isTrigger && hit.collider.gameObject.tag!="Parenting")){
+                    //play jump
+                    if(!soundSource.isPlaying)
+                        soundSource.PlayOneShot(jump, 1.0f);
+
 					GetComponent<Rigidbody>().velocity += jumpHeight * transform.up;
 				}
 			}

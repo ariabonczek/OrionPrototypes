@@ -11,6 +11,7 @@ GameObject:
   - 54: {fileID: 5412892}
   - 114: {fileID: 11403754}
   - 136: {fileID: 13646822}
+  - 82: {fileID: 8258820}
   m_Layer: 0
   m_Name: Player 1 1
   m_TagString: Player
@@ -58,7 +59,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 128134}
   m_LocalRotation: {x: 0, y: .00655026175, z: 0, w: .999978602}
-  m_LocalPosition: {x: -.899999976, y: -6.50277519, z: 23.1000004}
+  m_LocalPosition: {x: 4.21000004, y: -4.21000004, z: 9.30000019}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 458490}
@@ -135,6 +136,76 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!82 &8258820
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 128134}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: a0955c4ca8e1f7f4d85c5823df1e59dd, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
 --- !u!114 &11403754
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -147,22 +218,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myCamera: {fileID: 0}
-  otherPlayer: {fileID: 0}
-  dyingdistance: 15
   speed: 3
-  jumpheight: 8
+  jumpheight: 6
   Player1: 1
-  life: {fileID: 2800000, guid: d39594db658170841ab09f63856b736d, type: 3}
-  lifeforce: 0
+  respawnPosition: {x: 0, y: 0, z: 0}
   buttonPromptIntroTimer: 1
   mySButton: 
   myXButton: 
   myTButton: 
   myOButton: 
+  myShareButton: 
   myR2Trigger: 
   myL2Trigger: 
   myLeftStick: 
   myRightStick: 
+  meld: {fileID: 8300000, guid: 7fe73801945e4e246baaefe18109a275, type: 3}
+  walk: {fileID: 0}
+  jump: {fileID: 0}
 --- !u!136 &13646822
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -175,7 +247,7 @@ CapsuleCollider:
   m_Radius: .3395468
   m_Height: 1.29999995
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: .0299999993, z: 0}
 --- !u!212 &21234762
 SpriteRenderer:
   m_ObjectHideFlags: 1

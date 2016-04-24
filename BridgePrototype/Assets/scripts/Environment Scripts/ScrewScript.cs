@@ -26,6 +26,11 @@ public class ScrewScript : MonoBehaviour {
 	
 	// denotes whether the player can screw down
 	public bool canGoDown;
+
+    //Sounds
+    public AudioClip screwSound;
+    public AudioClip unmeld;
+    private AudioSource soundSource;
 	
 	// tracks analog stick positioning
 	private Vector2 analogStickPos;
@@ -79,6 +84,7 @@ public class ScrewScript : MonoBehaviour {
 		tempColor.a = 0f;
 		transform.GetChild (0).GetChild (4).GetComponent<SpriteRenderer> ().color = tempColor;
 		spinVal = 0;
+        soundSource = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -106,6 +112,9 @@ public class ScrewScript : MonoBehaviour {
 			
 			// handle players leaving the screw, which involves placing them nearby and re-enabling all their components
 			if (player && Input.GetButtonDown (player.GetComponent<PlayerScript> ().mySButton)) {
+                //play unmeld
+                soundSource.PlayOneShot(unmeld, 1.0f);
+
 				player.transform.position = transform.GetChild(3).position;
 				player.transform.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 				player.transform.GetComponent<Rigidbody> ().useGravity = true;
@@ -155,6 +164,12 @@ public class ScrewScript : MonoBehaviour {
 			
 			// this chunk controls the actual rotation and movement of the screw from the data collected about angleDiff directly above
 			if(Vector3.Dot(transform.GetChild(0).position, this.transform.up)<Vector3.Dot(topLimit.transform.position, this.transform.up) && Vector3.Dot(transform.GetChild(0).position, this.transform.up)>=Vector3.Dot(bottomY, this.transform.up)){
+               //Play screw Sound
+                if(angleDiff != 0.0f)
+                {
+                    if (!soundSource.isPlaying)
+                         soundSource.Play();
+                }
 				// we need only care about rotation if spinsInPlace is true
 				if(spinsInPlace){
 					transform.GetChild(0).RotateAround(transform.GetChild(0).position,(transform.GetChild(1).position - transform.GetChild(0).position),-(angleDiff * risingSpeed * .5f));
@@ -190,6 +205,7 @@ public class ScrewScript : MonoBehaviour {
 				// if we are no longer hovering, then the screw is rotated and move downward
 				else
 				{
+                    
 					if(ColliderRotates){
 						transform.GetChild(0).RotateAround(transform.GetChild(0).position,(transform.GetChild(1).position - transform.GetChild(0).position),descendingSpeed);
 						transform.GetChild(0).position -= (new Vector3(0,(.001f * descendingSpeed),0).magnitude * this.transform.up);
