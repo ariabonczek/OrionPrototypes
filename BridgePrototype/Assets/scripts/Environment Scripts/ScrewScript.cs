@@ -119,6 +119,7 @@ public class ScrewScript : MonoBehaviour {
 				player.transform.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 				player.transform.GetComponent<Rigidbody> ().useGravity = true;
 				player.transform.GetChild (0).GetComponent<Renderer> ().enabled = true;
+                player.transform.GetChild(2).GetComponent<Animation>().enabled = true;
 				player.transform.GetComponent<Collider> ().enabled = true;
 				
 				if(myCamera.GetComponent<CameraScript> ().player1 == this.transform.GetChild(2).gameObject){

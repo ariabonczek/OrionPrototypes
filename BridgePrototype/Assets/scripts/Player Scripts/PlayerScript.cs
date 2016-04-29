@@ -74,6 +74,9 @@ public class PlayerScript : MonoBehaviour {
     public AudioClip walk;
     public AudioClip jump;
     private AudioSource soundSource;
+
+    public Animation anim;
+
 	
 	// the initialization of the player
 	void Start()
@@ -92,7 +95,16 @@ public class PlayerScript : MonoBehaviour {
 
         //Sound References
         soundSource = GetComponent<AudioSource>();
-		
+
+        //Animation
+        anim = transform.GetChild(2).GetComponent<Animation>();
+        foreach (AnimationState state in anim)
+        {
+            state.speed = 3.0F;
+        }
+        anim["Run"].speed = 3f;
+        anim.Play();
+
 		// set the ui prompt alpha to 0 so it begins invisible
 		Color tempColor = interactSprite.color;
 		tempColor.a = 0f;
@@ -192,12 +204,18 @@ public class PlayerScript : MonoBehaviour {
         {
             if (!soundSource.isPlaying)
                 soundSource.Play();
+
+            if(!anim.IsPlaying("Run"))
+                anim.CrossFade("Run");
         }
         else
         {
             //dont stop other sounds
             if (!airborne && characterRenderer.enabled == true)
+            {
                 soundSource.Stop();
+                anim.CrossFade("Idle");
+            }
         }
         //soundSource.loop = true;
 		
@@ -207,6 +225,9 @@ public class PlayerScript : MonoBehaviour {
 			// also check to make sure that we haven't passed the upper limit for how long players can hold the jump button, then the jump occurs
 			if (pressCount <= 5f)
 			{
+                soundSource.Stop();
+                soundSource.PlayOneShot(jump, 1.0f);
+                anim.CrossFade("Jump");
 				Jump();
 				pressCount++;
 			}
@@ -215,13 +236,14 @@ public class PlayerScript : MonoBehaviour {
 		// the moment players let go of the jump button we reset the counter for how long they've held
 		if (Input.GetButtonUp(myXButton))
 		{
+            anim.CrossFade("Land");
 			pressCount = 0;
 		}
 		
 		// instead of rotating the entire player we just rotate the model
 		if (Input.GetAxis(myLeftStick + "X") > .1f || Input.GetAxis(myLeftStick + "Y") > .1f || Input.GetAxis(myLeftStick + "X") < -.1f || Input.GetAxis(myLeftStick + "Y") < -.1f)
 		{
-			this.gameObject.transform.GetChild(0).forward = movementVec;
+			this.gameObject.transform.GetChild(2).forward = movementVec;
 		}
 		
 		
@@ -252,9 +274,6 @@ public class PlayerScript : MonoBehaviour {
 	// the jump function simply gives the velocity of the character a great increase (mimicing the acceleration being applied almost all instantly) and we set airborn to true
 	void Jump()
 	{
-        //Play sounds
-        soundSource.Stop();
-        soundSource.PlayOneShot(jump, 1.0f);
 		rig.velocity += jumpheight * transform.up;
 		airborne = true;
 	}
@@ -363,6 +382,7 @@ public class PlayerScript : MonoBehaviour {
         soundSource.PlayOneShot(meld, 1.0f);
 
 		characterRenderer.enabled = false;
+        anim.enabled = false;
 		transform.GetComponent<Collider>().enabled = false;
 		if (Player1)
 		{
@@ -378,7 +398,7 @@ public class PlayerScript : MonoBehaviour {
 	// if the player exits the trigger of meld-able objects then we get rid of the button prompt to enter
 	void OnTriggerExit(Collider col)
 	{
-		if (col.gameObject.tag == "Screw" || col.gameObject.tag == "SingleControlRock" || col.gameObject.tag == "Switch")
+        if (col.gameObject.tag == "Screw" || col.gameObject.tag == "SingleControlRock" || col.gameObject.tag == "Switch" || col.gameObject.tag == "EndObject")
 		{
 			buttonPromptOn = false;
 		}

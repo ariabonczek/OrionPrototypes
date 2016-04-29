@@ -64,6 +64,7 @@ public class SingleControlRock : MonoBehaviour {
 				player1.transform.position = transform.position + transform.up;
 				player1.transform.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 				player1.transform.GetChild (0).GetComponent<Renderer> ().enabled = true;
+                player1.transform.GetChild(2).GetComponent<Animation>().enabled = true;
 				player1.transform.GetComponent<Collider> ().enabled = true;
 				
 				if(myCamera.GetComponent<CameraScript> ().player1 == this.gameObject){

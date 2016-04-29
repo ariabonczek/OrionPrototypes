@@ -12,6 +12,12 @@ public class CameraScript : MonoBehaviour
 	public float minDistance;
 	public float maxDistance;
 	
+    //Music
+    //The Nymphaeum (Part III) (2:53) by Angelwing
+    //Under Creative Commons
+    //http://www.freemusicpublicdomain.com/royalty-free-new-age-music/
+    private AudioSource soundSource;
+
 	// median point between player locations
 	private Vector3 median;
 	
@@ -50,6 +56,10 @@ public class CameraScript : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
+
+        soundSource = GetComponent<AudioSource>();
+        soundSource.Play();
+
 		// set initial player distance and median
 		playerDist = (player1.transform.position - player2.transform.position).magnitude;
 		median = player1.transform.position + ((player1.transform.position - player2.transform.position).normalized * playerDist / 2);
@@ -68,9 +78,14 @@ public class CameraScript : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+        //Make sure music stays
+        if (!soundSource.isPlaying)
+            soundSource.Play();
+
 		// initial check to be sure we have a Perspective point to give us a direction and distance from player
 		if (currentPPoint)
 		{
+
 			// updating player distance
 			playerDist = (player1.transform.position - player2.transform.position).magnitude;
 			

@@ -59,6 +59,7 @@ public class EndObject : MonoBehaviour {
                 player1.transform.position = transform.position + transform.up;
                 player1.transform.GetComponent<Rigidbody>().velocity = Vector3.zero;
                 player1.transform.GetChild(0).GetComponent<Renderer>().enabled = true;
+                player1.transform.GetChild(2).GetComponent<Animation>().enabled = true;
                 player1.transform.GetComponent<Collider>().enabled = true;
 
                 myCamera.GetComponent<CameraScript>().player1 = player1;
@@ -85,6 +86,7 @@ public class EndObject : MonoBehaviour {
                 player2.transform.position = transform.position + transform.up;
                 player2.transform.GetComponent<Rigidbody>().velocity = Vector3.zero;
                 player2.transform.GetChild(0).GetComponent<Renderer>().enabled = true;
+                player2.transform.GetChild(2).GetComponent<Animation>().enabled = true;
                 player2.transform.GetComponent<Collider>().enabled = true;
 
                 myCamera.GetComponent<CameraScript>().player2 = player2;
