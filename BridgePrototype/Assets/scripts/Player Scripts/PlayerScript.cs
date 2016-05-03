@@ -317,9 +317,15 @@ public class PlayerScript : MonoBehaviour {
 			} else {
 				buttonPromptOn = false;
 			}
-			
-			// if the player hits the square button and the object nearby is meld-able (i.e. a switch, screw, or control rock), then we call the meld in function to transition the player there
-			if (col.gameObject.tag == "Switch" && (Input.GetButtonDown(mySButton)))
+
+            // here we display the ui prompt for entering a meld-able object now that we're close enough
+            if ((col.gameObject.tag == "Screw" && col.GetComponentInParent<ScrewScript>().player))
+            {
+                this.transform.position += new Vector3(0, .01f, 0);
+            }
+
+            // if the player hits the square button and the object nearby is meld-able (i.e. a switch, screw, or control rock), then we call the meld in function to transition the player there
+            if (col.gameObject.tag == "Switch" && (Input.GetButtonDown(mySButton)))
 			{
 				if (!col.GetComponentInParent<SwitchScript>().player1)
 				{
