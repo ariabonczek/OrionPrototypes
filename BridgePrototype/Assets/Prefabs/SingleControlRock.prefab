@@ -61,7 +61,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 112216}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 28.8199997, y: .699999988, z: .200000003}
+  m_LocalPosition: {x: 36.7200012, y: -5.82000017, z: -18.5799999}
   m_LocalScale: {x: 1.35927653, y: 1, z: 1.33215725}
   m_Children:
   - {fileID: 490234}
@@ -88,7 +88,7 @@ Transform:
   m_GameObject: {fileID: 157636}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: .0469999984, y: -0, z: .0149999997}
-  m_LocalScale: {x: .496730864, y: .498444259, z: .508318126}
+  m_LocalScale: {x: .550000012, y: .670000017, z: .550000012}
   m_Children: []
   m_Father: {fileID: 402988}
   m_RootOrder: 0
@@ -102,8 +102,8 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: b46bef6dc99758241aae29b5c0bd2696, type: 2}
-  - {fileID: 2100000, guid: 89d0a64141632d647a8908a50fcf5415, type: 2}
+  - {fileID: 2100000, guid: a1c03d089e4ae9740b9cd742941a1950, type: 2}
+  - {fileID: 2100000, guid: a1c03d089e4ae9740b9cd742941a1950, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -111,7 +111,9 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_MinimumChartSize: 4
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
@@ -123,7 +125,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 157636}
-  m_Mesh: {fileID: 4300000, guid: ff23901930cbf104ebbc32e02ac9c765, type: 3}
+  m_Mesh: {fileID: 4300000, guid: c58959f384bde5b42a43ad68966cf220, type: 3}
 --- !u!54 &5437164
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -269,7 +271,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   justEntered: 0
   player1: {fileID: 0}
-  jumpHeight: 1
+  jumpHeight: 2
   jump: {fileID: 8300000, guid: b320f3ebf38448541b4d4585ee1b4bd1, type: 3}
   unmeld: {fileID: 8300000, guid: 7fe73801945e4e246baaefe18109a275, type: 3}
   myCamera: {fileID: 0}
