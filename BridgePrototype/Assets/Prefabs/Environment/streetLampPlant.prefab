@@ -11,6 +11,7 @@ GameObject:
   - 33: {fileID: 3321716}
   - 23: {fileID: 2343600}
   - 95: {fileID: 9589922}
+  - 64: {fileID: 6434694}
   m_Layer: 0
   m_Name: streetLampPlant
   m_TagString: Untagged
@@ -24,9 +25,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 127384}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 90.2669983, y: 73.0599976, z: 5.17089987}
-  m_LocalScale: {x: .297396302, y: .297396302, z: .297396302}
+  m_LocalRotation: {x: 0, y: -.405230701, z: 0, w: .914214492}
+  m_LocalPosition: {x: 38.3588333, y: 12.8599997, z: -67.1785355}
+  m_LocalScale: {x: .347443402, y: .347443461, z: .347443432}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -60,6 +61,18 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 127384}
+  m_Mesh: {fileID: 4300000, guid: abb4dd812c71fec43af3ddbd13db7bff, type: 3}
+--- !u!64 &6434694
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 127384}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
   m_Mesh: {fileID: 4300000, guid: abb4dd812c71fec43af3ddbd13db7bff, type: 3}
 --- !u!95 &9589922
 Animator:

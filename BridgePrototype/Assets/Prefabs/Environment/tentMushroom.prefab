@@ -11,6 +11,7 @@ GameObject:
   - 33: {fileID: 3319418}
   - 23: {fileID: 2371318}
   - 95: {fileID: 9573950}
+  - 64: {fileID: 6426458}
   m_Layer: 0
   m_Name: tentMushroom
   m_TagString: Untagged
@@ -24,9 +25,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 134258}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 87.4581757, y: 71.4548492, z: 8.45452404}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0, y: .538286328, z: 0, w: .842762053}
+  m_LocalPosition: {x: 50.4099998, y: 15.3100004, z: -35.2900009}
+  m_LocalScale: {x: .732207239, y: .732207298, z: .732207298}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -60,6 +61,18 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 134258}
+  m_Mesh: {fileID: 4300000, guid: 7a813c837e87df7488920a05b60f71e9, type: 3}
+--- !u!64 &6426458
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 134258}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
   m_Mesh: {fileID: 4300000, guid: 7a813c837e87df7488920a05b60f71e9, type: 3}
 --- !u!95 &9573950
 Animator:

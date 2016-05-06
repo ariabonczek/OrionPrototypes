@@ -11,6 +11,7 @@ GameObject:
   - 33: {fileID: 3335900}
   - 23: {fileID: 2395862}
   - 95: {fileID: 9522244}
+  - 64: {fileID: 6473166}
   m_Layer: 0
   m_Name: largeCrystal
   m_TagString: Untagged
@@ -24,9 +25,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 198280}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 80.2064285, y: 71.8253174, z: -26.9200001}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: .829945982, y: 0, z: 0, w: .557843864}
+  m_LocalPosition: {x: 39.4399986, y: 12.1599998, z: -53.1699982}
+  m_LocalScale: {x: 3.26715779, y: 3.26715684, z: 3.2671566}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -60,6 +61,18 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 198280}
+  m_Mesh: {fileID: 4300000, guid: 7c580de49fd89c44280b1c5117f04e89, type: 3}
+--- !u!64 &6473166
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 198280}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
   m_Mesh: {fileID: 4300000, guid: 7c580de49fd89c44280b1c5117f04e89, type: 3}
 --- !u!95 &9522244
 Animator:

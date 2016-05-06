@@ -386,9 +386,13 @@ public class PlayerScript : MonoBehaviour {
         //Play meld sound
         soundSource.Stop();
         soundSource.PlayOneShot(meld, 1.0f);
+        anim.CrossFade("Meld");
 
-		characterRenderer.enabled = false;
-        anim.enabled = false;
+        //Legacy animations dont support events on animation, so there is no way
+        //to make the animation play before this happens. 
+        //Making this function an IEnumerator will break it as well
+
+        characterRenderer.enabled = false;
 		transform.GetComponent<Collider>().enabled = false;
 		if (Player1)
 		{
