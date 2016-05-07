@@ -12,6 +12,9 @@ public class SingleControlRock : MonoBehaviour {
 	// rock's jump height value
 	public float jumpHeight;
 
+    // the boolean to lock the rock from access for the other player
+    public bool locked;
+
     //sounds
     public AudioClip jump;
     public AudioClip unmeld;
@@ -57,7 +60,7 @@ public class SingleControlRock : MonoBehaviour {
 			justEntered = false;
 		} else {
 			// if the player pressed square to get out and the rock is on the ground then we put the player on top of the block and turn its renderers and colliders on
-			if (player1 && Input.GetButtonDown (player1.GetComponent<PlayerScript> ().mySButton) && Physics.Raycast(ray, out hit, .7f)) {
+			if (player1 && Input.GetButtonDown (player1.GetComponent<PlayerScript> ().mySButton)) {
                 //play unmeld
                 soundSource.PlayOneShot(unmeld, 1.0f);
 
@@ -111,6 +114,78 @@ public class SingleControlRock : MonoBehaviour {
 			}
 		}
 		
-		ray = new Ray(transform.position, -transform.up);
-	}
+		ray = new Ray(transform.position + transform.GetChild(0).GetComponent<Collider>().bounds.extents, -transform.up);
+
+        // raycast check used to see if block is on the gruond
+        if (Physics.Raycast(ray, out hit, .7f))
+        {
+            if (hit.collider.gameObject.tag != "Player" && player1 && Input.GetButton(player1.GetComponent<PlayerScript>().myXButton))
+            {
+                if (!(hit.collider.isTrigger && hit.collider.gameObject.tag != "Parenting"))
+                {
+                    //play jump
+                    if (!soundSource.isPlaying)
+                        soundSource.PlayOneShot(jump, 1.0f);
+
+                    GetComponent<Rigidbody>().velocity += jumpHeight * transform.up;
+                }
+            }
+        }
+
+        ray = new Ray(transform.position - transform.GetChild(0).GetComponent<Collider>().bounds.extents, -transform.up);
+
+        // raycast check used to see if block is on the gruond
+        if (Physics.Raycast(ray, out hit, .7f))
+        {
+            if (hit.collider.gameObject.tag != "Player" && player1 && Input.GetButton(player1.GetComponent<PlayerScript>().myXButton))
+            {
+                if (!(hit.collider.isTrigger && hit.collider.gameObject.tag != "Parenting"))
+                {
+                    //play jump
+                    if (!soundSource.isPlaying)
+                        soundSource.PlayOneShot(jump, 1.0f);
+
+                    GetComponent<Rigidbody>().velocity += jumpHeight * transform.up;
+                }
+            }
+        }
+
+        ray = new Ray(transform.position + new Vector3(-transform.GetChild(0).GetComponent<Collider>().bounds.extents.x, 0 , transform.GetChild(0).GetComponent<Collider>().bounds.extents.z), -transform.up);
+
+        // raycast check used to see if block is on the gruond
+        if (Physics.Raycast(ray, out hit, .7f))
+        {
+            if (hit.collider.gameObject.tag != "Player" && player1 && Input.GetButton(player1.GetComponent<PlayerScript>().myXButton))
+            {
+                if (!(hit.collider.isTrigger && hit.collider.gameObject.tag != "Parenting"))
+                {
+                    //play jump
+                    if (!soundSource.isPlaying)
+                        soundSource.PlayOneShot(jump, 1.0f);
+
+                    GetComponent<Rigidbody>().velocity += jumpHeight * transform.up;
+                }
+            }
+        }
+
+        ray = new Ray(transform.position - new Vector3(-transform.GetChild(0).GetComponent<Collider>().bounds.extents.x, 0, transform.GetChild(0).GetComponent<Collider>().bounds.extents.z), -transform.up);
+
+        // raycast check used to see if block is on the gruond
+        if (Physics.Raycast(ray, out hit, .7f))
+        {
+            if (hit.collider.gameObject.tag != "Player" && player1 && Input.GetButton(player1.GetComponent<PlayerScript>().myXButton))
+            {
+                if (!(hit.collider.isTrigger && hit.collider.gameObject.tag != "Parenting"))
+                {
+                    //play jump
+                    if (!soundSource.isPlaying)
+                        soundSource.PlayOneShot(jump, 1.0f);
+
+                    GetComponent<Rigidbody>().velocity += jumpHeight * transform.up;
+                }
+            }
+        }
+
+        ray = new Ray(transform.position, -transform.up);
+    }
 }

@@ -17,9 +17,12 @@ public class ScrewScript : MonoBehaviour {
 	
 	// the float that influences how quickly the screw moves up
 	public float risingSpeed;
-	
-	// the float that influences how quicky the screw moves down
-	public float descendingSpeed;
+
+    // the boolean to lock the screw from access for the other player
+    public bool locked;
+
+    // the float that influences how quicky the screw moves down
+    public float descendingSpeed;
 	
 	// the float that denotes how many seconds the screw holds in place before descending
 	public float hoverTime;

@@ -69,6 +69,9 @@ public class PlayerScript : MonoBehaviour {
 	
 	// the reference to the spriterenderer for the ui interaction prompt sprite
 	private SpriteRenderer interactSprite;
+
+    // a bad habit bool to use
+    private bool screwOn;
 	
 	// the reference to the renderer for the character model
 	private Renderer characterRenderer;
@@ -158,6 +161,11 @@ public class PlayerScript : MonoBehaviour {
 			if (!(hit.collider.isTrigger && hit.collider.gameObject.tag!="Parenting") && hit.transform.gameObject.tag != "Player" )
 			{
 				airborne = false;
+
+                if (hit.collider.gameObject.tag == "Screw")
+                {
+                    this.transform.position += new Vector3(0, .01f, 0);
+                }
 			}
 			
 		} else
@@ -176,6 +184,9 @@ public class PlayerScript : MonoBehaviour {
 		
 		// call the method to display the prompts if nessecary
         DisplayPrompts ();
+
+        transform.up = Vector3.up;
+        this.transform.localScale = new Vector3(1,1,1);
         
         if (melding) {
 			MeldFrame ();
@@ -317,12 +328,6 @@ public class PlayerScript : MonoBehaviour {
 				buttonPromptOn = false;
 			}
 
-            // here we display the ui prompt for entering a meld-able object now that we're close enough
-            if ((col.gameObject.tag == "Screw" && col.GetComponentInParent<ScrewScript>().player))
-            {
-                this.transform.position += new Vector3(0, .01f, 0);
-            }
-
             // if the player hits the square button and the object nearby is meld-able (i.e. a switch, screw, or control rock), then we call the meld in function to transition the player there
             if (col.gameObject.tag == "Switch" && (Input.GetButtonDown(mySButton)))
 			{
@@ -336,13 +341,14 @@ public class PlayerScript : MonoBehaviour {
 			if (col.gameObject.tag == "Screw")
 			{
 				// if they are colliding and pressing the enter button we begin the meld process
-				if ((Input.GetButtonDown(mySButton)) && !col.GetComponentInParent<ScrewScript>().player)
+				if ((Input.GetButtonDown(mySButton)) && !col.GetComponentInParent<ScrewScript>().player && !col.GetComponentInParent<ScrewScript>().locked)
 				{
 					this.gameObject.transform.GetChild (2).forward = (col.transform.position - transform.position);
 					anim.CrossFade("Meld");
 					melding = true;
 					buttonPromptOn = false;
-				}
+                    col.GetComponentInParent<ScrewScript>().locked = true;
+                }
 				// otherwise, if they are in an object range and have gone through a meld animation, we transfer the player to the object
 				else if (meldDone){
 					col.GetComponentInParent<ScrewScript>().player = this.gameObject;
@@ -366,7 +372,9 @@ public class PlayerScript : MonoBehaviour {
                     {
                         myCamera.GetComponent<CameraScript>().player2 = col.gameObject;
                     }
-                    
+
+                    col.GetComponentInParent<ScrewScript>().locked = false;
+
                     buttonPromptOn = false;
 
 					this.transform.position -= new Vector3(0,100,0);
@@ -376,12 +384,13 @@ public class PlayerScript : MonoBehaviour {
 			if (col.gameObject.tag == "SingleControlRock")
 			{
 				// if they are colliding and pressing the enter button we begin the meld process
-				if (Input.GetButtonDown(mySButton) && !col.GetComponent<SingleControlRock>().player1)
+				if (Input.GetButtonDown(mySButton) && !col.GetComponent<SingleControlRock>().player1 && !col.GetComponent<SingleControlRock>().locked)
 				{
 					this.gameObject.transform.GetChild (2).forward = (col.transform.position - transform.position);
 					anim.CrossFade("Meld");
 					melding = true;
-					buttonPromptOn = false;
+                    col.GetComponent<SingleControlRock>().locked = true;
+                    buttonPromptOn = false;
 				}
 				// otherwise, if they are in an object range and have gone through a meld animation, we transfer the player to the object
 				else if (meldDone){
@@ -406,7 +415,9 @@ public class PlayerScript : MonoBehaviour {
                         myCamera.GetComponent<CameraScript>().player2 = col.gameObject;
                     }
 
-					this.transform.position -= new Vector3(0,100,0);
+                    col.GetComponent<SingleControlRock>().locked = false;
+
+                    this.transform.position -= new Vector3(0,100,0);
 
 					meldDone = false;
                 }
