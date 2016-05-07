@@ -15,6 +15,14 @@ public class SingleControlRock : MonoBehaviour {
     // the boolean to lock the rock from access for the other player
     public bool locked;
 
+	public bool timing;
+
+	public float timer;
+
+	public float tStart;
+
+	public float timerFull;
+
     //sounds
     public AudioClip jump;
     public AudioClip unmeld;
@@ -44,6 +52,7 @@ public class SingleControlRock : MonoBehaviour {
 		myCamera = GameObject.FindGameObjectWithTag ("MainCamera");
 		speed = 2;
         soundSource = GetComponent<AudioSource>();
+		timerFull = 3;
 	}
 	
 	void FixedUpdate(){
@@ -55,6 +64,20 @@ public class SingleControlRock : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		if(locked && !timing){
+			timing = true;
+			tStart = Time.time;
+		}
+
+		if(timing){
+			timer = Time.time - tStart;
+			if(timer>timerFull){
+				locked = false;
+				timing = false;
+			}
+		}
+
 		// checks if the player has just entered, as that way our input check for getting out doesn't immediatly assume the player's input to enter also indicated them exiting
 		if (justEntered == true) {
 			justEntered = false;
