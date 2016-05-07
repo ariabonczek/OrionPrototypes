@@ -47,6 +47,14 @@ public class PlayerScript : MonoBehaviour {
 	
 	// used to note the start time of a ui fade in
 	private float timeStart;
+
+	// boolean used to check if character is melding or not
+	private bool melding;
+
+	private bool meldDone;
+
+	// the amuont of frames into the meld animation
+	private int meldingFrames;
 	
 	// these represent the strings used to leverage Unity's input system and reference inputs in unity's input manager
 	public string mySButton;
@@ -161,92 +169,83 @@ public class PlayerScript : MonoBehaviour {
 	// the update loop
 	void Update()
 	{
-		// start with a quit check to exit the application
-		if (Input.GetButton(myShareButton))
-		{
-			Application.Quit();
-		}
-		
 		// the child we reference here is our ui prompt sprite, which we always orient towards the camera if it is visible
-		if (buttonPromptOn)
-		{
-			transform.GetChild(1).forward = (myCamera.transform.forward);
+		if (buttonPromptOn) {
+			transform.GetChild (1).forward = (myCamera.transform.forward);
 		}
 		
 		// call the method to display the prompts if nessecary
-		DisplayPrompts();
+        DisplayPrompts ();
+        
+        if (melding) {
+			MeldFrame ();
+		} else {
+			// start with a quit check to exit the application
+			if (Input.GetButton (myShareButton)) {
+				Application.Quit ();
+			}
 		
-		// calculate the angle difference between the camera orientation on the xz plane and what is essentially the direction character movement expects to move on
-		cameraAngleDiff = Vector3.Angle(new Vector3(0, 0, 1), new Vector3(myCamera.transform.forward.x, 0, myCamera.transform.forward.z));
+			// calculate the angle difference between the camera orientation on the xz plane and what is essentially the direction character movement expects to move on
+			cameraAngleDiff = Vector3.Angle (new Vector3 (0, 0, 1), new Vector3 (myCamera.transform.forward.x, 0, myCamera.transform.forward.z));
 		
-		// use cross product to get the sign of the angle at hand
-		Vector3 cross = Vector3.Cross(new Vector3(0, 0, 1), new Vector3(myCamera.transform.forward.x, 0, myCamera.transform.forward.z));
+			// use cross product to get the sign of the angle at hand
+			Vector3 cross = Vector3.Cross (new Vector3 (0, 0, 1), new Vector3 (myCamera.transform.forward.x, 0, myCamera.transform.forward.z));
 		
-		// if the cross component relative to the xz plane normal (y) is positive or zero then we do nothing, but if it is negative then we negate the angle
-		if (cross.y < 0)
-		{
-			cameraAngleDiff = -cameraAngleDiff;
-		}
+			// if the cross component relative to the xz plane normal (y) is positive or zero then we do nothing, but if it is negative then we negate the angle
+			if (cross.y < 0) {
+				cameraAngleDiff = -cameraAngleDiff;
+			}
 		
-		// we get the movement vector usign the left analog stick input
-		movementVec.x = (Vector3.left * -(Input.GetAxis(myLeftStick + "X") * speed * Time.deltaTime)).x;
-		movementVec.z = (Vector3.forward * -(Input.GetAxis(myLeftStick + "Y") * speed * Time.deltaTime)).z;
+			// we get the movement vector usign the left analog stick input
+			movementVec.x = (Vector3.left * -(Input.GetAxis (myLeftStick + "X") * speed * Time.deltaTime)).x;
+			movementVec.z = (Vector3.forward * -(Input.GetAxis (myLeftStick + "Y") * speed * Time.deltaTime)).z;
 		
-		// we then rotate the movement vector by the camera angle difference we've just calculated
-		movementVec = Quaternion.AngleAxis(cameraAngleDiff, Vector3.up) * movementVec;
+			// we then rotate the movement vector by the camera angle difference we've just calculated
+			movementVec = Quaternion.AngleAxis (cameraAngleDiff, Vector3.up) * movementVec;
 		
-		// translate the player by the finalized movement vector
-		this.transform.Translate(movementVec);
+			// translate the player by the finalized movement vector
+			this.transform.Translate (movementVec);
 
-        //Play walking sounds
-        //Play if not jumping or melding,and moving
-        if (new Vector3(movementVec.x, 0f, movementVec.z) != new Vector3(0f, 0f, 0f) && !airborne && characterRenderer.enabled == true)
-        {
-            if (!soundSource.isPlaying)
-                soundSource.Play();
+			//Play walking sounds
+			//Play if not jumping or melding,and moving
+			if (new Vector3 (movementVec.x, 0f, movementVec.z) != new Vector3 (0f, 0f, 0f) && !airborne && characterRenderer.enabled == true) {
+				if (!soundSource.isPlaying)
+					soundSource.Play ();
 
-            if(!anim.IsPlaying("Run"))
-                anim.CrossFade("Run");
-        }
-        else
-        {
-            //dont stop other sounds
-            if (!airborne && characterRenderer.enabled == true)
-            {
-                soundSource.Stop();
-                anim.CrossFade("Idle");
-            }
-        }
-        //soundSource.loop = true;
+				if (!anim.IsPlaying ("Run"))
+					anim.CrossFade ("Run");
+			} else {
+				//dont stop other sounds
+				if (!airborne && characterRenderer.enabled == true) {
+					soundSource.Stop ();
+					anim.CrossFade ("Idle");
+				}
+			}
+			//soundSource.loop = true;
 		
-		// if the player is trying to jump and we aren't already airborne
-		if (Input.GetButtonDown(myXButton) && airborne == false)
-		{
-			// also check to make sure that we haven't passed the upper limit for how long players can hold the jump button, then the jump occurs
-			if (pressCount <= 5f)
-			{
-                soundSource.Stop();
-                soundSource.PlayOneShot(jump, 1.0f);
-                anim.CrossFade("Jump");
-				Jump();
-				pressCount++;
+			// if the player is trying to jump and we aren't already airborne
+			if (Input.GetButtonDown (myXButton) && airborne == false) {
+				// also check to make sure that we haven't passed the upper limit for how long players can hold the jump button, then the jump occurs
+				if (pressCount <= 5f) {
+					soundSource.Stop ();
+					soundSource.PlayOneShot (jump, 1.0f);
+					anim.CrossFade ("Jump");
+					Jump ();
+					pressCount++;
+				}
+			}
+		
+			// the moment players let go of the jump button we reset the counter for how long they've held
+			if (Input.GetButtonUp (myXButton)) {
+				anim.CrossFade ("Land");
+				pressCount = 0;
+			}
+		
+			// instead of rotating the entire player we just rotate the model
+			if (Input.GetAxis (myLeftStick + "X") > .1f || Input.GetAxis (myLeftStick + "Y") > .1f || Input.GetAxis (myLeftStick + "X") < -.1f || Input.GetAxis (myLeftStick + "Y") < -.1f) {
+				this.gameObject.transform.GetChild (2).forward = movementVec;
 			}
 		}
-		
-		// the moment players let go of the jump button we reset the counter for how long they've held
-		if (Input.GetButtonUp(myXButton))
-		{
-            anim.CrossFade("Land");
-			pressCount = 0;
-		}
-		
-		// instead of rotating the entire player we just rotate the model
-		if (Input.GetAxis(myLeftStick + "X") > .1f || Input.GetAxis(myLeftStick + "Y") > .1f || Input.GetAxis(myLeftStick + "X") < -.1f || Input.GetAxis(myLeftStick + "Y") < -.1f)
-		{
-			this.gameObject.transform.GetChild(2).forward = movementVec;
-		}
-		
-		
 	}
 	
 	// the display prompts function goes through the process of displaying the ui prompt properly and fading it in if need be
@@ -329,48 +328,132 @@ public class PlayerScript : MonoBehaviour {
 			{
 				if (!col.GetComponentInParent<SwitchScript>().player1)
 				{
-					MeldIn(col.gameObject,col.GetComponentInParent<SwitchScript>().player1);
-					col.GetComponentInParent<SwitchScript>().player1 = this.gameObject;
-					col.GetComponentInParent<SwitchScript>().justEntered = true;
+					anim.CrossFade("Meld");
+					melding = true;
 				}
 			}
 			
-			if (col.gameObject.tag == "Screw" && (Input.GetButtonDown(mySButton)))
+			if (col.gameObject.tag == "Screw")
 			{
-				if (!col.GetComponentInParent<ScrewScript>().player)
+				// if they are colliding and pressing the enter button we begin the meld process
+				if ((Input.GetButtonDown(mySButton)) && !col.GetComponentInParent<ScrewScript>().player)
 				{
-					MeldIn(col.gameObject,col.GetComponentInParent<ScrewScript>().player);
+					this.gameObject.transform.GetChild (2).forward = (col.transform.position - transform.position);
+					anim.CrossFade("Meld");
+					melding = true;
+					buttonPromptOn = false;
+				}
+				// otherwise, if they are in an object range and have gone through a meld animation, we transfer the player to the object
+				else if (meldDone){
 					col.GetComponentInParent<ScrewScript>().player = this.gameObject;
 					col.GetComponentInParent<ScrewScript>().justEntered = true;
+					meldDone = false;
+
+					//Play meld sound
+					soundSource.Stop();
+					soundSource.PlayOneShot(meld, 1.0f);
+					
+					//Legacy animations dont support events on animation, so there is no way
+					//to make the animation play before this happens. 
+					//Making this function an IEnumerator will break it as well
+					
+					characterRenderer.enabled = false;
+					transform.GetComponent<Collider>().enabled = false;
+					if (Player1)
+					{
+						myCamera.GetComponent<CameraScript>().player1 = col.gameObject;
+                    } else
+                    {
+                        myCamera.GetComponent<CameraScript>().player2 = col.gameObject;
+                    }
+                    
+                    buttonPromptOn = false;
+
+					this.transform.position -= new Vector3(0,100,0);
 				}
 			}
 			
-			if (col.gameObject.tag == "SingleControlRock" && (Input.GetButtonDown(mySButton)))
+			if (col.gameObject.tag == "SingleControlRock")
 			{
-				if (!col.GetComponent<SingleControlRock>().player1)
+				// if they are colliding and pressing the enter button we begin the meld process
+				if (Input.GetButtonDown(mySButton) && !col.GetComponent<SingleControlRock>().player1)
 				{
-					MeldIn(col.gameObject,col.GetComponentInParent<SingleControlRock>().player1);
-					col.GetComponent<SingleControlRock>().player1 = this.gameObject;
-					col.GetComponent<SingleControlRock>().justEntered = true;
+					this.gameObject.transform.GetChild (2).forward = (col.transform.position - transform.position);
+					anim.CrossFade("Meld");
+					melding = true;
+					buttonPromptOn = false;
 				}
-				buttonPromptOn = false;
+				// otherwise, if they are in an object range and have gone through a meld animation, we transfer the player to the object
+				else if (meldDone){
+					col.GetComponentInParent<SingleControlRock>().player1 = this.gameObject;
+					col.GetComponentInParent<SingleControlRock>().justEntered = true;
+
+					//Play meld sound
+					soundSource.Stop();
+					soundSource.PlayOneShot(meld, 1.0f);
+					
+					//Legacy animations dont support events on animation, so there is no way
+					//to make the animation play before this happens. 
+					//Making this function an IEnumerator will break it as well
+					
+					characterRenderer.enabled = false;
+					transform.GetComponent<Collider>().enabled = false;
+					if (Player1)
+					{
+						myCamera.GetComponent<CameraScript>().player1 = col.gameObject;
+                    } else
+                    {
+                        myCamera.GetComponent<CameraScript>().player2 = col.gameObject;
+                    }
+
+					this.transform.position -= new Vector3(0,100,0);
+
+					meldDone = false;
+                }
 			}
 
-            if (col.gameObject.tag == "EndObject" && (Input.GetButtonDown(mySButton)))
+            if (col.gameObject.tag == "EndObject")
             {
-                if (Player1)
+				// if they are colliding and pressing the enter button we begin the meld process
+				if ((Input.GetButtonDown(mySButton)))
                 {
-                    MeldIn(col.gameObject, col.GetComponentInParent<EndObject>().player1);
-                    col.GetComponent<EndObject>().player1 = this.gameObject;
-                    col.GetComponent<EndObject>().p1justEntered = true;
+					this.gameObject.transform.GetChild (2).forward = new Vector3((col.transform.position - transform.position).x,0,(col.transform.position - transform.position).z);
+					anim.CrossFade("Meld");
+					melding = true;
+					buttonPromptOn = false;
                 }
-                else
-                {
-                    MeldIn(col.gameObject, col.GetComponentInParent<EndObject>().player2);
-                    col.GetComponent<EndObject>().player2 = this.gameObject;
-                    col.GetComponent<EndObject>().p2justEntered = true;
+				// otherwise, if they are in an object range and have gone through a meld animation, we transfer the player to the object
+                else if (meldDone)
+                {					
+					//Play meld sound
+					soundSource.Stop();
+					soundSource.PlayOneShot(meld, 1.0f);
+					
+					//Legacy animations dont support events on animation, so there is no way
+					//to make the animation play before this happens. 
+					//Making this function an IEnumerator will break it as well
+					
+					characterRenderer.enabled = false;
+					transform.GetComponent<Collider>().enabled = false;
+					if (Player1)
+					{
+						myCamera.GetComponent<CameraScript>().player1 = col.gameObject;
+					} else
+					{
+						myCamera.GetComponent<CameraScript>().player2 = col.gameObject;
+                    }
+                    
+                    this.transform.position -= new Vector3(0,100,0);
+                    
+                    meldDone = false;
+                    if(Player1){
+						col.GetComponentInParent<EndObject>().player1 = this.gameObject;
+                    }
+                    else 
+                    {
+						col.GetComponentInParent<EndObject>().player2 = this.gameObject;
+                    }
                 }
-                buttonPromptOn = false;
             }
 			
 			if (transform.GetComponent<Collider>().enabled == false)
@@ -379,30 +462,15 @@ public class PlayerScript : MonoBehaviour {
 			}
 		}
 	}
-	
-	// the function used for the player melding into objects, which stops the player
-	void MeldIn(GameObject meldTarget, GameObject playerRef)
-	{
-        //Play meld sound
-        soundSource.Stop();
-        soundSource.PlayOneShot(meld, 1.0f);
-        anim.CrossFade("Meld");
 
-        //Legacy animations dont support events on animation, so there is no way
-        //to make the animation play before this happens. 
-        //Making this function an IEnumerator will break it as well
-
-        characterRenderer.enabled = false;
-		transform.GetComponent<Collider>().enabled = false;
-		if (Player1)
-		{
-			myCamera.GetComponent<CameraScript>().player1 = meldTarget.gameObject;
-		} else
-		{
-			myCamera.GetComponent<CameraScript>().player2 = meldTarget.gameObject;
-		}
+	void MeldFrame(){
+		meldingFrames++;
 		
-		buttonPromptOn = false;
+		if (meldingFrames > 75) {
+			melding = false;
+			meldingFrames = 0;
+			meldDone = true;
+		}
 	}
 	
 	// if the player exits the trigger of meld-able objects then we get rid of the button prompt to enter
