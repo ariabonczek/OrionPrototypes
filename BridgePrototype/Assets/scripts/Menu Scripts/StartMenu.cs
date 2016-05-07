@@ -8,15 +8,15 @@ public class StartMenu : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-        P1 = this.gameObject.transform.GetChild(0).gameObject;
-        P2 = this.gameObject.transform.GetChild(1).gameObject;
+        //P1 = this.gameObject.transform.GetChild(0).gameObject;
+        //P2 = this.gameObject.transform.GetChild(1).gameObject;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	    if(P1 && P2 && P1.GetComponentInParent<StartMenuText>().ready && P2.GetComponentInParent<StartMenuText>().ready)
+	    if((Input.GetButtonDown("P1X") || Input.GetButtonDown("P1S") || Input.GetButtonDown("P1T") || Input.GetButtonDown("P1O") || Input.GetButtonDown("P2X") || Input.GetButtonDown("P2S") || Input.GetButtonDown("P2T") || Input.GetButtonDown("P2O")))
         {
-            Application.LoadLevel("minViable");
+            Application.LoadLevel(1);
             Debug.Log("Loading scene!");
         }
 	}
