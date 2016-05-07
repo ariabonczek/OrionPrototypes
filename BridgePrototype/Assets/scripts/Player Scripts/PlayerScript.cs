@@ -341,7 +341,7 @@ public class PlayerScript : MonoBehaviour {
 			if (col.gameObject.tag == "Screw")
 			{
 				// if they are colliding and pressing the enter button we begin the meld process
-				if ((Input.GetButtonDown(mySButton)) && !col.GetComponentInParent<ScrewScript>().player && !col.GetComponentInParent<ScrewScript>().locked && !melding)
+				if ((Input.GetButtonDown(mySButton)) && !col.GetComponentInParent<ScrewScript>().player && !col.GetComponentInParent<ScrewScript>().locked && !melding && !meldDone)
 				{
 					this.gameObject.transform.GetChild (2).forward = (col.transform.position - transform.position);
 					anim.CrossFade("Meld");
@@ -384,7 +384,7 @@ public class PlayerScript : MonoBehaviour {
 			if (col.gameObject.tag == "SingleControlRock")
 			{
 				// if they are colliding and pressing the enter button we begin the meld process
-				if (Input.GetButtonDown(mySButton) && !col.GetComponent<SingleControlRock>().player1 && !col.GetComponent<SingleControlRock>().locked && !melding)
+				if (Input.GetButtonDown(mySButton) && !col.GetComponent<SingleControlRock>().player1 && !col.GetComponent<SingleControlRock>().locked && !melding && !meldDone)
 				{
 					this.gameObject.transform.GetChild (2).forward = (col.transform.position - transform.position);
 					anim.CrossFade("Meld");
