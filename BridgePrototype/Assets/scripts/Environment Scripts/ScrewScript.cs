@@ -100,8 +100,8 @@ public class ScrewScript : MonoBehaviour {
 			timeStart = Time.time;
 		} else {
 			// setting the display prompts to show correctly to the camera.
-			transform.GetChild(0).GetChild(3).forward = (myCamera.transform.forward);
-			transform.GetChild(0).GetChild(4).forward = (myCamera.transform.forward);
+		//	transform.GetChild(0).GetChild(3).forward = (myCamera.transform.forward);
+		//	transform.GetChild(0).GetChild(4).forward = (myCamera.transform.forward);
 			
 			DisplayPrompts();
 			
