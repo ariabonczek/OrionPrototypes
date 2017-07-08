@@ -5,12 +5,12 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 442752}
-  - 33: {fileID: 3323980}
-  - 65: {fileID: 6565888}
-  - 23: {fileID: 2367466}
+  - component: {fileID: 442752}
+  - component: {fileID: 3323980}
+  - component: {fileID: 6565888}
+  - component: {fileID: 2367466}
   m_Layer: 0
   m_Name: Platform
   m_TagString: Platform
@@ -23,9 +23,9 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 448622}
+  - component: {fileID: 448622}
   m_Layer: 0
   m_Name: EndPoint
   m_TagString: Untagged
@@ -38,12 +38,12 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 415760}
-  - 114: {fileID: 11427992}
-  - 114: {fileID: 11494720}
-  - 114: {fileID: 11420090}
+  - component: {fileID: 415760}
+  - component: {fileID: 11427992}
+  - component: {fileID: 11494720}
+  - component: {fileID: 11420090}
   m_Layer: 0
   m_Name: Color-Changing Moving Platform
   m_TagString: Untagged
@@ -57,14 +57,15 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 189840}
-  m_LocalRotation: {x: 1, y: 1.62920685e-07, z: 1.62920685e-07, w: 2.65431496e-14}
-  m_LocalPosition: {x: 66.6673965, y: 18.8396301, z: 27.7313614}
-  m_LocalScale: {x: 26.2900429, y: 5.25291348, z: 1.86499}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 442752}
   - {fileID: 448622}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &442752
 Transform:
   m_ObjectHideFlags: 1
@@ -73,10 +74,11 @@ Transform:
   m_GameObject: {fileID: 110434}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: .157122165, y: .120521143, z: 2.33957601}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 415760}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &448622
 Transform:
   m_ObjectHideFlags: 1
@@ -84,11 +86,12 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 142832}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .100000001, y: 0, z: -0}
+  m_LocalPosition: {x: -4.74, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 415760}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &2367466
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -98,17 +101,24 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 5cb4def8828936b4489e6ac6e3cd2482, type: 2}
-  m_SubsetIndices: 
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 1
-  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_AutoUVMaxDistance: .5
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
@@ -169,8 +179,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Points: []
   actualPlat: {fileID: 110434}
-  reverses: 0
-  speed: 0
+  reverses: 1
+  speed: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
