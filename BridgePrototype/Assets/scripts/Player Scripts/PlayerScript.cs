@@ -88,7 +88,9 @@ public class PlayerScript : MonoBehaviour {
 
     public Animation anim;
 
-	
+	private Transform currrentMovingPlatform;
+
+	public bool interia = true;
 	// the initialization of the player
 	void Start()
 	{
@@ -284,8 +286,10 @@ public class PlayerScript : MonoBehaviour {
 	// the jump function simply gives the velocity of the character a great increase (mimicing the acceleration being applied almost all instantly) and we set airborn to true
 	void Jump()
 	{
+		transform.parent = null;
 		rig.velocity += jumpheight * transform.up;
 		airborne = true;
+
 	}
 	
 	// the respawn function just sets the position back to the last respawn point
@@ -306,9 +310,24 @@ public class PlayerScript : MonoBehaviour {
 				col.gameObject.GetComponent<BallScript>().DestroyBall();
 			} else if (!colorComponent || (colorComponent && !colorComponent.IsMyColor(Player1)))
 			{
-				Respawn();
+				//Respawn();
 			}
 		}
+
+		//parents parent to movign platform to it does not fall off
+		if (interia && col.gameObject.tag == "Platform") {
+		
+			currrentMovingPlatform = col.gameObject.transform;
+			transform.SetParent (currrentMovingPlatform);
+		}
+	}
+
+
+
+	void OnCollisionExit(Collision col)
+	{
+		if (interia && col.gameObject.tag == "Platform")
+			currrentMovingPlatform = null;
 	}
 	
 	// trigger checks, which all have to do with potential melding objects
