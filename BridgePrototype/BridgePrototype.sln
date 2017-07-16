@@ -1,0 +1,35 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{2CA83D8D-14F3-9134-67B1-AC90A94B4A4E}") = "BridgePrototype", "Assembly-CSharp-firstpass.csproj", "{148F27A2-E1A1-4127-E15D-50FCEC41DCAA}"
+EndProject
+Project("{2CA83D8D-14F3-9134-67B1-AC90A94B4A4E}") = "BridgePrototype", "Assembly-CSharp.csproj", "{8BF4E41C-EEC0-DDDA-1E48-CC011AF42388}"
+EndProject
+Project("{2CA83D8D-14F3-9134-67B1-AC90A94B4A4E}") = "BridgePrototype", "Assembly-CSharp-Editor.csproj", "{13AF84DE-7CFC-2249-93D4-42A1EBE5F105}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{148F27A2-E1A1-4127-E15D-50FCEC41DCAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{148F27A2-E1A1-4127-E15D-50FCEC41DCAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{148F27A2-E1A1-4127-E15D-50FCEC41DCAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{148F27A2-E1A1-4127-E15D-50FCEC41DCAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BF4E41C-EEC0-DDDA-1E48-CC011AF42388}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BF4E41C-EEC0-DDDA-1E48-CC011AF42388}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BF4E41C-EEC0-DDDA-1E48-CC011AF42388}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BF4E41C-EEC0-DDDA-1E48-CC011AF42388}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13AF84DE-7CFC-2249-93D4-42A1EBE5F105}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13AF84DE-7CFC-2249-93D4-42A1EBE5F105}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13AF84DE-7CFC-2249-93D4-42A1EBE5F105}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13AF84DE-7CFC-2249-93D4-42A1EBE5F105}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
