@@ -116,11 +116,14 @@ public class SingleControlRock : MonoBehaviour {
 			movementVec.z = (Vector3.forward * -(Input.GetAxis (player1.GetComponent<PlayerScript>().myLeftStick + "Y")* Time.deltaTime)).z;
 			
 			movementVec = Quaternion.AngleAxis(cameraAngleDiff, Vector3.up) * movementVec;
-			
+
+
+
 			movementVec *= speed;
 
 			if(movementVec.magnitude>0){
 				this.transform.Translate(movementVec);
+				this.gameObject.transform.GetChild (0).forward = movementVec;
 			}
 		}
 		

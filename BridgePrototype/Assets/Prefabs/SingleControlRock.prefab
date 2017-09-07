@@ -61,8 +61,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 112216}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 36.7200012, y: -5.82000017, z: -18.5799999}
-  m_LocalScale: {x: 1.35927653, y: 1, z: 1.33215725}
+  m_LocalPosition: {x: 3.74000001, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 490234}
   - {fileID: 439940}
@@ -75,8 +75,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 157418}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .0590000004, y: .360000014, z: .0149999997}
-  m_LocalScale: {x: .865429699, y: .946810484, z: .896177351}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 402988}
   m_RootOrder: 1
@@ -87,8 +87,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 157636}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .0469999984, y: -0, z: .0149999997}
-  m_LocalScale: {x: .550000012, y: .670000017, z: .550000012}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 402988}
   m_RootOrder: 0
@@ -111,9 +111,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_MinimumChartSize: 4
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
@@ -125,7 +123,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 157636}
-  m_Mesh: {fileID: 4300000, guid: c58959f384bde5b42a43ad68966cf220, type: 3}
+  m_Mesh: {fileID: 4300000, guid: 3b62c046ebe0ec74db9bc394925e601e, type: 3}
 --- !u!54 &5437164
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -151,8 +149,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.000211, y: .940910757, z: 1.81987619}
-  m_Center: {x: .0248283744, y: -.0295410156, z: .0263618305}
+  m_Size: {x: 1.10000002, y: 1, z: 1.10000002}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &6585776
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -163,8 +161,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.99495506, y: 1.98798823, z: 1.9787966}
-  m_Center: {x: .00270624179, y: .00519652758, z: .00257445429}
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &6594668
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -175,7 +173,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: .800000012, y: .800000012, z: .800000012}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!82 &8214392
 AudioSource:
@@ -271,7 +269,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   justEntered: 0
   player1: {fileID: 0}
-  jumpHeight: 2
+  jumpHeight: 1
+  locked: 0
+  timing: 0
+  timer: 0
+  tStart: 0
+  timerFull: 0
   jump: {fileID: 8300000, guid: b320f3ebf38448541b4d4585ee1b4bd1, type: 3}
   unmeld: {fileID: 8300000, guid: 7fe73801945e4e246baaefe18109a275, type: 3}
   myCamera: {fileID: 0}
